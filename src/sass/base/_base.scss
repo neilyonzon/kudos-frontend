@@ -1,0 +1,79 @@
+@import "_normalize";
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  clear: both;
+}
+
+.header {
+  font-size: 5rem;
+  font-weight: bold;
+  line-height: 7rem;
+  margin-bottom: 1rem;
+
+  &--left {
+    text-align: left;
+  }
+
+  &--right {
+    text-align: right;
+  }
+
+  &--white {
+    color: #fff;
+  }
+
+  &--primary {
+    color: $color-primary;
+  }
+
+  &--secondary {
+    color: $color-secondary;
+  }
+
+  &--dark {
+    color: $color__text-main;
+  }
+
+  &--solo {
+    padding: 0.5rem 8rem 0.2rem 8rem;
+  }
+}
+
+.callout {
+  font-size: 6rem;
+  font-weight: bold;
+  line-height: 7rem;
+
+  &--primary {
+    color: $color-primary;
+  }
+
+  &--secondary {
+    color: $color-secondary;
+  }
+
+  &--tertiary {
+    color: $color-tertiary;
+  }
+}
+
+.callout-2 {
+  font-size: 4rem;
+
+  &--primary {
+    color: $color-primary;
+  }
+
+  &--secondary {
+    color: $color-secondary;
+  }
+
+  &--tertiary {
+    color: $color-tertiary;
+  }
+}
