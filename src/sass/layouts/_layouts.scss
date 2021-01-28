@@ -25,9 +25,10 @@
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     padding-left: 0.2rem;
+    visibility: hidden;
 
-    &--hide {
-      visibility: hidden;
+    &--visible {
+      visibility: visible;
     }
   }
 
@@ -47,8 +48,19 @@
     }
   }
 
-  &__img {
-    border-radius: 50%;
+  &__img-container {
     width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  &__img {
+    position: relative;
+    width: 100%;
+    object-fit: contain;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
