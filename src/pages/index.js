@@ -8,8 +8,8 @@ const IndexPage = () => {
     <Layout>
       <Helmet>
         <title>Kudos Login</title>
+        <meta name="description" content="Kudos" />
       </Helmet>
-      <h1>Login</h1>
     </Layout>
   );
 };
