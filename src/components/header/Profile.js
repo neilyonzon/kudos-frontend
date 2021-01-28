@@ -7,7 +7,7 @@ class ProfileIcon extends React.Component {
     displayProfile: " ",
   };
 
-  // Notes. How to make 'detect click outside element' a universal/helper function accessible for all components?
+  // Neil: How to make 'detect click outside element' a universal/helper function accessible for all components?
 
   componentDidMount() {
     document.addEventListener("mousedown", this.hideProfileNav);
@@ -39,6 +39,7 @@ class ProfileIcon extends React.Component {
 
   render() {
     return (
+      //Neil Notes:
       // 1. API call to display image. Use placeholder if no image.
       // 2. Logout to Expire authentication and redirect to Login | Sign-Up Home Page View.
       // 3. Profile to route to profile page. Profile design/page tbd.
