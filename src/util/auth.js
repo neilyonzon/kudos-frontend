@@ -32,4 +32,10 @@ export const loginUser = ({ username, password }) =>{
         userData = data;
     }).catch(error => console.log(error));
 
+    if(userData){
+        return setUser(userData);
+    }
+
+    return false;
+
 }
