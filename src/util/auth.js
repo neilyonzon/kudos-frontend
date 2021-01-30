@@ -1,13 +1,13 @@
-export const isBrowser = () => typeof window !== "undefined";
+const isBrowser = () => typeof window !== "undefined";
 
-export const getUser = () => 
-    window.localStorage.getItem("userInfo") 
-        ? JSON.parse(window.localStorage.getItem("userInfo"))
-        : {}
+export const getToken = () => 
+    window.localStorage.getItem("userToken") 
+        ? window.localStorage.getItem("userToken")
+        : '';
 
-const setUser = userInfo => (window.localstorage.setItem("userInfo", JSON.stringify(userInfo)));
+const setToken = userToken => (window.localstorage.setItem("userToken", userToken));
 
-export const loginUser = ({ username, password }) =>{
+export const loginSuccessful = async (username, password) => {
     if(!isBrowser){
         return false;
     }
@@ -22,20 +22,34 @@ export const loginUser = ({ username, password }) =>{
       `
     }
 
-    let userData;
-    fetch('http://localhost:3000/graphql', {
+    const response = await fetch('http://localhost:3000/graphql', {
         method: 'POST',
         body: JSON.stringify(graphqlQuery)
-    }).then(response => {
-        return response.json();
-    }).then(data =>{
-        userData = data;
-    }).catch(error => console.log(error));
+    });
 
-    if(userData){
-        return setUser(userData);
+    const userData = response.json();
+    if(userData.errors){
+        return false
     }
 
-    return false;
+    if(userData.data){
+        const userToken = userData.data.loginTeacher.token || userData.data.loginStudent.token
+        setToken(userToken);
+        return true
+    }
+};
 
+// need to add logic in the future for if token is expired
+// also if we want to request another token
+export const isLoggedIn = () =>{
+    if(!isBrowser){
+        return false;
+    }
+
+    return !!getToken();
 }
+
+export const logout = callback =>{
+    setToken('');
+    callback();
+};
