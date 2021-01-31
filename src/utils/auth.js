@@ -5,9 +5,9 @@ export const getToken = () =>
         ? window.localStorage.getItem("userToken")
         : '';
 
-const setToken = userToken => (window.localstorage.setItem("userToken", userToken));
+const setToken = userToken => window.localStorage.setItem("userToken", userToken);
 
-export const loginSuccessful = async (username, password) => {
+export const loginSuccessful = async ({ username, password }) => {
     if(!isBrowser){
         return false;
     }
@@ -24,15 +24,19 @@ export const loginSuccessful = async (username, password) => {
 
     const response = await fetch('http://localhost:3000/graphql', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(graphqlQuery)
     });
 
-    const userData = response.json();
+    //need to refactor so it provides error message so it can be displayed in client if login fails
+    const userData = await response.json();
     if(userData.errors){
         return false
     }
 
-    if(userData.data){
+    if(userData){
         const userToken = userData.data.loginTeacher.token || userData.data.loginStudent.token
         setToken(userToken);
         return true
