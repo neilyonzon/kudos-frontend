@@ -8,6 +8,12 @@ const PrivateRoute = ({ component: Component, location, ...rest }) =>{
         return null
     }
 
+    // if user goes to home page but is logged in, go straight to dashboard
+    if(isLoggedIn() && location.pathname === '/'){
+        navigate('/dashboard')
+        return null
+    }
+
     return <Component {...rest} />
 }
 
