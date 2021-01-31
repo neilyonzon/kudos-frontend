@@ -2,7 +2,9 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { isLoggedIn } from '../utils/auth'
 
-const PrivateRoute = ({ component: Component, location, ...rest }) =>{
+const CustomRoute = ({ component: Component, location, ...rest }) =>{
+
+    // if user goes to protected route but isn't logged in, go to home page (which is the login page)
     if(!isLoggedIn() && location.pathname !== '/'){
         navigate('/')
         return null
@@ -10,11 +12,11 @@ const PrivateRoute = ({ component: Component, location, ...rest }) =>{
 
     // if user goes to home page but is logged in, go straight to dashboard
     if(isLoggedIn() && location.pathname === '/'){
-        navigate('/dashboard')
+        navigate('/dummy')
         return null
     }
 
     return <Component {...rest} />
 }
 
-export default PrivateRoute;
+export default CustomRoute;
