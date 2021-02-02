@@ -1,7 +1,7 @@
 const isBrowser = () => typeof window !== "undefined";
 
 export const getToken = () => 
-    window.localStorage.getItem("userToken") 
+    isBrowser() && window.localStorage.getItem("userToken") 
         ? window.localStorage.getItem("userToken")
         : '';
 
