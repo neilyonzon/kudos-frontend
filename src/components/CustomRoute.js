@@ -12,7 +12,7 @@ const CustomRoute = ({ component: Component, location, ...rest }) =>{
 
     // if user goes to home page but is logged in, go straight to dashboard
     if(isLoggedIn() && location.pathname === '/'){
-        navigate('/dummy')
+        navigate('/dashboard')
         return null
     }
 

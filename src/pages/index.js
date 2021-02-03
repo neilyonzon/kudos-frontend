@@ -2,7 +2,7 @@ import React from 'react'
 import { Router } from '@reach/router'
 import Layout from '../components/Layout'
 import Login from '../components/Login'
-import Dummy from '../components/Dummy'
+import Dummy from '../components/Dashboard'
 import CustomRoute from '../components/CustomRoute'
 
 // markup
