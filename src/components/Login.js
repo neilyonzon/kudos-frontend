@@ -19,7 +19,7 @@ class Login extends Component {
         event.preventDefault();
         const loggedIn = await loginSuccessful(this.state)
         if(loggedIn){
-            return navigate('/dummy')
+            return navigate('/dashboard')
         }else{
             this.setState({loginError: true})
         }
