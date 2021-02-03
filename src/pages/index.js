@@ -2,7 +2,7 @@ import React from 'react'
 import { Router } from '@reach/router'
 import Layout from '../components/Layout'
 import Login from '../components/Login'
-import Dummy from '../components/Dashboard'
+import Dashboard from '../components/Dashboard'
 import CustomRoute from '../components/CustomRoute'
 
 // markup
@@ -15,7 +15,7 @@ const IndexPage = () => {
       </Helmet>
       <Router>
         <CustomRoute path='/' component={Login} />
-        <CustomRoute path='/dummy' component={Dummy} />
+        <CustomRoute path='/dashboard' component={Dashboard} />
       </Router>
     </Layout>
   );
