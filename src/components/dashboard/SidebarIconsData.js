@@ -15,7 +15,7 @@ export const SidebarIconsData = [
         icon: <IoIosPeople />,
     },
     {
-        component: 'Award',
+        component: 'TreasureBox',
         icon: <FaAward />,
     },
     {
