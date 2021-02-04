@@ -1,0 +1,23 @@
+.navMenu {
+    background-color: grey;
+    width: 250px;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: -250;
+    transition: 850ms;
+  }
+
+  .navMenuItems {
+    width: 100%;
+  }
+
+  .navText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    height: 60px;
+    font-size: 30px;
+  }
