@@ -12,6 +12,11 @@ h6 {
 html {
   // This defines what 1rem is
   font-size: 62.5%; // 1 rem = 10px; 10px/16px = 62.5
+  color: $color-grey;
+}
+
+p {
+  font-size: 2rem;
 }
 
 .header {
@@ -49,36 +54,16 @@ html {
   }
 }
 
-.callout {
-  font-size: 6rem;
-  font-weight: bold;
-  line-height: 7rem;
-
-  &--primary {
-    color: $color-primary;
-  }
-
-  &--secondary {
-    color: $color-secondary;
-  }
-
-  &--tertiary {
-    color: $color-tertiary;
-  }
-}
-
-.callout-2 {
-  font-size: 4rem;
-
-  &--primary {
-    color: $color-primary;
-  }
-
-  &--secondary {
-    color: $color-secondary;
-  }
-
-  &--tertiary {
-    color: $color-tertiary;
-  }
+.btn {
+  display: block;
+  border-style: none;
+  border-radius: 20px;
+  padding: 1rem 2rem;
+  margin: 0.75rem;
+  font-size: 2rem;
+  font-weight: bolder;
+  color: white;
+  background: $color-green;
+  min-width: 20rem;
+  cursor: pointer;
 }

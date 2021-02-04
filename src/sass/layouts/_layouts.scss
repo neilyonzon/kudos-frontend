@@ -65,3 +65,14 @@
     transform: translate(-50%, -50%);
   }
 }
+
+.bg {
+  display: flex;
+  place-items: center;
+  width: 100vw;
+  height: auto;
+
+  &--yellow {
+    background: $color-yellow;
+  }
+}
