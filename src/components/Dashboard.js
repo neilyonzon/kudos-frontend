@@ -13,7 +13,57 @@ import { SidebarIconsData } from './dashboard/SidebarIconsData'
 class Dashboard extends Component {
 
     state = {
-        selectedComponentName: 'Home'
+        selectedComponentName: 'Home',
+        dashboardData: {},
+        selectedClass: ''
+    }
+
+    componentDidMount() {
+
+        const graphqlQuery = {
+            query: `
+            {
+                teacher{
+                    firstName
+                    lastName
+                    email
+                    classes{
+                        classId
+                        className
+                        treasureBoxOpen
+                        students{
+                            studentId
+                            firstName
+                            lastName
+                            username
+                            imageUrl
+                            favoriteSubject
+                            kudosBalance
+                        }
+                        prizes{
+                            prizeId
+                            name
+                            imageUrl
+                            kudosCost
+                            quantity
+                        }
+                    }
+                  }
+            }
+          `
+        }
+
+        const response = await fetch('http://localhost:3000/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' 
+            },
+            body: JSON.stringify(graphqlQuery)
+        });
+
+        const data = await response.json();
+        this.setState({dashboardData: data});
     }
 
     onComponentSelectHandler = (selectedComponentName) =>{
