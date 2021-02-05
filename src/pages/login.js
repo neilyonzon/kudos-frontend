@@ -15,8 +15,10 @@ const LoginPage = () => {
           <div className="login-panel__content">
             <h1>Manage Prizes</h1>
             <p>Organize and save time with our prize management tool.</p>
-            <button className="btn btn-primary">Login</button>
-            <button className="btn btn-primary--inv">Login</button>
+            <div className="login-panel__cta-box">
+              <button className="btn btn-primary">Login</button>
+              <button className="btn btn-primary--inverse">Sign-Up</button>
+            </div>
           </div>
           <div className="login-panel__line"></div>
           <div className="login-panel__img">

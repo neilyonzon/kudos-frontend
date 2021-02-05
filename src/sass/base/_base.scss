@@ -55,15 +55,34 @@ p {
 }
 
 .btn {
-  display: block;
+  min-width: 20rem;
+  margin: 0.75rem;
+  padding: 1rem 2rem;
   border-style: none;
   border-radius: 20px;
-  padding: 1rem 2rem;
-  margin: 0.75rem;
   font-size: 2rem;
   font-weight: bolder;
   color: white;
   background: $color-green;
-  min-width: 20rem;
   cursor: pointer;
+  transition: background 0.5s;
+
+  &-primary {
+    background: $color-green;
+
+    &--inverse {
+      border: 3px solid $color-green;
+      color: $color-green;
+      background: white;
+
+      &:hover {
+        border-color: $color-green-blue;
+        color: $color-green-blue;
+      }
+    }
+
+    &:hover {
+      background: $color-green-blue;
+    }
+  }
 }

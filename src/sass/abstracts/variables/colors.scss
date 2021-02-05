@@ -23,21 +23,17 @@ $color-primary: #169fff;
 $color-secondary: #a452ff;
 $color-secondary--dark: #9a42f7;
 $color-tertiary: #ffa800;
-$color-quaternary: #7de634;
+$color-quaternary: rgb(52, 230, 177);
 $color-black: #000;
 $color-yellow: #ecdd7b;
 $color-green: #84d397;
+$color-green-blue: #73c0b3;
 $color-grey: #707070;
 
-$color-primary-gradient: linear-gradient(
+$color-green-gradient: linear-gradient(
   to right,
-  rgba(22, 159, 255, 1),
-  rgba(22, 140, 255, 0.5)
-);
-$color-secondary-gradient: linear-gradient(
-  to right,
-  rgba(164, 82, 255, 1),
-  rgba(164, 82, 255, 0.5)
+  rgba(132, 211, 151),
+  rgb(132, 211, 198)
 );
 
 $color-tertiary-bg: rgba(255, 168, 0, 0.85);
