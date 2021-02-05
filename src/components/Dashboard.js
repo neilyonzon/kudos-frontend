@@ -81,13 +81,18 @@ class Dashboard extends Component {
         console.log(this.state.dashboardData)
 
         let selectedComponent = null
-        if(this.state.selectedComponentName === 'Home'){
-            selectedComponent = <Home data={this.state.dashboardData ? this.state.dashboardData.data.teacher.classes : ''}/>
+        let selectedClassData
+        if(this.state.selectedClass){
+            selectedClassData = this.state.dashboardData.data.teacher.classes.filter(selectedClass => {
+                return selectedClass.className === this.state.selectedClass})[0]
         }
-        if(this.state.selectedComponentName === 'Students'){
+        if(this.state.selectedComponentName === 'Home' && this.state.selectedClass){
+            selectedComponent = <Home data={selectedClassData}/>
+        }
+        if(this.state.selectedComponentName === 'Students' && this.state.selectedClass){
             selectedComponent = <Students />
         }
-        if(this.state.selectedComponentName === 'TreasureBox'){
+        if(this.state.selectedComponentName === 'TreasureBox' && this.state.selectedClass){
             selectedComponent = <TreasureBox />
         }
 
