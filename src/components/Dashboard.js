@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { logout } from '../utils/auth'
+import { logout, getToken } from '../utils/auth'
 import { navigate } from 'gatsby'
 
 import Home from './Home'
@@ -13,12 +13,13 @@ import { SidebarIconsData } from './dashboard/SidebarIconsData'
 class Dashboard extends Component {
 
     state = {
-        selectedComponentName: 'Home',
-        dashboardData: {},
+        loading: true,
+        selectedComponentName: '',
+        dashboardData: null,
         selectedClass: ''
     }
 
-    componentDidMount() {
+    async componentDidMount() {
 
         const graphqlQuery = {
             query: `
@@ -53,17 +54,21 @@ class Dashboard extends Component {
           `
         }
 
+        const token = getToken();
         const response = await fetch('http://localhost:3000/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' 
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(graphqlQuery)
-        });
+        })
 
-        const data = await response.json();
-        this.setState({dashboardData: data});
+        const responseData = await response.json();
+        const selectedClass = await responseData.data.teacher.classes[0].className || ''
+
+        this.setState({ dashboardData: responseData, selectedComponentName: 'Home', selectedClass: selectedClass, loading: false })
+
     }
 
     onComponentSelectHandler = (selectedComponentName) =>{
@@ -72,9 +77,12 @@ class Dashboard extends Component {
 
     render(){
 
-        let selectedComponent
+        console.log('dashboard data below')
+        console.log(this.state.dashboardData)
+
+        let selectedComponent = null
         if(this.state.selectedComponentName === 'Home'){
-            selectedComponent = <Home />
+            selectedComponent = <Home data={this.state.dashboardData ? this.state.dashboardData.data.teacher.classes : ''}/>
         }
         if(this.state.selectedComponentName === 'Students'){
             selectedComponent = <Students />
@@ -113,6 +121,7 @@ class Dashboard extends Component {
                 </nav>
 
                 <h1>Below is the selected component</h1>
+                {this.state.selectedClass ? <h2>{this.state.selectedClass} is selected</h2> : <h2>You don't have any classes!</h2>}
 
                 {selectedComponent}
 
