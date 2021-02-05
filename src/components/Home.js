@@ -10,8 +10,8 @@ class Home extends Component {
         return (
             <div>
                 <h1>This is the home component</h1>
-                {this.props.data[0].students.map(student => {
-                    return <StudentCard name={student.firstName} kudosBalance={student.kudosBalance}/>
+                {this.props.data.students.map(student => {
+                    return <StudentCard key={student.studentId} name={student.firstName} kudosBalance={student.kudosBalance}/>
                 })}
             </div>
         )
