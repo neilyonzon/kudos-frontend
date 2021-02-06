@@ -6,6 +6,8 @@ import Home from './Home'
 import Students from './Students'
 import TreasureBox from './TreasureBox'
 
+import ClassSelector from './dashboard/ClassSelector'
+
 import dashboardStyles from './dashboard.module.css'
 
 import { SidebarIconsData } from './dashboard/SidebarIconsData'
@@ -65,6 +67,7 @@ class Dashboard extends Component {
         })
 
         const responseData = await response.json();
+        // this will throw an error if classes[0] does not exist
         const selectedClass = await responseData.data.teacher.classes[0].className || ''
 
         this.setState({ dashboardData: responseData, selectedComponentName: 'Home', selectedClass: selectedClass, loading: false })
@@ -72,8 +75,12 @@ class Dashboard extends Component {
     }
 
     onComponentSelectHandler = (selectedComponentName) =>{
-        this.setState({selectedComponentName: selectedComponentName})
+        this.setState({ selectedComponentName: selectedComponentName })
     }
+
+    onSelectClassHandler = (event) =>[
+        this.setState({ selectedClass: event.target.value })
+    ]
 
     render(){
 
@@ -124,6 +131,10 @@ class Dashboard extends Component {
                         })}
                     </ul>
                 </nav>
+
+                {this.state.selectedClass ? 
+                    <ClassSelector onSelect={this.onSelectClassHandler} classes={this.state.dashboardData.data.teacher.classes}/> 
+                    : null}
 
                 <h1>Below is the selected component</h1>
                 {this.state.selectedClass ? <h2>{this.state.selectedClass} is selected</h2> : <h2>You don't have any classes!</h2>}
