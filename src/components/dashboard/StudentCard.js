@@ -6,11 +6,17 @@ import studentCardStyles from './studentCard.module.css'
 
 const StudentCard = props => {
     return (
-        <div>
-            <h1>{props.name}</h1>
-            <h2>{props.kudosBalance}</h2>
-            <FiDollarSign />
-            <HiPencilAlt />
+        <div className={studentCardStyles.studentCard}>
+            <span>
+                {props.name}
+            </span>
+            <span>
+                {props.kudosBalance} pts.
+            </span>
+            <div className={studentCardStyles.iconArea}>
+                <FiDollarSign />
+                <HiPencilAlt />
+            </div>
         </div>
     )
 };
