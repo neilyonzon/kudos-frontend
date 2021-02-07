@@ -1,0 +1,29 @@
+.controlPanel {
+    background-color: rgb(93, 198, 214);
+    width: 250px;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    list-style: none;
+    height: 50px;
+    width: 50px;
+    font-size: 40px;
+    color: white;
+  }
+
+  .iconCircle {
+      background: rgb(255, 153, 104);
+      padding: 4px; 
+      border-style: solid;
+      border-radius: 50%;
+      border-color: white;
+      border-width: 1px;
+  }
