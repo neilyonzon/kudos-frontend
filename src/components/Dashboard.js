@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import { logout, getToken } from '../utils/auth'
 import { navigate } from 'gatsby'
 
+import ControlPanel from './dashboard/ControlPanel'
+import ClassSelector from './dashboard/ClassSelector'
+
 import Home from './Home'
 import Students from './Students'
 import TreasureBox from './TreasureBox'
 
-import ClassSelector from './dashboard/ClassSelector'
-
 import dashboardStyles from './dashboard.module.css'
-
-import { SidebarIconsData } from './dashboard/SidebarIconsData'
 
 class Dashboard extends Component {
 
@@ -117,20 +116,10 @@ class Dashboard extends Component {
                     Log Out!
                 </a>
 
-                <nav className={dashboardStyles.navMenu}>
-                    <ul className={dashboardStyles.navMenuItems}>
-                        {SidebarIconsData.map(iconData =>{
-                            return (
-                                <li 
-                                    key={iconData.component} 
-                                    className={dashboardStyles.navText}
-                                    onClick={() => this.onComponentSelectHandler(iconData.component)}>
-                                    {iconData.icon}
-                                </li>
-                            )
-                        })}
-                    </ul>
-                </nav>
+                <ControlPanel 
+                    onSelectHandler={this.onComponentSelectHandler} 
+                    selectedComponent={this.state.selectedComponentName}
+                />
 
                 {this.state.selectedClass ? 
                     <ClassSelector onSelect={this.onSelectClassHandler} classes={this.state.dashboardData.data.teacher.classes}/> 
