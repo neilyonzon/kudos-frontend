@@ -41,6 +41,10 @@ class Dashboard extends Component {
                             imageUrl
                             favoriteSubject
                             kudosBalance
+                            transactions{
+                                prizeId
+                                approved
+                            }
                         }
                         prizes{
                             prizeId
