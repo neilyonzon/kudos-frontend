@@ -26,7 +26,7 @@ class Home extends Component {
         return (
             <div>
                 <h1>This is the home component</h1>
-                {this.props.data.students.map(student => {
+                {classStudents.map(student => {
                     return <StudentCard key={student.studentId} name={student.firstName} kudosBalance={student.kudosBalance}/>
                 })}
                 <TBSummary remainingPrizes={remainingPrizes} pendingApproval={pendingApproval} />
