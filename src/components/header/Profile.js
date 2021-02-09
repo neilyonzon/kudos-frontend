@@ -45,7 +45,7 @@ class ProfileIcon extends React.Component {
       // 3. Profile to route to profile page. Profile design/page tbd.
       <div className="header-profile" ref={this.setWrapperRef}>
         <div
-          class="header-profile__img-container"
+          className="header-profile__img-container"
           onClick={this.toggleProfileNav}
         >
           <img
