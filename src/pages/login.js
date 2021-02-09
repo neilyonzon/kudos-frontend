@@ -5,9 +5,23 @@ import LoginContainer from "../components/login/LoginContainer";
 
 class LoginPage extends React.Component {
   state = {
-    title: "Manage Prizes",
-    description: "Save time and manage your prizes through the prize box",
-    image: "",
+    login: {
+      title: "Manage Prizes",
+      description: "Save time and manage your prizes through the prize box",
+      image: "",
+      buttons: [
+        {
+          text: "Login",
+          link: "",
+          class: "btn-primary",
+        },
+        {
+          text: "Sign-Up",
+          link: "",
+          class: "btn-primary--inverse",
+        },
+      ],
+    },
   };
 
   render() {
@@ -17,7 +31,14 @@ class LoginPage extends React.Component {
           <title>Kudos Login</title>
           <meta name="description" content="Kudos" />
         </Helmet>
-        <LoginContainer details={this.state}></LoginContainer>
+        <LoginContainer
+          loginDetails={this.state.login}
+          wysiwyg={
+            <p>
+              This is a <strong>paragraph</strong>
+            </p>
+          }
+        ></LoginContainer>
       </Layout>
     );
   }

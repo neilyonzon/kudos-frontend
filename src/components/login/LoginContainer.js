@@ -2,16 +2,26 @@ import React from "react";
 import ToyBoyImg from "../../../src/images/toy-box.png";
 import PropTypes from "prop-types";
 
-const LoginContainer = (props) => {
+function LoginContainer(props) {
+  const buttons = props.loginDetails.buttons;
+
+  const buttonsOutput = buttons.map((button, index) => (
+    <button key={index} className={`btn ${button.class}`}>
+      {button.text}
+    </button>
+  ));
+
   return (
     <div className="bg bg--yellow">
       <div className="login-panel">
         <div className="login-panel__content">
-          {props.details.title && <h1>{props.details.title}</h1>}
-          {props.details.description && <p>{props.details.description}</p>}
+          {props.loginDetails.title && <h1>{props.loginDetails.title}</h1>}
+          {props.loginDetails.description && (
+            <p>{props.loginDetails.description}</p>
+          )}
           <div className="login-panel__cta-box">
-            <button className="btn btn-primary">Login</button>
-            <button className="btn btn-primary--inverse">Sign-Up</button>
+            {buttonsOutput}
+            {props.wysiwyg && props.wysiwyg}
           </div>
         </div>
         <div className="login-panel__line"></div>
@@ -21,7 +31,7 @@ const LoginContainer = (props) => {
       </div>
     </div>
   );
-};
+}
 
 LoginContainer.propTypes = {
   title: PropTypes.string,
