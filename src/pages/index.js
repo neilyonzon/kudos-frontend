@@ -1,6 +1,8 @@
-import * as React from "react";
-import { Helmet } from "react-helmet";
-import Layout from "../components/Layout";
+import React from 'react'
+import { Router } from '@reach/router'
+import Layout from '../components/Layout'
+import Login from '../components/Login'
+import Dummy from '../components/Dummy'
 
 // markup
 const IndexPage = () => {
@@ -10,6 +12,10 @@ const IndexPage = () => {
         <title>Kudos Login</title>
         <meta name="description" content="Kudos" />
       </Helmet>
+      <Router>
+        <Login path="/"/>
+        <Dummy path="/dummy"/>
+      </Router>
     </Layout>
   );
 };
