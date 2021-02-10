@@ -1,0 +1,15 @@
+.studentCard {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: lightcoral;
+    height: 50px;
+    width: 45%;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.iconArea {
+    display: flex;
+    justify-content: center;
+}
