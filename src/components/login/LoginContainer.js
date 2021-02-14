@@ -3,7 +3,11 @@ import ToyBoyImg from "../../../src/images/toy-box.png";
 import PropTypes from "prop-types";
 
 function LoginContainer(props) {
-  const buttons = props.loginDetails.buttons;
+  let buttons = "";
+
+  if (props.loginDetails.buttons) {
+    buttons = props.loginDetails.buttons;
+  }
 
   const buttonsOutput = buttons.map((button, index) => (
     <button key={index} className={`btn ${button.class}`}>
