@@ -5,7 +5,7 @@ import ProfileIcon from "./Profile";
 const Header = () => {
   return (
     <header className="main-header">
-      <Logo addClass=" main-header__logo"></Logo>
+      <Logo addclassName=" main-header__logo"></Logo>
       {/* Conditionally render below after authorization/User exists */}
       <ProfileIcon></ProfileIcon>
     </header>

@@ -1,9 +1,10 @@
-import React from 'react'
-import { Router } from '@reach/router'
-import Layout from '../components/Layout'
-import Login from '../components/Login'
-import Dashboard from '../components/Dashboard'
-import CustomRoute from '../components/CustomRoute'
+import React from "react";
+import { Router } from "@reach/router";
+import Layout from "../components/Layout";
+import Login from "../components/Login";
+import Dashboard from "../components/Dashboard";
+import CustomRoute from "../components/CustomRoute";
+import { Helmet } from "react-helmet";
 
 // markup
 const IndexPage = () => {
@@ -14,8 +15,8 @@ const IndexPage = () => {
         <meta name="description" content="Kudos" />
       </Helmet>
       <Router>
-        <CustomRoute path='/' component={Login} />
-        <CustomRoute path='/dashboard' component={Dashboard} />
+        <CustomRoute path="/" component={Login} />
+        <CustomRoute path="/dashboard" component={Dashboard} />
       </Router>
     </Layout>
   );
