@@ -15,12 +15,21 @@
 
   &__content {
     padding: 2rem;
+    bottom: 2rem;
     position: relative;
-    top: 3rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    & > h1 {
+      margin-bottom: 2rem;
+    }
+
+    & > p {
+      margin-bottom: 2rem;
+      width: 35rem;
+    }
   }
 
   &__cta-box {
@@ -34,6 +43,7 @@
     height: 30rem;
     background: $color-yellow;
     align-self: center;
+    display: block;
   }
 
   &__img {
@@ -42,9 +52,9 @@
   }
 
   &__img > img {
-    width: 65rem;
+    width: 60rem;
     position: relative;
-    left: 5rem;
-    bottom: 10rem;
+    left: 7rem;
+    bottom: 6rem;
   }
 }
