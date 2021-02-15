@@ -15,12 +15,13 @@ class TreasureBox extends Component {
                 const studentName = student.firstName + ' ' +  student.lastName
 
                 for(const transaction of student.transactions){
-                    
+
                     pendingApproval.push(<Approval 
                         key={transaction.id} 
                         studentName={studentName} 
                         studentUrl={student.imageUrl}
                         prizeName={transaction.prizeName} 
+                        prizeCost={transaction.prizeCost}
                         prizeUrl={transaction.prizeImageUrl}/>
                     )
                 }
