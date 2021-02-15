@@ -44,6 +44,7 @@ class Dashboard extends Component {
                                 prizeId
                                 prizeName
                                 prizeImageUrl
+                                prizeCost
                                 approved
                             }
                         }
