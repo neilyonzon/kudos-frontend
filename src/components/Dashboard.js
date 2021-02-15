@@ -63,7 +63,7 @@ class Dashboard extends Component {
 
     const token = getToken();
     const response = await fetch(
-      "http://localhost:3000/graphql",
+      "https://kudos-backend.herokuapp.com/graphql",
       {
         method: "POST",
         headers: {
