@@ -59,7 +59,7 @@ class Dashboard extends Component {
 
     const token = getToken();
     const response = await fetch(
-      "https://kudos-backend.herokuapp.com/graphql",
+      "http://localhost:3000/graphql",
       {
         method: "POST",
         headers: {
@@ -120,7 +120,7 @@ class Dashboard extends Component {
       this.state.selectedComponentName === "TreasureBox" &&
       this.state.selectedClass
     ) {
-      selectedComponent = <TreasureBox />;
+      selectedComponent = <TreasureBox data={selectedClassData}/>;
     }
 
     return (
