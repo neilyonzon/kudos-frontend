@@ -40,7 +40,10 @@ class Dashboard extends Component {
                             favoriteSubject
                             kudosBalance
                             transactions{
+                                id
                                 prizeId
+                                prizeName
+                                prizeImageUrl
                                 approved
                             }
                         }
