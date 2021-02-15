@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Approval from './treasureBox/Approval'
+import PrizeCard from './treasureBox/PrizeCard'
 
 class TreasureBox extends Component {
     
@@ -33,6 +34,18 @@ class TreasureBox extends Component {
                 <h2>Approvals</h2>
                 <span>{pendingApproval.length} pending approval</span>
                 {pendingApproval}
+                <div>
+                    <h2>Your Prizes {this.props.data.prizes.length} total</h2>
+                    {this.props.data.prizes.map(prize =>{
+                        return <PrizeCard
+                            key={prize.prizeId} 
+                            name={prize.name} 
+                            quantity={prize.quantity} 
+                            cost={prize.kudosCost} 
+                            category={prize.category}
+                            />
+                    })}
+                </div>
             </div>
         )
     }
