@@ -40,7 +40,11 @@ class Dashboard extends Component {
                             favoriteSubject
                             kudosBalance
                             transactions{
+                                id
                                 prizeId
+                                prizeName
+                                prizeImageUrl
+                                prizeCost
                                 approved
                             }
                         }
@@ -120,7 +124,7 @@ class Dashboard extends Component {
       this.state.selectedComponentName === "TreasureBox" &&
       this.state.selectedClass
     ) {
-      selectedComponent = <TreasureBox />;
+      selectedComponent = <TreasureBox data={selectedClassData}/>;
     }
 
     return (
