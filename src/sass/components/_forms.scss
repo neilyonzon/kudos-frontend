@@ -1,10 +1,15 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   position: relative;
   top: 1rem;
   height: auto;
-  width: 40rem;
   color: $color-gray;
   &__group {
     margin-bottom: 1.5rem;
@@ -14,7 +19,6 @@
   &__radio-group {
     padding-left: 0rem;
     position: relative;
-    right: 17%;
 
     & :not(:last-child) {
       margin-bottom: 1.2rem;
@@ -23,20 +27,26 @@
 
   &__label {
     font-size: 2rem;
-    padding-left: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
 
     &--hidden {
       display: none;
+    }
+
+    &--radio {
+      font-size: 2rem;
+      padding-left: 0.5rem;
     }
   }
 
   &__input,
   &__select {
-    width: 26rem;
+    width: 100%;
     color: $color-gray;
     border: 1px solid #d9d9d9;
     border-radius: 15px;
-    min-width: 20rem;
     padding: 1rem;
     font-size: 2rem;
     resize: none;
@@ -56,15 +66,10 @@
     }
   }
 
-  &__select {
-    width: 28rem;
-  }
-
   &__helper-text {
     width: auto;
-    display: inline-block;
     position: absolute;
-    left: 8.5rem;
+    white-space: nowrap;
     top: 95%;
     transform: translateY(-100%);
     padding: 0.5rem 0.7rem;
