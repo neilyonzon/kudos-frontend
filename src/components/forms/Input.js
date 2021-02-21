@@ -2,6 +2,34 @@ import React from "react";
 
 const input = (props) => {
   let inputElement = null;
+  let helperElement = "";
+
+  if (props.helper != "") {
+    helperElement = (
+      <div
+        id="helper-text__username"
+        className="form__helper-text"
+        aria-hidden="true"
+      >
+        {props.helper}
+      </div>
+    );
+  }
+
+  //START INPUT CHECK ASSIGNMENT
+  let inputClass = "form__input";
+
+  if (props.inputType == "select") {
+    inputClass += " form__input--select";
+  }
+
+  if (props.isValid && props.shouldValidate && props.touched) {
+    inputClass += " form__input--invalid";
+  }
+
+  //END INPUT CHECK ASSIGNMENT
+
+  //START LABEL CLASS ASSIGNMENT
   let label = null;
   let labelClass = "form__label--hidden";
   if (props.labelConfig.label) {
@@ -12,11 +40,20 @@ const input = (props) => {
   }
   let helperId = "helper-text__" + label;
 
+  //END LABEL CLASS ASSIGNMENT
+
+  //START VALIDATION ERROR
+  let validationError = null;
+  if (props.isValid && props.touched) {
+    validationError = <p>Please enter valid value!</p>;
+  }
+  //END VALIDATION ERROR
+
   switch (props.inputType) {
     case "input":
       inputElement = (
         <input
-          className="form__input"
+          className={inputClass}
           id={label}
           name={label}
           aria-controls={helperId}
@@ -30,7 +67,7 @@ const input = (props) => {
     case "textarea":
       inputElement = (
         <textarea
-          className="form__input"
+          className={inputClass}
           id={label}
           name={label}
           aria-controls={helperId}
@@ -48,19 +85,22 @@ const input = (props) => {
     case "select":
       inputElement = (
         <select
-          className="form__input"
+          className={inputClass}
           id={label}
           name={label}
           value={props.value}
           onChange={props.changed}
         >
-          {props.inputConfig.options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.displayValue}
-            </option>
-          ))}
+          {props.inputConfig.options.map((option) => {
+            return (
+              <option key={option.value} value={option.value}>
+                {option.displayValue}
+              </option>
+            );
+          })}
         </select>
       );
+      helperElement = "";
       break;
     case "imageChooser":
       inputElement = "";
@@ -89,13 +129,8 @@ const input = (props) => {
         {props.labelConfig.label}
       </label>
       {inputElement}
-      <div
-        id="helper-text__username"
-        className="form__helper-text"
-        aria-hidden="true"
-      >
-        {props.helper}
-      </div>
+      {helperElement}
+      {validationError}
     </div>
   );
 };

@@ -111,6 +111,21 @@ class Form extends Component {
             </select>
           </div>
           <div className="form__group">
+            <label className="form__label" htmlFor="points">
+              Points
+            </label>
+            <div className="form__points-control">
+              <div className="points-controt--minus"></div>
+              <input
+                className="form__input--points form__input"
+                name="points"
+                id="points"
+                type="text"
+              ></input>
+              <div className="points-controt--plus"></div>
+            </div>
+          </div>
+          <div className="form__group">
             <label className="form__label" htmlFor="options">
               Colors
             </label>
