@@ -7,6 +7,7 @@ h4,
 h5,
 h6 {
   clear: both;
+  font-weight: 400;
 }
 
 html {
@@ -56,6 +57,7 @@ p {
 
 .btn {
   min-width: 20rem;
+  max-width: 26rem;
   margin: 0.75rem;
   padding: 1rem 2rem;
   border-style: none;
@@ -84,5 +86,10 @@ p {
     &:hover {
       background: $color-green-blue;
     }
+  }
+
+  &:disabled {
+    background: $color-gray;
+    cursor: not-allowed;
   }
 }
