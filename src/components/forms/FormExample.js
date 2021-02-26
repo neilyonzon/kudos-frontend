@@ -75,21 +75,17 @@ class Form extends Component {
         value: "option1",
         valid: true,
       },
-      color: {
-        inputType: "radio",
+      points: {
+        inputType: "points",
         labelConfig: {
           display: true,
-          label: "Colors",
+          label: "Points",
         },
         config: {
-          options: [
-            { value: "red", displayValue: "Red" },
-            { value: "blue", displayValue: "Blue" },
-            { value: "green", displayValue: "Green" },
-          ],
+          placeholder: "",
         },
         helper: "",
-        value: "",
+        value: 0,
         valid: true,
       },
     },
@@ -151,6 +147,17 @@ class Form extends Component {
     });
   };
 
+  pointsIncrementHandler = (inputIdentifier, operator) => {
+    console.log(inputIdentifier);
+    let updatedForm = { ...this.state.form };
+    let updatedInput = this.state.form[inputIdentifier];
+    operator == "plus" ? updatedInput.value++ : updatedInput.value--;
+    updatedForm[inputIdentifier] = updatedInput;
+    this.setState({
+      form: updatedForm,
+    });
+  };
+
   render() {
     const formInputArray = [];
     for (let key in this.state.form) {
@@ -174,8 +181,36 @@ class Form extends Component {
             shouldValidate={formInput.config.validation}
             touched={formInput.config.touched}
             changed={(event) => this.inputChangeHandler(event, formInput.id)}
+            pointsHandler={this.pointsIncrementHandler}
           />
         ))}
+        {/* <div className="form__group form__group--points">
+          <label className="form__label" htmlFor="points">
+            Points
+          </label>
+          <div className="form__points-control">
+            <FiMinus
+              className="form__icon points-minus"
+              aria-controls="points"
+              onClick={(event) =>
+                this.pointsIncrementHandler("points", "minus")
+              }
+            ></FiMinus>
+            <input
+              onChange={(event) => this.inputChangeHandler(event, "points")}
+              className="form__input--points form__input"
+              name="points"
+              id="points"
+              type="number"
+              value={this.state.form.points.value}
+            ></input>
+            <FiPlus
+              className="form__icon points-plus"
+              aria-controls="points"
+              onClick={(event) => this.pointsIncrementHandler("points", "plus")}
+            ></FiPlus>
+          </div>
+        </div> */}
         <Button btnColor="green" disabled={!this.state.formIsValid}>
           Call to Action
         </Button>
