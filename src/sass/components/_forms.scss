@@ -16,6 +16,13 @@
   &__group {
     margin-bottom: 1.8rem;
     position: relative;
+
+    &--points {
+      align-self: center;
+      width: 20rem;
+      text-align: center;
+      margin-top: 2.5rem;
+    }
   }
 
   &__radio-group {
@@ -41,6 +48,14 @@
       font-size: 2rem;
       padding-left: 0.5rem;
     }
+  }
+
+  &__points-control {
+    margin-top: 2rem;
+    width: 20rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
 
   &__input {
@@ -74,6 +89,13 @@
     &--invalid {
       background: rgba(255, 192, 203, 0.4);
     }
+
+    &--points {
+      width: 6.7rem;
+      height: 6rem;
+      padding: 1rem;
+      text-align: center;
+    }
   }
 
   &__helper-text {
@@ -90,6 +112,17 @@
     border-radius: 15px;
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  }
+
+  &__icon {
+    color: $color-green;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-green-blue;
+    }
   }
 
   > .btn {

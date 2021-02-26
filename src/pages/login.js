@@ -2,6 +2,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import Layout from "../components/Layout";
 import LoginContainer from "../components/login/LoginContainer";
+import Login from "../components/LoginForm";
 
 class LoginPage extends React.Component {
   state = {
@@ -9,18 +10,18 @@ class LoginPage extends React.Component {
       title: "Manage Prizes",
       description: "Save time and manage your prizes through the prize box",
       image: "",
-      buttons: [
-        {
-          text: "Login",
-          link: "",
-          class: "btn-primary",
-        },
-        {
-          text: "Sign-Up",
-          link: "",
-          class: "btn-primary--inverse",
-        },
-      ],
+      // buttons: [
+      //   {
+      //     text: "Login",
+      //     link: "",
+      //     class: "btn-primary",
+      //   },
+      //   {
+      //     text: "Sign-Up",
+      //     link: "",
+      //     class: "btn-primary--inverse",
+      //   },
+      // ],
     },
   };
 
@@ -33,11 +34,7 @@ class LoginPage extends React.Component {
         </Helmet>
         <LoginContainer
           loginDetails={this.state.login}
-          wysiwyg={
-            <p>
-              This is a <strong>paragraph</strong>
-            </p>
-          }
+          wysiwyg={<Login />}
         ></LoginContainer>
       </Layout>
     );

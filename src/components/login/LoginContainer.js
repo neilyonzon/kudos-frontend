@@ -3,17 +3,17 @@ import ToyBoyImg from "../../../src/images/toy-box.png";
 import PropTypes from "prop-types";
 
 function LoginContainer(props) {
-  let buttons = "";
+  // let buttons = "";
 
-  if (props.loginDetails.buttons) {
-    buttons = props.loginDetails.buttons;
-  }
+  // if (props.loginDetails.buttons) {
+  //   buttons = props.loginDetails.buttons;
+  // }
 
-  const buttonsOutput = buttons.map((button, index) => (
-    <button key={index} className={`btn ${button.class}`}>
-      {button.text}
-    </button>
-  ));
+  // const buttonsOutput = buttons.map((button, index) => (
+  //   <button key={index} className={`btn ${button.class}`}>
+  //     {button.text}
+  //   </button>
+  // ));
 
   return (
     <div className="bg bg--yellow">
@@ -24,7 +24,7 @@ function LoginContainer(props) {
             <p>{props.loginDetails.description}</p>
           )}
           <div className="login-panel__cta-box">
-            {buttonsOutput}
+            {/* {buttonsOutput} */}
             {props.wysiwyg && props.wysiwyg}
           </div>
         </div>
