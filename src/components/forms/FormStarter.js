@@ -1,3 +1,5 @@
+//DO NOT MODIFY THE CONTENTS ON THIS PAGE
+
 import React, { Component } from "react";
 import Input from "./Input";
 import Button from "../elements/Button";
@@ -36,7 +38,7 @@ class Form extends Component {
         helper: "",
         value: "",
         validation: {
-          required: false,
+          required: true,
         },
         valid: false,
         touched: false,
@@ -103,7 +105,6 @@ class Form extends Component {
       formData[inputIdentifier] = this.state.form[inputIdentifier].value;
     }
     console.log(formData);
-    //Make request and pass data.
   };
 
   checkValidity = (value, rules) => {
@@ -184,33 +185,6 @@ class Form extends Component {
             pointsHandler={this.pointsIncrementHandler}
           />
         ))}
-        {/* <div className="form__group form__group--points">
-          <label className="form__label" htmlFor="points">
-            Points
-          </label>
-          <div className="form__points-control">
-            <FiMinus
-              className="form__icon points-minus"
-              aria-controls="points"
-              onClick={(event) =>
-                this.pointsIncrementHandler("points", "minus")
-              }
-            ></FiMinus>
-            <input
-              onChange={(event) => this.inputChangeHandler(event, "points")}
-              className="form__input--points form__input"
-              name="points"
-              id="points"
-              type="number"
-              value={this.state.form.points.value}
-            ></input>
-            <FiPlus
-              className="form__icon points-plus"
-              aria-controls="points"
-              onClick={(event) => this.pointsIncrementHandler("points", "plus")}
-            ></FiPlus>
-          </div>
-        </div> */}
         <Button btnColor="green" disabled={!this.state.formIsValid}>
           Call to Action
         </Button>

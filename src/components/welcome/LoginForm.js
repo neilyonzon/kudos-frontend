@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { navigate } from "gatsby";
-import Input from "./forms/Input";
-import Button from "./elements/Button";
-import { loginSuccessful, isLoggedIn } from "../utils/auth";
+import Input from "../forms/Input";
+import Button from "../elements/Button";
+import { loginSuccessful, isLoggedIn } from "../../utils/auth";
 
 class Login extends Component {
   state = {
-    username: "",
-    password: "",
     loginError: false,
     form: {
       username: {
@@ -153,7 +151,7 @@ class Login extends Component {
         </div>
       );
     }
-    return <div>{display}</div>;
+    return <div className="form-container">{display}</div>;
   }
 }
 

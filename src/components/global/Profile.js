@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import Placeholder from "../../images/profile-image-placeholder.png";
+import { logout } from "../../utils/auth";
 
 class ProfileIcon extends React.Component {
   state = {
@@ -61,7 +62,15 @@ class ProfileIcon extends React.Component {
             </Link>
           </li>
           <li className="header-profile__nav-item">
-            <a href="#" id="logout">
+            <a
+              href="#"
+              id="logout"
+              onClick={(e) => {
+                logout(() => {
+                  navigate("/");
+                });
+              }}
+            >
               Logout
             </a>
           </li>

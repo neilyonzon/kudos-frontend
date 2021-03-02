@@ -1,10 +1,11 @@
 import React from "react";
 import { Router } from "@reach/router";
-import Layout from "../components/Layout";
-import Login from "../components/Login";
+import Layout from "../components/global/Layout";
+import Login from "./Login";
 import Dashboard from "../components/Dashboard";
 import CustomRoute from "../components/CustomRoute";
 import { Helmet } from "react-helmet";
+import "../sass/style.scss";
 
 // markup
 const IndexPage = () => {

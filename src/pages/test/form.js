@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import Layout from "../../components/Layout";
+import Layout from "../../components/global/Layout";
 import LoginContainer from "../../components/login/LoginContainer";
-import Form from "../../components/forms/FormExample";
+import Form from "../../components/forms/FormStarter";
 
 class FormTest extends React.Component {
   state = {

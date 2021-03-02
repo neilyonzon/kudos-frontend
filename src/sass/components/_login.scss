@@ -13,10 +13,14 @@
   background: #ffffff;
   @include border-round;
 
+  &__intro {
+    text-align: center;
+  }
   &__content {
     padding: 2rem;
     bottom: 2rem;
     position: relative;
+    width: 48rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,4 +60,16 @@
     left: 7rem;
     bottom: 6rem;
   }
+}
+
+.fade-active {
+  visibility: visible;
+  opacity: 1;
+  transition: all 1s;
+}
+
+.fade-inactive {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
 }
