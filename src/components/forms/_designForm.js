@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Input from "./Input";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
+import { FiMinus } from "@react-icons/all-files/fi/FiMinus";
 
 class Form extends Component {
   state = {
@@ -151,6 +153,35 @@ class Form extends Component {
               <label htmlFor="option3" className="form__label--radio">
                 Option 3
               </label>
+            </div>
+          </div>
+          <div className="form__group form__group--points">
+            <label className="form__label" htmlFor="points">
+              Points
+            </label>
+            <div className="form__points-control">
+              <FiMinus
+                className="form__icon points-minus"
+                aria-controls="points"
+                onClick={(event) =>
+                  this.pointsIncrementHandler("points", "minus")
+                }
+              ></FiMinus>
+              <input
+                onChange={(event) => this.inputChangeHandler(event, "points")}
+                className="form__input--points form__input"
+                name="points"
+                id="points"
+                type="number"
+                value={this.state.form.points.value}
+              ></input>
+              <FiPlus
+                className="form__icon points-plus"
+                aria-controls="points"
+                onClick={(event) =>
+                  this.pointsIncrementHandler("points", "plus")
+                }
+              ></FiPlus>
             </div>
           </div>
           <button className="btn btn-primary">Call to Action</button>

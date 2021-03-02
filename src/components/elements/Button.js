@@ -3,7 +3,7 @@ import React from "react";
 const Button = (props) => {
   let buttonClass = "";
   if (props.btnColor == "green") {
-    buttonClass = "btn--primary";
+    buttonClass = "btn-primary";
   }
 
   return (
