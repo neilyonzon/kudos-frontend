@@ -1,12 +1,23 @@
+let acsToken = "";
+
+export const setAcsToken = (token) =>{
+  acsToken = token;
+};
+
+export const getAcsToken = () =>{
+  return acsToken;
+};
+
+
 const isBrowser = () => typeof window !== "undefined";
 
-export const getToken = () =>
-  isBrowser() && window.localStorage.getItem("userToken")
-    ? window.localStorage.getItem("userToken")
-    : "";
+// export const getToken = () =>
+//   isBrowser() && window.localStorage.getItem("userToken")
+//     ? window.localStorage.getItem("userToken")
+//     : "";
 
-const setToken = (userToken) =>
-  window.localStorage.setItem("userToken", userToken);
+// const setToken = (userToken) =>
+//   window.localStorage.setItem("userToken", userToken);
 
 export const loginSuccessful = async ({ username, password }) => {
   if (!isBrowser) {
@@ -40,7 +51,7 @@ export const loginSuccessful = async ({ username, password }) => {
   if (userData) {
     const userToken =
       userData.data.loginTeacher.token || userData.data.loginStudent.token;
-    setToken(userToken);
+    setAcsToken(userToken);
     return true;
   }
 };
@@ -52,10 +63,10 @@ export const isLoggedIn = () => {
     return false;
   }
 
-  return !!getToken();
+  return !!getAcsToken();
 };
 
 export const logout = (callback) => {
-  setToken("");
+  setAcsToken("");
   callback();
 };
