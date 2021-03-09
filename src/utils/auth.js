@@ -1,3 +1,5 @@
+const jwt_decode = require('jwt-decode');
+
 let acsToken = "";
 
 export const setAcsToken = (token) =>{
@@ -34,7 +36,7 @@ export const loginSuccessful = async ({ username, password }) => {
       `,
   };
 
-  const response = await fetch("https://kudos-backend.herokuapp.com/graphql", {
+  const response = await fetch("http://localhost:3000/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,11 +58,25 @@ export const loginSuccessful = async ({ username, password }) => {
   }
 };
 
-// need to add logic in the future for if token is expired
-// also if we want to request another token
-export const isLoggedIn = () => {
+export const isLoggedIn = async () => {
   if (!isBrowser) {
     return false;
+  }
+
+  const acsToken = getAcsToken();
+  let newAcsToken;
+  // access token might not exist in memory if user switched tabs, refreshed page, has never logged in, or access token is expired
+  // try to get new access token with refresh token cookie but if refresh token is not valid, setAcsToken will set access token to ""
+  // and !!getAcsToken() will return false, else refresh token valid and !!getAcsToken() will return true
+  if(!acsToken){
+    newAcsToken = refreshToken()
+    setAcsToken(newAcsToken)
+  } else {
+    const { exp } = jwt_decode(acsToken)
+    if(Date.now() >= exp * 1000){
+      newAcsToken = await refreshToken()
+      setAcsToken(newAcsToken)
+    }
   }
 
   return !!getAcsToken();
@@ -70,3 +86,20 @@ export const logout = (callback) => {
   setAcsToken("");
   callback();
 };
+
+// returns valid access token if refresh token cookie is valid
+// else returns empty string if refresh token is not valid
+const refreshToken = async () =>{
+
+  const response = await fetch("http://localhost:3000/refresh_token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  const resData = await response.json()
+  const newAcsToken = await resData.accessToken
+  return newAcsToken
+
+}
