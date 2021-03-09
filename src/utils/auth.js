@@ -1,7 +1,6 @@
 const jwt_decode = require('jwt-decode');
 
 let acsToken = "";
-
 export const setAcsToken = (token) =>{
   acsToken = token;
 };
@@ -36,7 +35,7 @@ export const loginSuccessful = async ({ username, password }) => {
       `,
   };
 
-  const response = await fetch("http://localhost:3000/graphql", {
+  const response = await fetch("http://localhost:3000/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,13 +62,13 @@ export const isLoggedIn = async () => {
     return false;
   }
 
-  const acsToken = getAcsToken();
-  let newAcsToken;
   // access token might not exist in memory if user switched tabs, refreshed page, has never logged in, or access token is expired
   // try to get new access token with refresh token cookie but if refresh token is not valid, setAcsToken will set access token to ""
   // and !!getAcsToken() will return false, else refresh token valid and !!getAcsToken() will return true
+  const acsToken = getAcsToken();
+  let newAcsToken;
   if(!acsToken){
-    newAcsToken = refreshToken()
+    newAcsToken = await refreshToken()
     setAcsToken(newAcsToken)
   } else {
     const { exp } = jwt_decode(acsToken)
@@ -78,6 +77,9 @@ export const isLoggedIn = async () => {
       setAcsToken(newAcsToken)
     }
   }
+
+  console.log('access token available')
+  console.log(!!getAcsToken())
 
   return !!getAcsToken();
 };
