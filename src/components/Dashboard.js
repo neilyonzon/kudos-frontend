@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { logout, getToken } from "../utils/auth";
+import { logout, getAcsToken } from "../utils/auth";
 import { navigate } from "gatsby";
 
 import ControlPanel from "./dashboard/ControlPanel";
@@ -61,7 +61,7 @@ class Dashboard extends Component {
           `,
     };
 
-    const token = getToken();
+    const token = getAcsToken();
     const response = await fetch(
       "https://kudos-backend.herokuapp.com/graphql",
       {
