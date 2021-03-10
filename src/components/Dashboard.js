@@ -22,7 +22,7 @@ class Dashboard extends Component {
   async componentDidMount() {
     const graphqlQuery = {
       query: `
-            {
+            query {
                 teacher{
                     firstName
                     lastName
@@ -63,7 +63,7 @@ class Dashboard extends Component {
 
     const token = getAcsToken();
     const response = await fetch(
-      "https://kudos-backend.herokuapp.com/graphql",
+      "http://localhost:3000/graphql",
       {
         method: "POST",
         headers: {
