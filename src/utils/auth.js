@@ -1,4 +1,4 @@
-const jwt_decode = require('jwt-decode');
+import jwt_decode from 'jwt-decode'
 
 let acsToken = "";
 export const setAcsToken = (token) =>{
@@ -27,15 +27,15 @@ export const loginSuccessful = async ({ username, password }) => {
 
   const graphqlQuery = {
     query: `
-        {
+        mutation {
             loginTeacher(teacherInput: {username: "${username}", password:"${password}"}) {
-              token
+              accessToken
             }
         }
       `,
   };
 
-  const response = await fetch("http://localhost:3000/", {
+  const response = await fetch("http://localhost:3000/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const loginSuccessful = async ({ username, password }) => {
 
   if (userData) {
     const userToken =
-      userData.data.loginTeacher.token || userData.data.loginStudent.token;
+      userData.data.loginTeacher.accessToken || userData.data.loginStudent.accessToken;
     setAcsToken(userToken);
     return true;
   }
@@ -71,6 +71,7 @@ export const isLoggedIn = async () => {
     newAcsToken = await refreshToken()
     setAcsToken(newAcsToken)
   } else {
+    console.log(acsToken)
     const { exp } = jwt_decode(acsToken)
     if(Date.now() >= exp * 1000){
       newAcsToken = await refreshToken()
