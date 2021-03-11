@@ -16,8 +16,8 @@ const IndexPage = () => {
         <meta name="description" content="Kudos" />
       </Helmet>
       <Router>
-        <CustomRoute path="/" component={Login} />
-        <CustomRoute path="/dashboard" component={Dashboard} />
+        <Login path="/" />
+        <Dashboard path="/dashboard" />
       </Router>
     </Layout>
   );
