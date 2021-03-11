@@ -37,6 +37,7 @@ export const loginSuccessful = async ({ username, password }) => {
 
   const response = await fetch("http://localhost:3000/graphql", {
     method: "POST",
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
@@ -79,9 +80,6 @@ export const isLoggedIn = async () => {
     }
   }
 
-  console.log('access token available')
-  console.log(!!getAcsToken())
-
   return !!getAcsToken();
 };
 
@@ -96,6 +94,7 @@ const refreshToken = async () =>{
 
   const response = await fetch("http://localhost:3000/refresh_token", {
     method: "POST",
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     }
