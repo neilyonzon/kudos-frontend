@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { logout, getAcsToken } from "../utils/auth";
+import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 import { navigate } from "gatsby";
 
 import ControlPanel from "./dashboard/ControlPanel";
@@ -20,6 +20,12 @@ class Dashboard extends Component {
   };
 
   async componentDidMount() {
+    const userLoggedIn = await isLoggedIn()
+    if(!userLoggedIn){
+      return navigate('/')
+    }
+
+
     const graphqlQuery = {
       query: `
             query {

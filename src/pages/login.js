@@ -4,6 +4,8 @@ import LoginForm from "../components/welcome/LoginForm";
 import RegisterForm from "../components/welcome/RegisterForm";
 import Button from "../components/elements/Button";
 import ToyBoyImg from "../../src/images/toy-box.png";
+import { isLoggedIn } from "../utils/auth";
+import { navigate } from "gatsby";
 
 class LoginPage extends React.Component {
   state = {
@@ -20,6 +22,15 @@ class LoginPage extends React.Component {
       },
     },
   };
+
+  async componentDidMount() {
+
+    const userLoggedIn = await isLoggedIn()
+    if(userLoggedIn){
+      return navigate('/dashboard')
+    }
+
+  }
 
   handleClick = (e, type) => {
     e.preventDefault();
