@@ -1,18 +1,18 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import LoginForm from "../components/welcome/LoginForm";
-import RegisterForm from "../components/welcome/RegisterForm";
-import Button from "../components/elements/Button";
+import Content from "../components/welcome/Content";
 import ToyBoyImg from "../../src/images/toy-box.png";
 import { isLoggedIn } from "../utils/auth";
 import { navigate } from "gatsby";
 
 class LoginPage extends React.Component {
   state = {
+    //can we restructure this state object? Do we need to have this inner login property?
     login: {
       title: "Manage Prizes",
       description: "Save time and manage your prizes through the prize box",
       image: "",
+      //next two attributes - can we choose better names?
       condition: "welcome",
       classState: {
         login: "fade-inactive",
@@ -32,7 +32,7 @@ class LoginPage extends React.Component {
 
   }
 
-  handleClick = (e, type) => {
+  chooseWelcomeTypeHandler = (e, type) => {
     e.preventDefault();
     let loginData = { ...this.state.login };
     loginData.classState.buttons = "fade-inactive";
@@ -40,65 +40,6 @@ class LoginPage extends React.Component {
     loginData.condition = type;
     this.setState({ login: loginData });
     this.setState({ login: loginData });
-  };
-
-  contentComponent = () => {
-    let content = null;
-    switch (this.state.login.condition) {
-      case "welcome":
-        content = (
-          <div className="login-panel__content">
-            <div className="login-panel__intro">
-              <h1>Welcome to Kudos</h1>
-              <p>Lorem ipsum dolor sit amet, consecte</p>
-            </div>
-            <div className="login-panel__cta-box">
-              <Button
-                clicked={(e) => this.handleClick(e, "login")}
-                btnColor="green"
-                btnClass={this.state.buttonClass}
-              >
-                Login
-              </Button>
-              <Button
-                clicked={(e) => this.handleClick(e, "register")}
-                btnColor="green"
-                btnClass={this.state.buttonClass}
-              >
-                Sign-Up
-              </Button>
-            </div>
-          </div>
-        );
-        break;
-      case "login":
-        content = (
-          <div className="login-panel__content">
-            <div className="login-panel__intro">
-              <h1>Login, Buddy</h1>
-              <p>Lorem ipsum dolor sit amet, consecte</p>
-            </div>
-            <div className={this.state.login.classState.login}>
-              <LoginForm />
-            </div>
-          </div>
-        );
-        break;
-      case "register":
-        content = (
-          <div className="login-panel__content">
-            <div className="login-panel__intro">
-              <h1>Register</h1>
-              <p>Lorem ipsum dolor sit amet, consecte</p>
-            </div>
-            <RegisterForm />
-          </div>
-        );
-        break;
-      default:
-        content = <div>Error</div>;
-    }
-    return content;
   };
 
   render() {
@@ -111,7 +52,7 @@ class LoginPage extends React.Component {
         <div>
           <div className="bg bg--yellow">
             <div className="login-panel">
-              {this.contentComponent()}
+              <Content condition={this.state.login.condition} welcomeTypeHandler={this.chooseWelcomeTypeHandler} classState={this.state.login.classState} />
               <div className="login-panel__line"></div>
               <div className="login-panel__img">
                 <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
