@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { navigate } from "gatsby";
-import { loginSuccessful, isLoggedIn } from "../../utils/auth";
 
 class Login extends Component {
   state = {

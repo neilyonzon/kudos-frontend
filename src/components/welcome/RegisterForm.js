@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { navigate } from "gatsby";
 import Input from "../forms/Input";
 import Button from "../elements/Button";
-import { loginSuccessful, isLoggedIn } from "../../utils/auth";
 
 class Login extends Component {
   state = {
@@ -150,12 +149,6 @@ class Login extends Component {
       username: this.state.form.username.value,
       password: this.state.form.password.value,
     };
-    const loggedIn = await loginSuccessful(loginValues);
-    if (loggedIn) {
-      return navigate("/dashboard");
-    } else {
-      this.setState({ loginError: true });
-    }
   };
 
   render() {

@@ -12,56 +12,7 @@ export const getAcsToken = () =>{
 
 const isBrowser = () => typeof window !== "undefined";
 
-// export const getToken = () =>
-//   isBrowser() && window.localStorage.getItem("userToken")
-//     ? window.localStorage.getItem("userToken")
-//     : "";
-
-// const setToken = (userToken) =>
-//   window.localStorage.setItem("userToken", userToken);
-
-export const loginSuccessful = async ({ username, password }) => {
-  if (!isBrowser) {
-    return false;
-  }
-
-  const graphqlQuery = {
-    query: `
-        mutation {
-            loginTeacher(teacherInput: {username: "${username}", password:"${password}"}) {
-              accessToken
-            }
-        }
-      `,
-  };
-
-  const response = await fetch("http://localhost:3000/graphql", {
-    method: "POST",
-    credentials: 'include',
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(graphqlQuery),
-  });
-
-  //need to refactor so it provides error message so it can be displayed in client if login fails
-  const userData = await response.json();
-  if (userData.errors) {
-    return false;
-  }
-
-  if (userData) {
-    const userToken =
-      userData.data.loginTeacher.accessToken || userData.data.loginStudent.accessToken;
-    setAcsToken(userToken);
-    return true;
-  }
-};
-
 export const isLoggedIn = async () => {
-  if (!isBrowser) {
-    return false;
-  }
 
   // access token might not exist in memory if user switched tabs, refreshed page, has never logged in, or access token is expired
   // try to get new access token with refresh token cookie but if refresh token is not valid, setAcsToken will set access token to ""
