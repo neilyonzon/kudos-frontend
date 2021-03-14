@@ -94,8 +94,8 @@ const Login = props =>{
   }
 
   const LOGIN_USER = gql`
-    mutation Login($username: String!, $password: String!){
-      login(teacherInput: {username: $username, password: $password}) {
+    mutation LoginUser($username: String!, $password: String!){
+      loginTeacher(teacherInput: {username: $username, password: $password}) {
         accessToken
       }
     }
@@ -103,9 +103,10 @@ const Login = props =>{
 
   const [login] = useMutation(LOGIN_USER, 
     {
-      onCompleted({ login }){
-        if(login){
-          setAcsToken(login.accessToken)
+      onCompleted({ loginTeacher }){
+        if(loginTeacher){
+          console.log(loginTeacher.accessToken)
+          setAcsToken(loginTeacher.accessToken)
           return navigate("/dashboard")
         }
       },
