@@ -21,6 +21,7 @@ class LoginPage extends React.Component {
         buttons: "fade-active",
       },
     },
+    showScreen: false
   };
 
   async componentDidMount() {
@@ -29,6 +30,8 @@ class LoginPage extends React.Component {
     if(userLoggedIn){
       return navigate('/dashboard')
     }
+
+    this.setState({ showScreen: true })
 
   }
 
@@ -39,29 +42,32 @@ class LoginPage extends React.Component {
     loginData.classState[type] = "fade-active";
     loginData.condition = type;
     this.setState({ login: loginData });
-    this.setState({ login: loginData });
   };
 
   render() {
-    return (
-      <>
-        <Helmet>
-          <title>Kudos Login</title>
-          <meta name="description" content="Kudos" />
-        </Helmet>
-        <div>
-          <div className="bg bg--yellow">
-            <div className="login-panel">
-              <Content condition={this.state.login.condition} welcomeTypeHandler={this.chooseWelcomeTypeHandler} classState={this.state.login.classState} />
-              <div className="login-panel__line"></div>
-              <div className="login-panel__img">
-                <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
+
+    let component = null;
+    if(this.state.showScreen){
+      component = (<>
+                    <Helmet>
+                      <title>Kudos Login</title>
+                      <meta name="description" content="Kudos" />
+                    </Helmet>
+                    <div>
+                      <div className="bg bg--yellow">
+                        <div className="login-panel">
+                          <Content condition={this.state.login.condition} welcomeTypeHandler={this.chooseWelcomeTypeHandler} classState={this.state.login.classState} />
+                          <div className="login-panel__line"></div>
+                          <div className="login-panel__img">
+                            <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>)
+    }
+
+    return component
   }
 }
 
