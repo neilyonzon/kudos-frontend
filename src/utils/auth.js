@@ -43,7 +43,7 @@ export const logout = (callback) => {
 // else returns empty string if refresh token is not valid
 const refreshToken = async () =>{
 
-  const response = await fetch("http://localhost:3000/refresh_token", {
+  const response = await fetch("https://kudos-backend.herokuapp.com/refresh_token", {
     method: "POST",
     credentials: 'include',
     headers: {

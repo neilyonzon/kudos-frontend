@@ -4,7 +4,7 @@ import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/c
 const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({
-        uri: 'http://localhost:3000/graphql',
+        uri: 'https://kudos-backend.herokuapp.com/graphql',
         credentials: 'include'
     })
 })
