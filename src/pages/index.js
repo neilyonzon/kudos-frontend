@@ -3,7 +3,6 @@ import { Router } from "@reach/router";
 import Layout from "../components/global/Layout";
 import Login from "./Login";
 import Dashboard from "../components/Dashboard";
-import CustomRoute from "../components/CustomRoute";
 import { Helmet } from "react-helmet";
 import "../sass/style.scss";
 
@@ -16,8 +15,8 @@ const IndexPage = () => {
         <meta name="description" content="Kudos" />
       </Helmet>
       <Router>
-        <CustomRoute path="/" component={Login} />
-        <CustomRoute path="/dashboard" component={Dashboard} />
+        <Login path="/" />
+        <Dashboard path="/dashboard" />
       </Router>
     </Layout>
   );
