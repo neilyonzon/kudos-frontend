@@ -19,7 +19,7 @@ const Dashboard = props =>{
   const [classes, setClasses] = useState([])
   const [selectedClassId, setSelectedClassId] = useState(null);
 
-  useEffect(async () =>{
+  useEffect(() =>{
 
     const checkLoginStatus = async () =>{
       const userLoggedIn = await isLoggedIn()
@@ -41,7 +41,7 @@ const Dashboard = props =>{
         lastName
         email
         classes{
-            classId
+            id
             className
         }
       }
@@ -53,7 +53,7 @@ const Dashboard = props =>{
       onCompleted({ teacher }){
         if(teacher && teacher.classes.length > 0){
           setClasses(teacher.classes)
-          setSelectedClassId(teacher.classes[0].classId)
+          setSelectedClassId(teacher.classes[0].id)
         }
       }
     }
@@ -66,9 +66,9 @@ const Dashboard = props =>{
   const onSelectClassHandler = (e) =>{
     const selectedClassName = e.target.value
     const selectedClass = classes.find(cls =>{
-      return cls.className = selectedClassName
+      return cls.className === selectedClassName
     })
-    setSelectedClassId(selectedClass.classId)
+    setSelectedClassId(selectedClass.id)
   }
 
   if(!called && show){
@@ -84,9 +84,13 @@ const Dashboard = props =>{
     )
   }
 
-  // if(error){
-
-  // }
+  if(error){
+    return (
+      <div>
+        <h1>...an error happened...</h1>
+      </div>
+    )
+  }
 
   if(called && !loading){
 
@@ -99,7 +103,7 @@ const Dashboard = props =>{
       case 'Settings':
         tabComponent = <TreasureBox />
       default:
-        tabComponent = <Home />
+        tabComponent = <Home selectedClassId={selectedClassId}/>
     }
 
     return (
@@ -127,17 +131,8 @@ const Dashboard = props =>{
         />
 
         <h1>Below is the selected tab</h1>
-        {/* {}
+        {tabComponent}
 
-        }
-
-        {this.state.selectedClass ? (
-          <h2>{this.state.selectedClass} is selected</h2>
-        ) : (
-          <h2>You don't have any classes!</h2>
-        )}
-
-        {selectedComponent} */}
       </div>
     )
   }
