@@ -14,9 +14,9 @@ const ControlPanel = props => {
             <ul>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Home')}
+                    onClick={() => props.onSelectHandler('Dashboard')}
                 >
-                    <IoIosHome className={ props.selectedComponent === 'Home' ? controlPanelStyles.iconCircle : null } />
+                    <IoIosHome className={ props.selectedComponent === 'Dashboard' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
