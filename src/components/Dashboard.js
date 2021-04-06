@@ -20,12 +20,18 @@ const Dashboard = props =>{
   const [selectedClassId, setSelectedClassId] = useState(null);
 
   useEffect(async () =>{
-    const userLoggedIn = await isLoggedIn()
-    if(!userLoggedIn){
-      return navigate('/')
-    } else{
-      setShow(true)
+
+    const checkLoginStatus = async () =>{
+      const userLoggedIn = await isLoggedIn()
+      if(!userLoggedIn){
+        return navigate('/')
+      } else{
+        setShow(true)
+      }
     }
+
+    checkLoginStatus()
+    
   }, [])
 
   const GET_TEACHER_INFO = gql`
@@ -112,7 +118,7 @@ const Dashboard = props =>{
 
         <ControlPanel
           onSelectHandler={onTabSelectHandler}
-          selectedComponent={selectedTab}
+          selectedTab={selectedTab}
         />
 
         <ClassSelector
