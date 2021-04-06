@@ -14,25 +14,25 @@ const ControlPanel = props => {
             <ul>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Dashboard')}
+                    onClick={() => props.onSelectTab('Dashboard')}
                 >
                     <IoIosHome className={ props.selectedTab === 'Dashboard' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Students')}
+                    onClick={() => props.onSelectTab('Students')}
                 >
                     <IoIosPeople className={ props.selectedTab === 'Students' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('TreasureBox')}
+                    onClick={() => props.onSelectTab('TreasureBox')}
                 >
                     <FaAward className={ props.selectedTab === 'TreasureBox' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Settings')}
+                    onClick={() => props.onSelectTab('Settings')}
                 >
                     <IoIosSettings className={ props.selectedTab === 'Settings' ? controlPanelStyles.iconCircle : null } />
                 </li>

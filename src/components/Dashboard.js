@@ -98,10 +98,13 @@ const Dashboard = props =>{
     switch(selectedTab){
       case 'Students':
         tabComponent = <Students />
+        break
       case 'TreasureBox':
         tabComponent = <TreasureBox />
+        break
       case 'Settings':
         tabComponent = <TreasureBox />
+        break
       default:
         tabComponent = <Home selectedClassId={selectedClassId}/>
     }
@@ -121,12 +124,12 @@ const Dashboard = props =>{
         </a>
 
         <ControlPanel
-          onSelectHandler={onTabSelectHandler}
+          onSelectTab={onTabSelectHandler}
           selectedTab={selectedTab}
         />
 
         <ClassSelector
-          onSelect={onSelectClassHandler}
+          onSelectClass={onSelectClassHandler}
           classes={classes}
         />
 
