@@ -1,5 +1,5 @@
 import React from 'react'
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
 import StudentCard from './dashboard/StudentCard'
 import TBSummary from './dashboard/TBSummary'
@@ -37,22 +37,9 @@ const Home = props =>{
         }
     `
 
-    const [loadClassInfo, { called, loading, error, data }] = useLazyQuery(GET_CLASS_DASHBOARD, {
+    const { loading, error, data } = useQuery(GET_CLASS_DASHBOARD, {
         variables: { classId: props.selectedClassId }
     })
-
-    if(!props.selectedClassId){
-        return(
-            <div>
-                <h2>You don't have any classes! Go to settings to add a class</h2>
-            </div>
-        )
-    } 
-
-    if(!called){
-        loadClassInfo()
-        return null
-    }
 
     if(loading){
         return (
