@@ -95,18 +95,26 @@ const Dashboard = props =>{
   if(called && !loading){
 
     let tabComponent
-    switch(selectedTab){
-      case 'Students':
-        tabComponent = <Students />
-        break
-      case 'TreasureBox':
+    switch(true){
+      case (selectedTab === 'Settings'):
         tabComponent = <TreasureBox />
         break
-      case 'Settings':
+      case (!selectedClassId):
+        tabComponent = (
+          <div>
+            <h2>You don't have any classes! Go to settings to add a class</h2>
+          </div>
+        )
+        break
+      case (selectedTab === 'Students'):
+        tabComponent = <Students />
+        break
+      case (selectedTab === 'TreasureBox'):
         tabComponent = <TreasureBox />
         break
       default:
-        tabComponent = <Home selectedClassId={selectedClassId}/>
+        tabComponent = <Home selectedClassId={selectedClassId} />
+
     }
 
     return (
