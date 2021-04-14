@@ -110,7 +110,7 @@ const Dashboard = props =>{
         tabComponent = <Students />
         break
       case (selectedTab === 'TreasureBox'):
-        tabComponent = <TreasureBox />
+        tabComponent = <TreasureBox selectedClassId={selectedClassId}/>
         break
       default:
         tabComponent = <Home selectedClassId={selectedClassId} />
