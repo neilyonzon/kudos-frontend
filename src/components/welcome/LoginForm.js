@@ -151,7 +151,32 @@ class Login extends Component {
         </div>
       );
     }
-    return <div className="form-container">{display}</div>;
+    return (
+      <div className="form-container">
+        {display}
+        <div className="forgot-container">
+          <p>
+            <a
+              href=""
+              onClick={(e) => {
+                this.props.updateCondition(e, "retrieve");
+              }}
+            >
+              Forgot Password
+            </a>
+          </p>
+          <p>
+            <a
+              href=""
+              onClick={(e) => this.props.updateCondition(e, "register")}
+            >
+              Sign Up
+            </a>{" "}
+            if you don't have an account.
+          </p>
+        </div>
+      </div>
+    );
   }
 }
 

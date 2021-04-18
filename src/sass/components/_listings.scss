@@ -1,0 +1,127 @@
+.list {
+  width: 100%;
+  font-size: 1.6rem;
+
+  &--dash {
+    height: 73rem;
+  }
+
+  &--groups {
+    height: 73rem;
+  }
+
+  &__col {
+    &-name {
+      &--dash {
+        width: 12rem;
+      }
+    }
+
+    &-kudos {
+      &--dash {
+        width: 7rem;
+      }
+    }
+
+    &-img {
+      width: 7rem;
+    }
+  }
+
+  &__header {
+    width: 95%;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    flex: none;
+    margin-right: 3rem;
+
+    &--groups {
+      margin-left: 5rem;
+    }
+
+    &-icon::after {
+      font-family: FontAwesome;
+      font-weight: 900;
+      font-size: 1.5rem;
+      content: "\f078";
+    }
+  }
+
+  &__search {
+    width: 7rem;
+    position: relative;
+    left: 2rem;
+    font-size: 2.5rem;
+  }
+
+  &__items-container {
+    overflow-y: scroll;
+
+    &--groups {
+      height: 67rem;
+    }
+
+    &--dash {
+      height: 67rem;
+    }
+
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: $color-gray-light;
+      -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  &__item-container {
+    display: flex;
+  }
+
+  &__item-checkbox {
+    height: 9rem;
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0rem;
+    margin-right: 1rem;
+    justify-content: center;
+    width: 4rem;
+  }
+
+  &__item {
+    width: 95%;
+    height: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: $color-gray-light;
+    margin: 1.5rem 0rem;
+  }
+
+  &__img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &__name {
+    width: 12rem;
+  }
+
+  &__btns {
+    width: 7rem;
+  }
+
+  &__btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+}

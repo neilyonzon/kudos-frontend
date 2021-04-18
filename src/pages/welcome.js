@@ -5,7 +5,7 @@ import RegisterForm from "../components/welcome/RegisterForm";
 import Button from "../components/elements/Button";
 import ToyBoyImg from "../../src/images/toy-box.png";
 
-class LoginPage extends React.Component {
+class WelcomePage extends React.Component {
   state = {
     login: {
       title: "Manage Prizes",
@@ -68,7 +68,7 @@ class LoginPage extends React.Component {
               <p>Lorem ipsum dolor sit amet, consecte</p>
             </div>
             <div className={this.state.login.classState.login}>
-              <LoginForm />
+              <LoginForm updateCondition={this.handleClick}></LoginForm>
             </div>
           </div>
         );
@@ -113,4 +113,4 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+export default WelcomePage;

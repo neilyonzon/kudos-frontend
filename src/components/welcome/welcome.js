@@ -56,6 +56,12 @@ class Login extends Component {
               />
             </label>
             <input type="submit" value="Log In!" />
+            <p>
+              <a href="#">Forgot Password?</a>
+            </p>
+            <p>
+              <a href="#">Sign Up</a>
+            </p>
           </form>
         </div>
       );

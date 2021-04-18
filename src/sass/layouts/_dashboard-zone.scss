@@ -1,0 +1,47 @@
+.dashboard {
+  display: grid;
+  padding: 4rem;
+  grid-template-rows: 37rem 37rem;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 3rem;
+  grid-template-areas:
+    "groups treasure"
+    "groups extra";
+}
+
+.dashboard-panel-treasure {
+  font-weight: bold;
+  grid-area: treasure;
+
+  & > .panel__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & > .icon-treasure {
+      position: relative;
+      top: 1rem;
+    }
+  }
+
+  &__links {
+    position: relative;
+    top: 2.5rem;
+    text-align: center;
+
+    & > p {
+      margin: 1rem;
+      font-weight: bold;
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.dashboard-lorem {
+  grid-area: extra;
+}
+
+.dashboard-groups {
+  grid-area: groups;
+}

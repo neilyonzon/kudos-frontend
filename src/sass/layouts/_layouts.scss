@@ -76,3 +76,20 @@
     background: $color-yellow;
   }
 }
+
+.main {
+  background-color: #81cbdd;
+  height: 110rem;
+  padding-top: 3rem;
+  padding-right: 5rem;
+  display: grid;
+  grid-template-rows: 18rem 100rem;
+  grid-template-columns: 1fr 17fr;
+  grid-gap: 4rem;
+  grid-template-areas:
+    "nav message"
+    "nav panel";
+}
+
+@import "control-zone";
+@import "dashboard-zone";
