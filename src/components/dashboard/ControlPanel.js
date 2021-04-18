@@ -14,27 +14,27 @@ const ControlPanel = props => {
             <ul>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Home')}
+                    onClick={() => props.onSelectTab('Dashboard')}
                 >
-                    <IoIosHome className={ props.selectedComponent === 'Home' ? controlPanelStyles.iconCircle : null } />
+                    <IoIosHome className={ props.selectedTab === 'Dashboard' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Students')}
+                    onClick={() => props.onSelectTab('Students')}
                 >
-                    <IoIosPeople className={ props.selectedComponent === 'Students' ? controlPanelStyles.iconCircle : null } />
+                    <IoIosPeople className={ props.selectedTab === 'Students' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('TreasureBox')}
+                    onClick={() => props.onSelectTab('TreasureBox')}
                 >
-                    <FaAward className={ props.selectedComponent === 'TreasureBox' ? controlPanelStyles.iconCircle : null } />
+                    <FaAward className={ props.selectedTab === 'TreasureBox' ? controlPanelStyles.iconCircle : null } />
                 </li>
                 <li
                     className={controlPanelStyles.icon}
-                    onClick={() => props.onSelectHandler('Settings')}
+                    onClick={() => props.onSelectTab('Settings')}
                 >
-                    <IoIosSettings className={ props.selectedComponent === 'Settings' ? controlPanelStyles.iconCircle : null } />
+                    <IoIosSettings className={ props.selectedTab === 'Settings' ? controlPanelStyles.iconCircle : null } />
                 </li>
             </ul>
         </nav>
