@@ -5,7 +5,7 @@ import ToyBoyImg from "../../src/images/toy-box.png";
 import { isLoggedIn } from "../utils/auth";
 import { navigate } from "gatsby";
 
-class LoginPage extends React.Component {
+class Welcome extends React.Component {
   state = {
     //can we restructure this state object? Do we need to have this inner login property?
     login: {
@@ -71,4 +71,4 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+export default Welcome;
