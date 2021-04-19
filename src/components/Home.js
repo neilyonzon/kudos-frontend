@@ -1,98 +1,154 @@
-import React from 'react'
-import { gql, useQuery } from '@apollo/client'
+import React, { useState, useEffect, Component } from "react";
+import { gql, useLazyQuery } from '@apollo/client'
+import { navigate } from "gatsby";
+import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 
-import StudentCard from './dashboard/StudentCard'
-import TBSummary from './dashboard/TBSummary'
-import Approval from './treasureBox/Approval'
+import ControlPanel from "./dashboard/ControlPanel";
+import ClassSelector from "./dashboard/ClassSelector";
+
+import Dashboard from "./Dashboard";
+import Students from "./Students";
+import TreasureBox from "./TreasureBox";
+
+import dashboardStyles from "./dashboard.module.css";
 
 const Home = props =>{
 
-    const GET_CLASS_DASHBOARD = gql`
-        query getClassDashboard($classId: Int!){
-            getClassInfo(classId: $classId){
-                className
-                treasureBoxOpen
-                students{
-                    id
-                    firstName
-                    lastName
-                    username
-                    imageUrl
-                    kudosBalance
-                    transactions{
-                        id
-                        approved
-                        prizeId
-                        prizeName
-                        prizeCost
-                        prizeImageUrl
-                    }
-                }
-                prizes{
-                    id
-                    name
-                    kudosCost
-                    quantity
-                    category
-                }
-            }
-        }
-    `
+  const [show, setShow] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('Dashboard');
+  const [classes, setClasses] = useState([])
+  const [selectedClassId, setSelectedClassId] = useState(null);
 
-    const { loading, error, data } = useQuery(GET_CLASS_DASHBOARD, {
-        variables: { classId: props.selectedClassId }
+  useEffect(() =>{
+
+    const checkLoginStatus = async () =>{
+      const userLoggedIn = await isLoggedIn()
+      if(!userLoggedIn){
+        return navigate('/')
+      } else{
+        setShow(true)
+      }
+    }
+
+    checkLoginStatus()
+    
+  }, [])
+
+  const GET_TEACHER_INFO = gql`
+    query getTeacherInfo{
+      teacher{
+        firstName
+        lastName
+        email
+        classes{
+            id
+            className
+        }
+      }
+    }
+  `
+
+  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(GET_TEACHER_INFO, 
+    {
+      onCompleted({ teacher }){
+        if(teacher && teacher.classes.length > 0){
+          setClasses(teacher.classes)
+          setSelectedClassId(teacher.classes[0].id)
+        }
+      }
+    }
+  )
+
+  const onTabSelectHandler = (tabName) =>{
+    setSelectedTab(tabName)
+  }
+
+  const onSelectClassHandler = (e) =>{
+    const selectedClassName = e.target.value
+    const selectedClass = classes.find(cls =>{
+      return cls.className === selectedClassName
     })
+    setSelectedClassId(selectedClass.id)
+  }
 
-    if(loading){
-        return (
-            <div>
-                <h2>...loading...</h2>
-            </div>
-        )
-    }
+  if(!called && show){
+    loadTeacherInfo()
+    return null
+  }
 
-    if(error){
-        return(
-            <div>
-                <h2>there was an error :(</h2>
-            </div>
-        )
-    }
-
-    // if no students, prompt teacher to add students
-    // if(data && !data.getClassInfo.students){
-
-    // }
-
-    const classStudents = data.getClassInfo.students
-    let numPendingApproval = 0
-    let pendingApprovals = []
-    for(const student of classStudents){
-        for(const transaction of student.transactions){
-            if(!transaction.approved){
-                numPendingApproval += 1
-                const studentName = student.firstName + ' ' + student.lastName
-                pendingApprovals.push(<Approval key={transaction.id} studentName={studentName} prizeCost={transaction.prizeCost} prizeName={transaction.prizeName}/>)
-            }
-        }
-    }
-
-    let remainingPrizes = 0
-    for(const prize of data.getClassInfo.prizes){
-        remainingPrizes += prize.quantity
-    }
-
-    return(
-        <div>
-            <h1>The home component is selected</h1>
-            <h3>{numPendingApproval} waiting to be approved</h3>
-            <h3>{remainingPrizes} prizes remain</h3>
-            {classStudents.map(student => {
-                return <StudentCard key={student.id} name={student.firstName} kudosBalance={student.kudosBalance} />
-            })}
-            {pendingApprovals}
-        </div>
+  if(loading){
+    return (
+      <div>
+        <h1>...Loading...</h1>
+      </div>
     )
+  }
+
+  if(error){
+    return (
+      <div>
+        <h1>...an error happened...</h1>
+      </div>
+    )
+  }
+
+  if(called && !loading){
+
+    let tabComponent
+    switch(true){
+      case (selectedTab === 'Settings'):
+        tabComponent = <TreasureBox />
+        break
+      case (!selectedClassId):
+        tabComponent = (
+          <div>
+            <h2>You don't have any classes! Go to settings to add a class</h2>
+          </div>
+        )
+        break
+      case (selectedTab === 'Students'):
+        tabComponent = <Students />
+        break
+      case (selectedTab === 'TreasureBox'):
+        tabComponent = <TreasureBox selectedClassId={selectedClassId}/>
+        break
+      default:
+        tabComponent = <Dashboard selectedClassId={selectedClassId} />
+
+    }
+
+    return (
+      <div>
+        <h1>This is the dashboard page!</h1>
+
+        <a
+          href="/"
+          onClick={(event) => {
+            event.preventDefault();
+            logout(() => navigate("/"));
+          }}
+        >
+          Log Out!
+        </a>
+
+        <ControlPanel
+          onSelectTab={onTabSelectHandler}
+          selectedTab={selectedTab}
+        />
+
+        <ClassSelector
+          onSelectClass={onSelectClassHandler}
+          classes={classes}
+        />
+
+        <h1>Below is the selected tab</h1>
+        {tabComponent}
+
+      </div>
+    )
+  }
+
+  return null
 }
 
 export default Home;

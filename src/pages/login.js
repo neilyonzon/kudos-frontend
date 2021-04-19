@@ -28,7 +28,7 @@ class LoginPage extends React.Component {
 
     const userLoggedIn = await isLoggedIn()
     if(userLoggedIn){
-      return navigate('/dashboard')
+      return navigate('/home')
     }
 
     this.setState({ showScreen: true })

@@ -2,7 +2,7 @@ import React from "react";
 import { Router } from "@reach/router";
 import Layout from "../components/global/Layout";
 import Login from "./Login";
-import Dashboard from "../components/Dashboard";
+import Home from "../components/Home";
 import { Helmet } from "react-helmet";
 import "../sass/style.scss";
 
@@ -16,7 +16,7 @@ const IndexPage = () => {
       </Helmet>
       <Router>
         <Login path="/" />
-        <Dashboard path="/dashboard" />
+        <Home path="/home" />
       </Router>
     </Layout>
   );
