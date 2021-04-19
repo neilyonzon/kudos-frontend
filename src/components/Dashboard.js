@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import { logout, getToken } from "../utils/auth";
+import React, { useState, useEffect, Component } from "react";
+import { gql, useLazyQuery } from '@apollo/client'
 import { navigate } from "gatsby";
+import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 
 import ControlPanel from "./dashboard/ControlPanel";
 import ClassSelector from "./dashboard/ClassSelector";
@@ -11,120 +12,109 @@ import TreasureBox from "./TreasureBox";
 
 import dashboardStyles from "./dashboard.module.css";
 
-class Dashboard extends Component {
-  state = {
-    loading: true,
-    selectedComponentName: "",
-    dashboardData: null,
-    selectedClass: "",
-  };
+const Dashboard = props =>{
 
-  async componentDidMount() {
-    const graphqlQuery = {
-      query: `
-            {
-                teacher{
-                    firstName
-                    lastName
-                    email
-                    classes{
-                        classId
-                        className
-                        treasureBoxOpen
-                        students{
-                            studentId
-                            firstName
-                            lastName
-                            username
-                            imageUrl
-                            favoriteSubject
-                            kudosBalance
-                            transactions{
-                                id
-                                prizeId
-                                prizeName
-                                prizeImageUrl
-                                prizeCost
-                                approved
-                            }
-                        }
-                        prizes{
-                            prizeId
-                            name
-                            imageUrl
-                            kudosCost
-                            quantity
-                        }
-                    }
-                  }
-            }
-          `,
-    };
+  const [show, setShow] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('Dashboard');
+  const [classes, setClasses] = useState([])
+  const [selectedClassId, setSelectedClassId] = useState(null);
 
-    const token = getToken();
-    const response = await fetch(
-      "https://kudos-backend.herokuapp.com/graphql",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(graphqlQuery),
+  useEffect(() =>{
+
+    const checkLoginStatus = async () =>{
+      const userLoggedIn = await isLoggedIn()
+      if(!userLoggedIn){
+        return navigate('/')
+      } else{
+        setShow(true)
       }
-    );
+    }
 
-    const responseData = await response.json();
-    // this will throw an error if classes[0] does not exist
-    const selectedClass =
-      (await responseData.data.teacher.classes[0].className) || "";
+    checkLoginStatus()
+    
+  }, [])
 
-    this.setState({
-      dashboardData: responseData,
-      selectedComponentName: "Home",
-      selectedClass: selectedClass,
-      loading: false,
-    });
+  const GET_TEACHER_INFO = gql`
+    query getTeacherInfo{
+      teacher{
+        firstName
+        lastName
+        email
+        classes{
+            id
+            className
+        }
+      }
+    }
+  `
+
+  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(GET_TEACHER_INFO, 
+    {
+      onCompleted({ teacher }){
+        if(teacher && teacher.classes.length > 0){
+          setClasses(teacher.classes)
+          setSelectedClassId(teacher.classes[0].id)
+        }
+      }
+    }
+  )
+
+  const onTabSelectHandler = (tabName) =>{
+    setSelectedTab(tabName)
   }
 
-  onComponentSelectHandler = (selectedComponentName) => {
-    this.setState({ selectedComponentName: selectedComponentName });
-  };
+  const onSelectClassHandler = (e) =>{
+    const selectedClassName = e.target.value
+    const selectedClass = classes.find(cls =>{
+      return cls.className === selectedClassName
+    })
+    setSelectedClassId(selectedClass.id)
+  }
 
-  onSelectClassHandler = (event) => [
-    this.setState({ selectedClass: event.target.value }),
-  ];
+  if(!called && show){
+    loadTeacherInfo()
+    return null
+  }
 
-  render() {
-    console.log("dashboard data below");
-    console.log(this.state.dashboardData);
+  if(loading){
+    return (
+      <div>
+        <h1>...Loading...</h1>
+      </div>
+    )
+  }
 
-    let selectedComponent = null;
-    let selectedClassData;
-    if (this.state.selectedClass) {
-      selectedClassData = this.state.dashboardData.data.teacher.classes.filter(
-        (selectedClass) => {
-          return selectedClass.className === this.state.selectedClass;
-        }
-      )[0];
-    }
-    if (
-      this.state.selectedComponentName === "Home" &&
-      this.state.selectedClass
-    ) {
-      selectedComponent = <Home data={selectedClassData} />;
-    }
-    if (
-      this.state.selectedComponentName === "Students" &&
-      this.state.selectedClass
-    ) {
-      selectedComponent = <Students />;
-    }
-    if (
-      this.state.selectedComponentName === "TreasureBox" &&
-      this.state.selectedClass
-    ) {
-      selectedComponent = <TreasureBox data={selectedClassData}/>;
+  if(error){
+    return (
+      <div>
+        <h1>...an error happened...</h1>
+      </div>
+    )
+  }
+
+  if(called && !loading){
+
+    let tabComponent
+    switch(true){
+      case (selectedTab === 'Settings'):
+        tabComponent = <TreasureBox />
+        break
+      case (!selectedClassId):
+        tabComponent = (
+          <div>
+            <h2>You don't have any classes! Go to settings to add a class</h2>
+          </div>
+        )
+        break
+      case (selectedTab === 'Students'):
+        tabComponent = <Students />
+        break
+      case (selectedTab === 'TreasureBox'):
+        tabComponent = <TreasureBox selectedClassId={selectedClassId}/>
+        break
+      default:
+        tabComponent = <Home selectedClassId={selectedClassId} />
+
     }
 
     return (
@@ -142,28 +132,23 @@ class Dashboard extends Component {
         </a>
 
         <ControlPanel
-          onSelectHandler={this.onComponentSelectHandler}
-          selectedComponent={this.state.selectedComponentName}
+          onSelectTab={onTabSelectHandler}
+          selectedTab={selectedTab}
         />
 
-        {this.state.selectedClass ? (
-          <ClassSelector
-            onSelect={this.onSelectClassHandler}
-            classes={this.state.dashboardData.data.teacher.classes}
-          />
-        ) : null}
+        <ClassSelector
+          onSelectClass={onSelectClassHandler}
+          classes={classes}
+        />
 
-        <h1>Below is the selected component</h1>
-        {this.state.selectedClass ? (
-          <h2>{this.state.selectedClass} is selected</h2>
-        ) : (
-          <h2>You don't have any classes!</h2>
-        )}
+        <h1>Below is the selected tab</h1>
+        {tabComponent}
 
-        {selectedComponent}
       </div>
-    );
+    )
   }
+
+  return null
 }
 
 export default Dashboard;

@@ -9,12 +9,12 @@ const Header = () => {
       <Logo addclassName=" main-header__logo"></Logo>
       {/* Conditionally render below after authorization/User exists */}
 
-      {(() => {
+      {/* {(() => {
         if (isLoggedIn() === true) {
           console.log("work");
           return <ProfileIcon />;
         }
-      })()}
+      })()} */}
     </header>
   );
 };
