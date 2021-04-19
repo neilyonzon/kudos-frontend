@@ -3,14 +3,14 @@ import { gql, useLazyQuery } from '@apollo/client'
 import { navigate } from "gatsby";
 import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 
-import ControlPanel from "./dashboard/ControlPanel";
-import ClassSelector from "./dashboard/ClassSelector";
+import ControlPanel from "../components/dashboard/ControlPanel";
+import ClassSelector from "../components/dashboard/ClassSelector";
 
-import Dashboard from "./Dashboard";
-import Students from "./Students";
-import TreasureBox from "./TreasureBox";
+import Dashboard from "../components/Dashboard";
+import Students from "../components/Students";
+import TreasureBox from "../components/TreasureBox";
 
-import dashboardStyles from "./dashboard.module.css";
+import dashboardStyles from "../components/dashboard.module.css";
 
 const Home = props =>{
 

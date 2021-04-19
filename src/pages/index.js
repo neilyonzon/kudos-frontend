@@ -2,7 +2,7 @@ import React from "react";
 import { Router } from "@reach/router";
 import Layout from "../components/global/Layout";
 import Welcome from "./Welcome";
-import Home from "../components/Home";
+import Home from "./Home";
 import { Helmet } from "react-helmet";
 import "../sass/style.scss";
 
