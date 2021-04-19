@@ -93,3 +93,16 @@ p {
     cursor: not-allowed;
   }
 }
+
+a {
+  text-decoration: underline;
+  color: $color-gray;
+}
+
+.icon::after {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}

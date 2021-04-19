@@ -116,6 +116,79 @@ const Login = props =>{
     }
   )
 
+<<<<<<< HEAD
+  render() {
+    const formInputArray = [];
+    for (let key in this.state.form) {
+      formInputArray.push({
+        id: key,
+        config: this.state.form[key],
+      });
+    }
+    let display;
+
+    if (!this.state.loginError) {
+      display = (
+        <form
+          method="POST"
+          onSubmit={async (event) => {
+            await this.loginSubmitHandler(event);
+          }}
+          className="form"
+          id="example-form"
+        >
+          {formInputArray.map((formInput) => (
+            <Input
+              key={formInput.id}
+              inputType={formInput.config.inputType}
+              inputConfig={formInput.config.config}
+              value={formInput.config.value}
+              labelConfig={formInput.config.labelConfig}
+              helper={formInput.config.helper}
+              isValid={!formInput.config.valid}
+              shouldValidate={formInput.config.validation}
+              touched={formInput.config.touched}
+              changed={(event) => this.inputChangeHandler(event, formInput.id)}
+              pointsHandler={this.pointsIncrementHandler}
+            />
+          ))}
+          <Button btnColor="green" disabled={!this.state.formIsValid}>
+            Log In
+          </Button>
+        </form>
+      );
+    } else {
+      display = (
+        <div>
+          <h1>An error occurred...</h1>
+        </div>
+      );
+    }
+    return (
+      <div className="form-container">
+        {display}
+        <div className="forgot-container">
+          <p>
+            <a
+              href=""
+              onClick={(e) => {
+                this.props.updateCondition(e, "retrieve");
+              }}
+            >
+              Forgot Password
+            </a>
+          </p>
+          <p>
+            <a
+              href=""
+              onClick={(e) => this.props.updateCondition(e, "register")}
+            >
+              Sign Up
+            </a>{" "}
+            if you don't have an account.
+          </p>
+        </div>
+=======
   const formInputArray = [];
   for (let key in form) {
     formInputArray.push({
@@ -160,6 +233,7 @@ const Login = props =>{
     display = (
       <div>
         <h1>An error occurred...</h1>
+>>>>>>> origin/main
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Router } from "@reach/router";
 import Layout from "../components/global/Layout";
-import Login from "./Login";
+import Welcome from "./welcome";
 import Dashboard from "../components/Dashboard";
 import { Helmet } from "react-helmet";
 import "../sass/style.scss";
