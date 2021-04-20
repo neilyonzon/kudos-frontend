@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../Logo";
+import Logo from "./Logo";
 import ProfileIcon from "./Profile";
 import { loginSuccesssful, isLoggedIn } from "../../utils/auth";
 
