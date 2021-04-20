@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 
-import StudentCard from './dashboard/StudentCard'
+import StudentCard from './students/StudentCard'
 import TBSummary from './dashboard/TBSummary'
 import Approval from './treasureBox/Approval'
 
