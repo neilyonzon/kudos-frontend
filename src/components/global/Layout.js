@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import Header from "./Header";
 import Footer from "./Footer";
+import "../../sass/style.scss";
 
 const Layout = ({ children, pageName }) => {
   let className = "";
