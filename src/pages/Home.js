@@ -3,8 +3,8 @@ import { gql, useLazyQuery } from '@apollo/client'
 import { navigate } from "gatsby";
 import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 
-import ControlPanel from "../components/dashboard/ControlPanel";
-import ClassSelector from "../components/dashboard/ClassSelector";
+import ControlPanel from "../components/home/ControlPanel";
+import ClassSelector from "../components/home/ClassSelector";
 
 import Dashboard from "../components/Dashboard";
 import Students from "../components/Students";
