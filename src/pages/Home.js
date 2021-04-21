@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery } from "@apollo/client";
 import { navigate } from "gatsby";
 import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 
@@ -12,109 +12,105 @@ import TreasureBox from "../components/TreasureBox";
 
 import dashboardStyles from "../components/dashboard.module.css";
 
-const Home = props =>{
-
+const Home = (props) => {
   const [show, setShow] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('Dashboard');
-  const [classes, setClasses] = useState([])
+  const [selectedTab, setSelectedTab] = useState("Dashboard");
+  const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState(null);
 
-  useEffect(() =>{
-
-    const checkLoginStatus = async () =>{
-      const userLoggedIn = await isLoggedIn()
-      if(!userLoggedIn){
-        return navigate('/')
-      } else{
-        setShow(true)
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const userLoggedIn = await isLoggedIn();
+      if (!userLoggedIn) {
+        return navigate("/");
+      } else {
+        setShow(true);
       }
-    }
+    };
 
-    checkLoginStatus()
-    
-  }, [])
+    checkLoginStatus();
+  }, []);
 
   const GET_TEACHER_INFO = gql`
-    query getTeacherInfo{
-      teacher{
+    query getTeacherInfo {
+      teacher {
         firstName
         lastName
         email
-        classes{
-            id
-            className
+        classes {
+          id
+          className
         }
       }
     }
-  `
+  `;
 
-  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(GET_TEACHER_INFO, 
+  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
+    GET_TEACHER_INFO,
     {
-      onCompleted({ teacher }){
-        if(teacher && teacher.classes.length > 0){
-          setClasses(teacher.classes)
-          setSelectedClassId(teacher.classes[0].id)
+      onCompleted({ teacher }) {
+        if (teacher && teacher.classes.length > 0) {
+          setClasses(teacher.classes);
+          setSelectedClassId(teacher.classes[0].id);
         }
-      }
+      },
     }
-  )
+  );
 
-  const onTabSelectHandler = (tabName) =>{
-    setSelectedTab(tabName)
+  const onTabSelectHandler = (tabName) => {
+    setSelectedTab(tabName);
+  };
+
+  const onSelectClassHandler = (e) => {
+    const selectedClassName = e.target.value;
+    const selectedClass = classes.find((cls) => {
+      return cls.className === selectedClassName;
+    });
+    setSelectedClassId(selectedClass.id);
+  };
+
+  if (!called && show) {
+    loadTeacherInfo();
+    return null;
   }
 
-  const onSelectClassHandler = (e) =>{
-    const selectedClassName = e.target.value
-    const selectedClass = classes.find(cls =>{
-      return cls.className === selectedClassName
-    })
-    setSelectedClassId(selectedClass.id)
-  }
-
-  if(!called && show){
-    loadTeacherInfo()
-    return null
-  }
-
-  if(loading){
+  if (loading) {
     return (
       <div>
         <h1>...Loading...</h1>
       </div>
-    )
+    );
   }
 
-  if(error){
+  if (error) {
     return (
       <div>
         <h1>...an error happened...</h1>
       </div>
-    )
+    );
   }
 
-  if(called && !loading){
-
-    let tabComponent
-    switch(true){
-      case (selectedTab === 'Settings'):
-        tabComponent = <TreasureBox />
-        break
-      case (!selectedClassId):
+  if (called && !loading) {
+    let tabComponent;
+    switch (true) {
+      case selectedTab === "Settings":
+        tabComponent = <TreasureBox />;
+        break;
+      case !selectedClassId:
         tabComponent = (
           <div>
             <h2>You don't have any classes! Go to settings to add a class</h2>
           </div>
-        )
-        break
-      case (selectedTab === 'Students'):
-        tabComponent = <Students />
-        break
-      case (selectedTab === 'TreasureBox'):
-        tabComponent = <TreasureBox selectedClassId={selectedClassId}/>
-        break
+        );
+        break;
+      case selectedTab === "Students":
+        tabComponent = <Students />;
+        break;
+      case selectedTab === "TreasureBox":
+        tabComponent = <TreasureBox selectedClassId={selectedClassId} />;
+        break;
       default:
-        tabComponent = <Dashboard selectedClassId={selectedClassId} />
-
+        tabComponent = <Dashboard selectedClassId={selectedClassId} />;
     }
 
     return (
@@ -136,19 +132,15 @@ const Home = props =>{
           selectedTab={selectedTab}
         />
 
-        <ClassSelector
-          onSelectClass={onSelectClassHandler}
-          classes={classes}
-        />
+        <ClassSelector onSelectClass={onSelectClassHandler} classes={classes} />
 
         <h1>Below is the selected tab</h1>
         {tabComponent}
-
       </div>
-    )
+    );
   }
 
-  return null
-}
+  return null;
+};
 
 export default Home;

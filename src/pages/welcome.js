@@ -5,7 +5,7 @@ import ToyBoyImg from "../../src/images/toy-box.png";
 import { isLoggedIn } from "../utils/auth";
 import { navigate } from "gatsby";
 
-class WelcomePage extends React.Component {
+class Welcome extends React.Component {
   state = {
     //can we restructure this state object? Do we need to have this inner login property?
     login: {
@@ -27,7 +27,7 @@ class WelcomePage extends React.Component {
   async componentDidMount() {
     const userLoggedIn = await isLoggedIn();
     if (userLoggedIn) {
-      return navigate("/dashboard");
+      return navigate("/home");
     }
 
     this.setState({ showScreen: true });
@@ -74,4 +74,4 @@ class WelcomePage extends React.Component {
   }
 }
 
-export default WelcomePage;
+export default Welcome;
