@@ -21,18 +21,16 @@ class Welcome extends React.Component {
         buttons: "fade-active",
       },
     },
-    showScreen: false
+    showScreen: false,
   };
 
   async componentDidMount() {
-
-    const userLoggedIn = await isLoggedIn()
-    if(userLoggedIn){
-      return navigate('/home')
+    const userLoggedIn = await isLoggedIn();
+    if (userLoggedIn) {
+      return navigate("/home");
     }
 
-    this.setState({ showScreen: true })
-
+    this.setState({ showScreen: true });
   }
 
   chooseWelcomeTypeHandler = (e, type) => {
@@ -45,29 +43,34 @@ class Welcome extends React.Component {
   };
 
   render() {
-
     let component = null;
-    if(this.state.showScreen){
-      component = (<>
-                    <Helmet>
-                      <title>Kudos Login</title>
-                      <meta name="description" content="Kudos" />
-                    </Helmet>
-                    <div>
-                      <div className="bg bg--yellow">
-                        <div className="login-panel">
-                          <Content condition={this.state.login.condition} welcomeTypeHandler={this.chooseWelcomeTypeHandler} classState={this.state.login.classState} />
-                          <div className="login-panel__line"></div>
-                          <div className="login-panel__img">
-                            <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>)
+    if (this.state.showScreen) {
+      component = (
+        <>
+          <Helmet>
+            <title>Kudos Login</title>
+            <meta name="description" content="Kudos" />
+          </Helmet>
+          <div>
+            <div className="bg bg--yellow">
+              <div className="login-panel">
+                <Content
+                  condition={this.state.login.condition}
+                  welcomeTypeHandler={this.chooseWelcomeTypeHandler}
+                  classState={this.state.login.classState}
+                />
+                <div className="login-panel__line"></div>
+                <div className="login-panel__img">
+                  <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      );
     }
 
-    return component
+    return component;
   }
 }
 
