@@ -46,7 +46,6 @@ const Login = (props) => {
       touched: false,
     },
   });
-
   const [formIsValid, setFormIsValid] = useState(false);
 
   const inputChangeHandler = (event, inputIdentifier) => {
@@ -136,7 +135,6 @@ const Login = (props) => {
           });
         }}
         className="form"
-        id="example-form"
       >
         {formInputArray.map((formInput) => (
           <Input

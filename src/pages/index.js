@@ -6,7 +6,6 @@ import Home from "./Home";
 import { Helmet } from "react-helmet";
 import "../sass/style.scss";
 
-// markup
 const IndexPage = () => {
   return (
     <Layout>

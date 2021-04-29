@@ -1,108 +1,132 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
+
 import Input from "../forms/Input";
 import Button from "../elements/Button";
+import { setAcsToken } from "../../utils/auth";
 
-class Login extends Component {
-  state = {
-    loginError: false,
-    form: {
-      firstName: {
-        inputType: "",
-        labelConfig: {
-          display: false,
-          label: "First Name",
-        },
-        config: {
-          type: "text",
-          placeholder: "First Name",
-        },
-        helper: "Enter first name",
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+const Register = (props) => {
+  //Add Hooks
+  const [registerError, setRegisterError] = useState(false);
+
+  const [form, setForm] = useState({
+    firstName: {
+      inputType: "",
+      labelConfig: {
+        display: false,
+        label: "First Name",
       },
-      lastName: {
-        inputType: "input",
-        labelConfig: {
-          display: false,
-          label: "Last Name",
-        },
-        config: {
-          type: "text",
-          placeholder: "Last Name",
-        },
-        helper: "Enter last name",
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      config: {
+        type: "text",
+        placeholder: "First Name",
       },
-      username: {
-        inputType: "input",
-        labelConfig: {
-          display: false,
-          label: "Username",
-        },
-        config: {
-          type: "text",
-          placeholder: "Username",
-        },
-        helper: "Username",
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      helper: "Enter first name",
+      value: "",
+      validation: {
+        required: true,
       },
-      password: {
-        inputType: "input",
-        labelConfig: {
-          display: false,
-          label: "Password",
-        },
-        config: {
-          type: "password",
-          placeholder: "Password",
-        },
-        helper: "Password must be 8 characters long.",
-        value: "",
-        validation: {
-          required: false,
-        },
-        valid: false,
-        touched: false,
-      },
-      confirmPassword: {
-        inputType: "input",
-        labelConfig: {
-          display: false,
-          label: "Confirm Password",
-        },
-        config: {
-          type: "password",
-          placeholder: "Reenter Password",
-        },
-        helper: "Reenter Password",
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
-      },
+      valid: false,
+      touched: false,
     },
-    formIsValid: false,
-    loading: false,
+    lastName: {
+      inputType: "input",
+      labelConfig: {
+        display: false,
+        label: "Last Name",
+      },
+      config: {
+        type: "text",
+        placeholder: "Last Name",
+      },
+      helper: "Enter last name",
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    email: {
+      inputType: "input",
+      labelConfig: {
+        display: false,
+        label: "Email",
+      },
+      config: {
+        type: "email",
+        placeholder: "oscar@school.edu",
+      },
+      helper: "Enter valid email.",
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    username: {
+      inputType: "input",
+      labelConfig: {
+        display: false,
+        label: "Username",
+      },
+      config: {
+        type: "text",
+        placeholder: "Username",
+      },
+      helper: "Username",
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    password: {
+      inputType: "input",
+      labelConfig: {
+        display: false,
+        label: "Password",
+      },
+      config: {
+        type: "password",
+        placeholder: "Password",
+      },
+      helper: "Password must be 8 characters long.",
+      value: "",
+      validation: {
+        required: false,
+      },
+      valid: false,
+      touched: false,
+    },
+  });
+
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  //Add inner functions
+  const inputChangeHandler = (event, inputIdentifier) => {
+    const updatedForm = { ...form };
+    const updatedFormInput = { ...updatedForm[inputIdentifier] };
+    updatedFormInput.value = event.target.value;
+    updatedFormInput.valid = checkValidity(
+      updatedFormInput.value,
+      updatedFormInput.validation
+    );
+    updatedFormInput.touched = true;
+    updatedForm[inputIdentifier] = updatedFormInput;
+
+    let formIsValid = true;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+
+    setForm(updatedForm);
+    setFormIsValid(formIsValid);
   };
 
-  checkValidity = (value, rules) => {
+  const checkValidity = (value, rules) => {
     if (!rules) {
       return true;
     }
@@ -121,85 +145,103 @@ class Login extends Component {
     return isValid;
   };
 
-  inputChangeHandler = (event, inputIdentifier) => {
-    const updatedForm = { ...this.state.form };
-    const updatedFormInput = { ...updatedForm[inputIdentifier] };
-    updatedFormInput.value = event.target.value;
-    updatedFormInput.valid = this.checkValidity(
-      updatedFormInput.value,
-      updatedFormInput.validation
-    );
-    updatedFormInput.touched = true;
-    updatedForm[inputIdentifier] = updatedFormInput;
+  const pointsIncrementHandler = () => {
+    return null;
+  };
 
-    let formIsValid = true;
-    for (let inputIdentifier in updatedForm) {
-      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+  //Add graphql string used for mutation hook
+  const REGISTER_TEACHER = gql`
+    mutation RegisterTeacher(
+      $firstName: String
+      $lastName: String
+      $username: String!
+      $email: String
+      $password: String!
+    ) {
+      createTeacher(
+        teacherInput: {
+          firstName: $firstName
+          lastName: $lastName
+          username: $username
+          email: $email
+          password: $password
+        }
+      ) {
+        firstName
+      }
     }
+  `;
 
-    this.setState({
-      form: updatedForm,
-      formIsValid: formIsValid,
+  //Create mutation hook
+  const [register] = useMutation(REGISTER_TEACHER, {
+    onCompleted({ createTeacher }) {
+      if (createTeacher) {
+        console.log("success");
+        //Login User if success
+        return navigate("/");
+      }
+    },
+    onError() {
+      setRegisterError(true);
+    },
+  });
+
+  const formInputArray = [];
+  for (let key in form) {
+    formInputArray.push({
+      id: key,
+      config: form[key],
     });
-  };
-
-  loginSubmitHandler = async (event) => {
-    event.preventDefault();
-    let loginValues = {
-      username: this.state.form.username.value,
-      password: this.state.form.password.value,
-    };
-  };
-
-  render() {
-    const formInputArray = [];
-    for (let key in this.state.form) {
-      formInputArray.push({
-        id: key,
-        config: this.state.form[key],
-      });
-    }
-    let display;
-
-    if (!this.state.loginError) {
-      display = (
-        <form
-          method="POST"
-          onSubmit={async (event) => {
-            await this.loginSubmitHandler(event);
-          }}
-          className="form"
-          id="example-form"
-        >
-          {formInputArray.map((formInput) => (
-            <Input
-              key={formInput.id}
-              inputType={formInput.config.inputType}
-              inputConfig={formInput.config.config}
-              value={formInput.config.value}
-              labelConfig={formInput.config.labelConfig}
-              helper={formInput.config.helper}
-              isValid={!formInput.config.valid}
-              shouldValidate={formInput.config.validation}
-              touched={formInput.config.touched}
-              changed={(event) => this.inputChangeHandler(event, formInput.id)}
-              pointsHandler={this.pointsIncrementHandler}
-            />
-          ))}
-          <Button btnColor="green" disabled={!this.state.formIsValid}>
-            Register
-          </Button>
-        </form>
-      );
-    } else {
-      display = (
-        <div>
-          <h1>An error occurred...</h1>
-        </div>
-      );
-    }
-    return <div className="form-container">{display}</div>;
   }
-}
+  let display;
 
-export default Login;
+  if (!registerError) {
+    display = (
+      <form
+        method="POST"
+        onSubmit={async (event) => {
+          event.preventDefault();
+          register({
+            variables: {
+              firstName: form.firstName.value,
+              lastName: form.lastName.value,
+              email: form.email.value,
+              username: form.username.value,
+              password: form.password.value,
+            },
+          });
+        }}
+        className="form"
+      >
+        {formInputArray.map((formInput) => (
+          <Input
+            key={formInput.id}
+            inputType={formInput.config.inputType}
+            inputConfig={formInput.config.config}
+            value={formInput.config.value}
+            labelConfig={formInput.config.labelConfig}
+            helper={formInput.config.helper}
+            isValid={!formInput.config.valid}
+            shouldValidate={formInput.config.validation}
+            touched={formInput.config.touched}
+            changed={(event) => inputChangeHandler(event, formInput.id)}
+            pointsHandler={pointsIncrementHandler}
+          />
+        ))}
+        <Button btnColor="green" disabled={!formIsValid}>
+          Register
+        </Button>
+      </form>
+    );
+  } else {
+    display = (
+      <div>
+        <h1>An error occurred...</h1>
+      </div>
+    );
+  }
+
+  return <div className="form-container">{display}</div>;
+};
+
+export default Register;
