@@ -19,7 +19,7 @@ class Dashboard extends Component {
           <div className="message-banner">
             <h1>Welcome Back Oscar Cano</h1>
           </div>
-          <div className="control-nav">
+          <nav className="control-nav">
             <ul>
               <li className="control-nav__item selected">
                 {" "}
@@ -36,7 +36,7 @@ class Dashboard extends Component {
                 <IoIosSettings />
               </li>
             </ul>
-          </div>
+          </nav>
           <div className="control-panel dashboard">
             <div className="panel dashboard-groups">
               <h4 className="panel__title">Your Groups</h4>

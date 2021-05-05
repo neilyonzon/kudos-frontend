@@ -3,7 +3,7 @@ import { gql, useLazyQuery } from "@apollo/client";
 import { navigate } from "gatsby";
 import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
 
-import ControlPanel from "../components/home/ControlPanel";
+import ControlNav from "../components/home/ControlNav";
 import ClassSelector from "../components/home/ClassSelector";
 
 import Dashboard from "../components/Dashboard";
@@ -92,9 +92,11 @@ const Home = (props) => {
 
   if (called && !loading) {
     let tabComponent;
+    let tabClass;
     switch (true) {
       case selectedTab === "Settings":
         tabComponent = <TreasureBox />;
+        tabClass = "dashboard";
         break;
       case !selectedClassId:
         tabComponent = (
@@ -105,17 +107,22 @@ const Home = (props) => {
         break;
       case selectedTab === "Students":
         tabComponent = <Students />;
+        tabClass = "students";
         break;
       case selectedTab === "TreasureBox":
         tabComponent = <TreasureBox selectedClassId={selectedClassId} />;
+        tabClass = "treasurebox";
         break;
       default:
         tabComponent = <Dashboard selectedClassId={selectedClassId} />;
+        tabClass = "dashboard";
     }
 
     return (
-      <div>
-        <h1>This is the dashboard page!</h1>
+      <div className="main">
+        <div className="message-banner">
+          <h1>Welcome Back Oscar Cano</h1>
+        </div>
 
         <a
           href="/"
@@ -127,7 +134,7 @@ const Home = (props) => {
           Log Out!
         </a>
 
-        <ControlPanel
+        <ControlNav
           onSelectTab={onTabSelectHandler}
           selectedTab={selectedTab}
         />
@@ -135,7 +142,7 @@ const Home = (props) => {
         <ClassSelector onSelectClass={onSelectClassHandler} classes={classes} />
 
         <h1>Below is the selected tab</h1>
-        {tabComponent}
+        <div className={`control-panel ${tabClass}`}>{tabComponent}</div>
       </div>
     );
   }
