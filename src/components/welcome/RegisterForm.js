@@ -152,10 +152,10 @@ const Register = (props) => {
   //Add graphql string used for mutation hook
   const REGISTER_TEACHER = gql`
     mutation RegisterTeacher(
-      $firstName: String
-      $lastName: String
+      $firstName: String!
+      $lastName: String!
       $username: String!
-      $email: String
+      $email: String!
       $password: String!
     ) {
       createTeacher(
