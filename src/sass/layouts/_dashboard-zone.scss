@@ -1,10 +1,11 @@
 .dashboard {
   display: grid;
   padding: 4rem;
-  grid-template-rows: 37rem 37rem;
+  grid-template-rows: 2rem 37rem 37rem;
   grid-template-columns: 1fr 1fr;
   grid-gap: 3rem;
   grid-template-areas:
+    "utility utility"
     "groups treasure"
     "groups extra";
 }

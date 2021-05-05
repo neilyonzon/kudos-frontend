@@ -9,7 +9,7 @@ import ClassSelector from "../components/home/ClassSelector";
 import Dashboard from "../components/Dashboard";
 import Students from "../components/Students";
 import TreasureBox from "../components/TreasureBox";
-
+import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
 import dashboardStyles from "../components/dashboard.module.css";
 
 const Home = (props) => {
@@ -139,10 +139,17 @@ const Home = (props) => {
           selectedTab={selectedTab}
         />
 
-        <ClassSelector onSelectClass={onSelectClassHandler} classes={classes} />
-
         <h1>Below is the selected tab</h1>
-        <div className={`control-panel ${tabClass}`}>{tabComponent}</div>
+        <div className={`control-panel ${tabClass}`}>
+          <div className="utility-bar">
+            <ClassSelector
+              onSelectClass={onSelectClassHandler}
+              classes={classes}
+            />
+            <AiOutlineLock className="treasure-lock" />
+          </div>
+          {tabComponent}
+        </div>
       </div>
     );
   }

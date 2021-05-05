@@ -5,6 +5,7 @@ import { IoIosHome } from "@react-icons/all-files/io/IoIosHome";
 import { IoIosPeople } from "@react-icons/all-files/io/IoIosPeople";
 import { IoIosSettings } from "@react-icons/all-files/io/IoIosSettings";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
+import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
@@ -38,15 +39,18 @@ class Dashboard extends Component {
             </ul>
           </nav>
           <div className="control-panel dashboard">
-            <div className="panel dashboard-groups">
-              <h4 className="panel__title">Your Groups</h4>
-              <div className="select">
+            <div className="utility-bar">
+              <div className="class-chooser select">
                 <select>
                   <option value="class-204">Class 204</option>
                   <option value="ymca-tutoring">YMCA Tutoring</option>
                   <option value="manage">Manage Classes</option>
                 </select>
               </div>
+              <AiOutlineLock className="treasure-lock" />
+            </div>
+            <div className="panel dashboard-groups">
+              <h4 className="panel__title">Class 203</h4>
               <div className="list list--dash">
                 <div className="list__header list__header--dash">
                   <div className="list__col-img list__header-item" />
@@ -298,7 +302,6 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-
             <div className="panel dashboard-lorem">
               <h4 className="panel__title">Lorem Ipsum</h4>
               <div className="panel__content">
