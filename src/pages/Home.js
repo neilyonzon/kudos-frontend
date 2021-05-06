@@ -139,7 +139,6 @@ const Home = (props) => {
           selectedTab={selectedTab}
         />
 
-        <h1>Below is the selected tab</h1>
         <div className={`control-panel ${tabClass}`}>
           <div className="utility-bar">
             <ClassSelector
