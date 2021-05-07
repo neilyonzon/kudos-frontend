@@ -17,9 +17,9 @@ const StudentCard = (props) => {
   return (
     <div className="list__item">
       <img className="list__img" src="https://placekitten.com/200/300"></img>
-      <span className="list__col-name list__col-name--dash">{props.name}</span>
+      <span className="list__col-name list__col-name--dash">{props.studentData.firstName + ' ' + props.studentData.lastName}</span>
       <span className="ist__col-kudos list__col-kudos--dash">
-        {props.kudosBalance}
+        {props.studentData.kudosBalance}
       </span>
       <div className="list__col-btns">
         <button className="list__btn list__btn--pts">
@@ -32,6 +32,9 @@ const StudentCard = (props) => {
       <EditStudentCardModal
         editStudent={openEditStudent}
         onCloseEditStudent={handleEditStudentModal}
+        firstName={props.studentData.firstName}
+        lastName={props.studentData.lastName}
+        username={props.studentData.username}
       />
     </div>
 

@@ -23,6 +23,9 @@ const EditStudentModal = props => {
             style={customStyles}
         >
             <h2>This is the edit student modal</h2>
+            <p>Student first name: {props.firstName}</p>
+            <p>Student last name: {props.lastName}</p>
+            <p>Student username: {props.username}</p>
 
         </Modal>
     )
