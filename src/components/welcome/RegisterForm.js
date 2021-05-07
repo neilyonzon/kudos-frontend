@@ -176,9 +176,11 @@ const Register = (props) => {
   const [register] = useMutation(REGISTER_TEACHER, {
     onCompleted({ createTeacher }) {
       if (createTeacher) {
-        console.log("success");
+        alert(
+          "Registration Success! Please login. (Replace with Modal Notification/Toaster?)"
+        );
         //Login User if success
-        return navigate("/");
+        props.redirectLogin("x", "login");
       }
     },
     onError() {

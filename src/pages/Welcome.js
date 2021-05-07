@@ -7,67 +7,69 @@ import { navigate } from "gatsby";
 
 class Welcome extends React.Component {
   state = {
-    //can we restructure this state object? Do we need to have this inner login property?
-    login: {
-      title: "Manage Prizes",
-      description: "Save time and manage your prizes through the prize box",
-      image: "",
-      //next two attributes - can we choose better names?
-      condition: "welcome",
-      classState: {
-        login: "fade-inactive",
-        register: "fade-inactive",
-        retrieve: "fade-inactive",
-        buttons: "fade-active",
-      },
+    title: "Manage Prizes",
+    description: "Save time and manage your prizes through the prize box",
+    image: "",
+    contentType: "welcome",
+    contentClass: {
+      login: "fade-inactive",
+      register: "fade-inactive",
+      retrieve: "fade-inactive",
+      buttons: "fade-active",
     },
-    showScreen: false
+    showScreen: false,
   };
 
   async componentDidMount() {
-
-    const userLoggedIn = await isLoggedIn()
-    if(userLoggedIn){
-      return navigate('/home')
+    const userLoggedIn = await isLoggedIn();
+    if (userLoggedIn) {
+      return navigate("/home");
     }
 
-    this.setState({ showScreen: true })
-
+    this.setState({ showScreen: true });
   }
 
   chooseWelcomeTypeHandler = (e, type) => {
-    e.preventDefault();
-    let loginData = { ...this.state.login };
-    loginData.classState.buttons = "fade-inactive";
-    loginData.classState[type] = "fade-active";
-    loginData.condition = type;
-    this.setState({ login: loginData });
+    if (!e) {
+      e.preventDefault();
+    }
+    let newCondition = this.state.contentType;
+    let newContentClass = { ...this.state.contentClass };
+    newContentClass.buttons = "fade-inactive";
+    newContentClass[type] = "fade-active";
+    newCondition = type;
+    this.setState({ contentType: newCondition, contentClass: newContentClass });
   };
 
   render() {
-
     let component = null;
-    if(this.state.showScreen){
-      component = (<>
-                    <Helmet>
-                      <title>Kudos Login</title>
-                      <meta name="description" content="Kudos" />
-                    </Helmet>
-                    <div>
-                      <div className="bg bg--yellow">
-                        <div className="login-panel">
-                          <Content condition={this.state.login.condition} welcomeTypeHandler={this.chooseWelcomeTypeHandler} classState={this.state.login.classState} />
-                          <div className="login-panel__line"></div>
-                          <div className="login-panel__img">
-                            <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>)
+    if (this.state.showScreen) {
+      component = (
+        <>
+          <Helmet>
+            <title>Kudos Login</title>
+            <meta name="description" content="Kudos" />
+          </Helmet>
+          <div>
+            <div className="bg bg--yellow">
+              <div className="login-panel">
+                <Content
+                  contentType={this.state.contentType}
+                  welcomeTypeHandler={this.chooseWelcomeTypeHandler}
+                  contentClass={this.state.contentClass}
+                />
+                <div className="login-panel__line"></div>
+                <div className="login-panel__img">
+                  <img src={ToyBoyImg} alt="Toy Box Illustration"></img>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      );
     }
 
-    return component
+    return component;
   }
 }
 
