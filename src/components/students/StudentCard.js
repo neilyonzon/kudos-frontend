@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
+
+import EditStudentCardModal from './EditStudentModal';
 
 import studentCardStyles from "./studentCard.module.css";
 
 const StudentCard = (props) => {
+
+  const [openEditStudent, setOpenEditStudent] = useState(false)
+
+  const handleEditStudentModal = () =>{
+    setOpenEditStudent(!openEditStudent)
+  }
+  
   return (
     <div className="list__item">
       <img className="list__img" src="https://placekitten.com/200/300"></img>
@@ -16,10 +25,14 @@ const StudentCard = (props) => {
         <button className="list__btn list__btn--pts">
           <FaDollarSign className="icon-pts" />
         </button>
-        <button className="list__btn list__btn--edit">
+        <button className="list__btn list__btn--edit" onClick={handleEditStudentModal}>
           <FaEdit className="icon-edit" />
         </button>
       </div>
+      <EditStudentCardModal
+        editStudent={openEditStudent}
+        onCloseEditStudent={handleEditStudentModal}
+      />
     </div>
 
     // <div className={studentCardStyles.studentCard}>
