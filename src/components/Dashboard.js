@@ -114,8 +114,7 @@ const Dashboard = (props) => {
               return (
                 <StudentCard
                   key={student.id}
-                  name={student.firstName}
-                  kudosBalance={student.kudosBalance}
+                  studentData={student}
                 />
               );
             })}
