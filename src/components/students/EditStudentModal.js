@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import Input from '../forms/Input';
 import Button from '../elements/Button';
 
+import { checkValidity } from '../../utils/formValidity';
+
 const customStyles = {
     content : {
         top                   : '50%',
@@ -115,25 +117,6 @@ const EditStudentModal = props => {
 
         setForm(updatedForm);
         setFormIsValid(formIsValid);
-    };
-
-    const checkValidity = (value, rules) => {
-        if (!rules) {
-        return true;
-        }
-        let isValid = true;
-        if (rules.required) {
-        isValid = value.trim() !== "" && isValid;
-        }
-
-        if (rules.minLength) {
-        isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if (rules.maxLength) {
-        isValid = value.length <= rules.maxLength && isValid;
-        }
-        return isValid;
     };
 
     const formInputArray = [];
