@@ -1,5 +1,5 @@
-import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import React, { useEffect } from "react";
+import { gql, useLazyQuery } from "@apollo/client";
 
 import StudentCard from "./students/StudentCard";
 import TBSummary from "./dashboard/TBSummary";
@@ -42,7 +42,11 @@ const Dashboard = (props) => {
     }
   `;
 
-  const { loading, error, data } = useQuery(GET_CLASS_DASHBOARD, {
+  useEffect(()=> {
+    getClassData()
+  }, [])
+
+  const [getClassData, { loading, error, data }] = useLazyQuery(GET_CLASS_DASHBOARD, {
     variables: { classId: props.selectedClassId },
   });
 
@@ -115,6 +119,7 @@ const Dashboard = (props) => {
                 <StudentCard
                   key={student.id}
                   studentData={student}
+                  refreshData={getClassData}
                 />
               );
             })}

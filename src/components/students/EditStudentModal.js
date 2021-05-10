@@ -109,7 +109,11 @@ const EditStudentModal = props => {
         }
     `
 
-    const [editStudent] = useMutation(EDIT_STUDENT)
+    const [editStudent] = useMutation(EDIT_STUDENT, {
+        onCompleted(){
+            props.refreshData()
+        }
+    })
 
     const inputChangeHandler = (event, inputIdentifier) => {
         const updatedForm = { ...form };
@@ -141,6 +145,7 @@ const EditStudentModal = props => {
                 password: form.password.value
             }
         })
+        props.onCloseEditStudent()
     }
 
     const formInputArray = [];
