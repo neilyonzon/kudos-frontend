@@ -42,14 +42,17 @@ const Dashboard = (props) => {
     }
   `;
 
-  useEffect(()=> {
-    getClassData()
-  }, [])
+  useEffect(() => {
+    getClassData();
+  }, []);
 
-  const [getClassData, { loading, error, data }] = useLazyQuery(GET_CLASS_DASHBOARD, {
-    variables: { classId: props.selectedClassId },
-    fetchPolicy: "network-only"
-  });
+  const [getClassData, { loading, error, data }] = useLazyQuery(
+    GET_CLASS_DASHBOARD,
+    {
+      variables: { classId: props.selectedClassId },
+      fetchPolicy: "network-only",
+    }
+  );
 
   if (loading) {
     return (
@@ -72,7 +75,7 @@ const Dashboard = (props) => {
 
   // }
 
-  if(data){
+  if (data) {
     const classStudents = data.getClassInfo.students;
     let numPendingApproval = 0;
     let pendingApprovals = [];
@@ -92,12 +95,12 @@ const Dashboard = (props) => {
         }
       }
     }
-  
+
     let remainingPrizes = 0;
     for (const prize of data.getClassInfo.prizes) {
       remainingPrizes += prize.quantity;
     }
-  
+
     return (
       <>
         <div className="panel dashboard-groups">
@@ -165,7 +168,7 @@ const Dashboard = (props) => {
     <div>
       <h2>...loading...</h2>
     </div>
-  )
+  );
 };
 
 export default Dashboard;
