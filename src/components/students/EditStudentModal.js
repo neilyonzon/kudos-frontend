@@ -102,8 +102,8 @@ const EditStudentModal = props => {
     const [formIsValid, setFormIsValid] = useState(false);
 
     const EDIT_STUDENT = gql`
-        mutation postEditStudent($firstName: String!, $lastName: String!, $username: String!, $password: String!){
-            editStudent(studentInput: {firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
+        mutation postEditStudent($id: Int!, $firstName: String!, $lastName: String!, $username: String!, $password: String!){
+            editStudent(studentInput: {id: $id, firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
                 id
             }
         }
@@ -112,6 +112,9 @@ const EditStudentModal = props => {
     const [editStudent] = useMutation(EDIT_STUDENT, {
         onCompleted(){
             props.refreshData()
+        },
+        onError(){
+            console.log('error editing student')
         }
     })
 
@@ -135,12 +138,13 @@ const EditStudentModal = props => {
         setFormIsValid(formIsValid);
     };
 
-    const submitEditStudentHandler = (event) => {
+    const submitEditStudentHandler = async (event) => {
         event.preventDefault()
         editStudent({
             variables: {
-                firstName: form.firstname.value,
-                lastName: form.lastname.value,
+                id: props.id,
+                firstName: form.firstName.value,
+                lastName: form.lastName.value,
                 username: form.username.value,
                 password: form.password.value
             }
@@ -181,12 +185,11 @@ const EditStudentModal = props => {
                         changed={(event) => inputChangeHandler(event, formInput.id)}
                     />
                 ))}
+
+                <Button btnColor="green" disabled={!formIsValid}>
+                    Update
+                </Button>
             </form>
-
-
-            <Button btnColor="green" disabled={!formIsValid}>
-            Update
-            </Button>
 
         </Modal>
     )

@@ -33,6 +33,7 @@ const StudentCard = (props) => {
         editStudent={openEditStudent}
         onCloseEditStudent={handleEditStudentModal}
         refreshData={props.refreshData}
+        id={props.studentData.id}
         firstName={props.studentData.firstName}
         lastName={props.studentData.lastName}
         username={props.studentData.username}
