@@ -104,7 +104,7 @@ const Login = (props) => {
       if (loginTeacher) {
         console.log(loginTeacher.accessToken);
         setAcsToken(loginTeacher.accessToken);
-        return navigate("/dashboard");
+        return navigate("/home");
       }
     },
     onError() {

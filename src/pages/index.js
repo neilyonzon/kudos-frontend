@@ -15,7 +15,7 @@ const IndexPage = () => {
       </Helmet>
       <Router>
         <Welcome path="/" />
-        <Home path="/dashboard" />
+        <Home path="/home" />
       </Router>
     </Layout>
   );
