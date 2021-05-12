@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { gql, useMutation } from '@apollo/client';
+
 import Input from '../forms/Input';
 import Button from '../elements/Button';
 
@@ -45,7 +47,7 @@ const EditStudentModal = props => {
             inputType: "input",
             labelConfig: {
               display: false,
-              label: "First Name",
+              label: "FirstName",
             },
             config: {
               type: "text",
@@ -63,7 +65,7 @@ const EditStudentModal = props => {
             inputType: "input",
             labelConfig: {
               display: false,
-              label: "Last Name",
+              label: "LastName",
             },
             config: {
               type: "text",
@@ -99,6 +101,23 @@ const EditStudentModal = props => {
 
     const [formIsValid, setFormIsValid] = useState(false);
 
+    const EDIT_STUDENT = gql`
+        mutation postEditStudent($id: Int!, $firstName: String!, $lastName: String!, $username: String!, $password: String!){
+            editStudent(studentInput: {id: $id, firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
+                id
+            }
+        }
+    `
+
+    const [editStudent] = useMutation(EDIT_STUDENT, {
+        onCompleted(){
+            props.refreshData()
+        },
+        onError(){
+            console.log('error editing student')
+        }
+    })
+
     const inputChangeHandler = (event, inputIdentifier) => {
         const updatedForm = { ...form };
         const updatedFormInput = { ...updatedForm[inputIdentifier] };
@@ -119,6 +138,20 @@ const EditStudentModal = props => {
         setFormIsValid(formIsValid);
     };
 
+    const submitEditStudentHandler = async (event) => {
+        event.preventDefault()
+        editStudent({
+            variables: {
+                id: props.id,
+                firstName: form.firstName.value,
+                lastName: form.lastName.value,
+                username: form.username.value,
+                password: form.password.value
+            }
+        })
+        props.onCloseEditStudent()
+    }
+
     const formInputArray = [];
     for (let key in form) {
         formInputArray.push({
@@ -134,25 +167,29 @@ const EditStudentModal = props => {
             style={customStyles}
         >
             <p>{props.firstName + " " + props.lastName}</p>
+            <form 
+                className="form"
+                onSubmit={submitEditStudentHandler}
+            >
+                {formInputArray.map((formInput) => (
+                    <Input
+                        key={formInput.id}
+                        inputType={formInput.config.inputType}
+                        inputConfig={formInput.config.config}
+                        value={formInput.config.value}
+                        labelConfig={formInput.config.labelConfig}
+                        helper={formInput.config.helper}
+                        isValid={!formInput.config.valid}
+                        shouldValidate={formInput.config.validation}
+                        touched={formInput.config.touched}
+                        changed={(event) => inputChangeHandler(event, formInput.id)}
+                    />
+                ))}
 
-            {formInputArray.map((formInput) => (
-                <Input
-                    key={formInput.id}
-                    inputType={formInput.config.inputType}
-                    inputConfig={formInput.config.config}
-                    value={formInput.config.value}
-                    labelConfig={formInput.config.labelConfig}
-                    helper={formInput.config.helper}
-                    isValid={!formInput.config.valid}
-                    shouldValidate={formInput.config.validation}
-                    touched={formInput.config.touched}
-                    changed={(event) => inputChangeHandler(event, formInput.id)}
-                />
-            ))}
-
-            <Button btnColor="green" disabled={!formIsValid}>
-            Update
-            </Button>
+                <Button btnColor="green" disabled={!formIsValid}>
+                    Update
+                </Button>
+            </form>
 
         </Modal>
     )
