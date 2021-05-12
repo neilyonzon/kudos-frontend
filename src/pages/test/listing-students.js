@@ -8,8 +8,8 @@ import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
-import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVerticalSharp";
+import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 
 class Dashboard extends Component {
   state = {};
@@ -39,7 +39,7 @@ class Dashboard extends Component {
               </li>
             </ul>
           </nav>
-          <div className="control-panel dashboard">
+          <div className="control-panel">
             <div className="utility-bar">
               <div className="class-chooser select">
                 <select>
@@ -50,14 +50,15 @@ class Dashboard extends Component {
               </div>
               <AiOutlineLock className="treasure-lock" />
             </div>
-            <div className="panel dashboard-groups">
+            <div>
               <h4 className="panel__title">Class 203</h4>
+
               <div className="list">
                 <div className="list__top">
                   <div className="list__header">
                     <div className="list__col-img list__col" />
                     <div className="list__col list__col--lg">
-                      Name <span class="icon list__header-icon"></span>
+                      Name <span className="icon list__header-icon"></span>
                     </div>
                     <div className="list__col">
                       Kudos <span className="icon list__header-icon"></span>
@@ -65,10 +66,17 @@ class Dashboard extends Component {
                   </div>
                   <div className="list__action-btns">
                     <AiOutlineSearch className="icon-search" />
+                    <FaDollarSign className="icon-pts" />
+                    <IoEllipsisVerticalSharp />
                   </div>
                 </div>
                 <div className="list__items-container">
                   <div className="list__item">
+                    <input
+                      type="checkbox"
+                      className="list__checkbox"
+                      id="student"
+                    ></input>
                     <div className="list__details">
                       <img
                         className="list__img list__col"
@@ -90,6 +98,7 @@ class Dashboard extends Component {
                   </div>
 
                   <div className="list__item">
+                    <input type="checkbox" className="list__checkbox"></input>
                     <div className="list__details">
                       <img
                         className="list__img list__col"
@@ -110,27 +119,6 @@ class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="panel dashboard-panel-treasure">
-              <h4 className="panel__title">Treasure Box</h4>
-              <div className="panel__content">
-                <GiOpenTreasureChest className="icon-treasure" />
-                <div className="dashboard-panel-treasure__links">
-                  <p>
-                    <a href="#">29 Remaining</a>
-                  </p>
-                  <p>
-                    <a href="#">23 Pending Approvals</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="panel dashboard-lorem">
-              <h4 className="panel__title">Lorem Ipsum</h4>
-              <div className="panel__content">
-                <p>29 Remaining</p>
-                <p>23 Pending Approvals</p>
               </div>
             </div>
           </div>

@@ -8,8 +8,8 @@ import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
-import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVerticalSharp";
+import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 
 class Dashboard extends Component {
   state = {};
@@ -39,7 +39,7 @@ class Dashboard extends Component {
               </li>
             </ul>
           </nav>
-          <div className="control-panel dashboard">
+          <div className="control-panel">
             <div className="utility-bar">
               <div className="class-chooser select">
                 <select>
@@ -50,7 +50,7 @@ class Dashboard extends Component {
               </div>
               <AiOutlineLock className="treasure-lock" />
             </div>
-            <div className="panel dashboard-groups">
+            <div>
               <h4 className="panel__title">Class 203</h4>
               <div className="list">
                 <div className="list__top">
@@ -60,29 +60,32 @@ class Dashboard extends Component {
                       Name <span class="icon list__header-icon"></span>
                     </div>
                     <div className="list__col">
-                      Kudos <span className="icon list__header-icon"></span>
+                      Cost <span className="icon list__header-icon"></span>
+                    </div>
+
+                    <div className="list__col">
+                      Category <span className="icon list__header-icon"></span>
                     </div>
                   </div>
                   <div className="list__action-btns">
                     <AiOutlineSearch className="icon-search" />
+                    <IoEllipsisVerticalSharp />
                   </div>
                 </div>
                 <div className="list__items-container">
                   <div className="list__item">
                     <div className="list__details">
                       <img
-                        className="list__img list__col"
+                        className="list__img list__img--prize list__col"
                         src="https://placekitten.com/200/300"
                       ></img>
                       <span className="list__col list__col--lg">
-                        Jennifer Roxas Lee
+                        Teen Titans Book
                       </span>
                       <span className="list__col">209 pts</span>
+                      <span className="list__col">Arts &amp; Crafts</span>
                     </div>
                     <div className="list__col-btns">
-                      <button className="list__btn list__btn--pts">
-                        <FaDollarSign className="icon-pts" />
-                      </button>
                       <button className="list__btn list__btn--edit">
                         <FaEdit className="icon-edit" />
                       </button>
@@ -92,45 +95,22 @@ class Dashboard extends Component {
                   <div className="list__item">
                     <div className="list__details">
                       <img
-                        className="list__img list__col"
+                        className="list__img list__img--prize list__col"
                         src="https://placekitten.com/200/300"
                       ></img>
                       <span className="list__col list__col--lg">
-                        Matthew John
+                        Pokemon Plush
                       </span>
                       <span className="list__col">209 pts</span>
+                      <span className="list__col">Toys</span>
                     </div>
                     <div className="list__col-btns">
-                      <button className="list__btn list__btn--pts">
-                        <FaDollarSign className="icon-pts" />
-                      </button>
                       <button className="list__btn list__btn--edit">
                         <FaEdit className="icon-edit" />
                       </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="panel dashboard-panel-treasure">
-              <h4 className="panel__title">Treasure Box</h4>
-              <div className="panel__content">
-                <GiOpenTreasureChest className="icon-treasure" />
-                <div className="dashboard-panel-treasure__links">
-                  <p>
-                    <a href="#">29 Remaining</a>
-                  </p>
-                  <p>
-                    <a href="#">23 Pending Approvals</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="panel dashboard-lorem">
-              <h4 className="panel__title">Lorem Ipsum</h4>
-              <div className="panel__content">
-                <p>29 Remaining</p>
-                <p>23 Pending Approvals</p>
               </div>
             </div>
           </div>
