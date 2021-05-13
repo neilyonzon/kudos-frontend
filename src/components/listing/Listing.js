@@ -1,7 +1,5 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-
-import StudentCard from "./students/StudentCard";
 import ListingCard from "./ListingCard";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
