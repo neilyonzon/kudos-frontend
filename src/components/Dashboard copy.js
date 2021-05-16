@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
 import StudentCard from "./students/StudentCard";
@@ -90,9 +90,6 @@ const Dashboard = (props) => {
 
   if (data) {
     const classStudents = data.getClassInfo.students;
-    // const updatedListingData = { ...listingData };
-    // updatedListingData.data = classStudents;
-    // setClassData(updatedListingData);
     let numPendingApproval = 0;
     let pendingApprovals = [];
     for (const student of classStudents) {
@@ -146,7 +143,7 @@ const Dashboard = (props) => {
               })}
             </div>
           </div> */}
-          <Listing rows={classStudents} config={listingData} />
+          <Listing />
         </div>
         <div className="panel dashboard-panel-treasure">
           <h4 className="panel__title">Treasure Box</h4>
