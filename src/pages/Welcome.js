@@ -2,7 +2,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import Content from "../components/welcome/Content";
 import ToyBoyImg from "../../src/images/toy-box.png";
-import { isLoggedIn } from "../utils/auth";
+import { retrieveAcsToken } from "../utils/auth";
 import { navigate } from "gatsby";
 
 class Welcome extends React.Component {
@@ -21,7 +21,8 @@ class Welcome extends React.Component {
   };
 
   async componentDidMount() {
-    const userLoggedIn = await isLoggedIn();
+    const acsToken = await retrieveAcsToken()
+    const userLoggedIn = !!acsToken
     if (userLoggedIn) {
       return navigate("/home");
     }

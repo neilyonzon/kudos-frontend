@@ -2,15 +2,15 @@ import React from 'react';
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import { getAcsToken } from './src/utils/auth';
+import { retrieveAcsToken } from './src/utils/auth';
 
 const httpLink = createHttpLink({
     uri: 'https://kudos-backend.herokuapp.com/graphql',
     credentials: 'include'
 })
 
-const authLink = setContext((_, { headers }) => {
-    const accessToken = getAcsToken()
+const authLink = setContext(async (_, { headers }) => {
+    const accessToken = await retrieveAcsToken()
     return {
         headers: {
             ...headers,

@@ -9,21 +9,19 @@ export const getAcsToken = () =>{
   return acsToken;
 };
 
-
-const isBrowser = () => typeof window !== "undefined";
-
-export const isLoggedIn = async () => {
+export const retrieveAcsToken = async () => {
 
   // access token might not exist in memory if user switched tabs, refreshed page, has never logged in, or access token is expired
   // try to get new access token with refresh token cookie but if refresh token is not valid, setAcsToken will set access token to ""
   // and !!getAcsToken() will return false, else refresh token valid and !!getAcsToken() will return true
+
   const acsToken = getAcsToken();
   let newAcsToken;
   if(!acsToken){
     newAcsToken = await refreshToken()
     setAcsToken(newAcsToken)
   } else {
-    console.log(acsToken)
+    // console.log(acsToken)
     const { exp } = jwt_decode(acsToken)
     if(Date.now() >= exp * 1000){
       newAcsToken = await refreshToken()
@@ -31,7 +29,7 @@ export const isLoggedIn = async () => {
     }
   }
 
-  return !!getAcsToken();
+  return getAcsToken();
 };
 
 export const logout = (callback) => {
