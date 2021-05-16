@@ -22,7 +22,7 @@ const customStyles = {
   // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
   //Modal.setAppElement('#yourAppElement')
 
-const EditStudentModal = props => {
+const StudentModal = props => {
 
     const [form, setForm] = useState({
         username: {
@@ -195,4 +195,4 @@ const EditStudentModal = props => {
     )
 }
 
-export default EditStudentModal;
+export default StudentModal;
