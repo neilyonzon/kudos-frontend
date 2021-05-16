@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { navigate } from "gatsby";
-import { isLoggedIn, logout, getAcsToken } from "../utils/auth";
+import { retrieveAcsToken, logout } from "../utils/auth";
 
 import ControlNav from "../components/home/ControlNav";
 import ClassSelector from "../components/home/ClassSelector";
@@ -21,11 +21,11 @@ const Home = (props) => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const userLoggedIn = await isLoggedIn();
-      if (!userLoggedIn) {
-        return navigate("/");
+      const acsToken = await retrieveAcsToken();
+      if(!!acsToken){
+        setShow(true)
       } else {
-        setShow(true);
+        return navigate("/")
       }
     };
 
@@ -46,7 +46,7 @@ const Home = (props) => {
     }
   `;
 
-  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
+  const [loadTeacherInfo, { called, loading, error }] = useLazyQuery(
     GET_TEACHER_INFO,
     {
       onCompleted({ teacher }) {
