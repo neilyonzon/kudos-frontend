@@ -182,8 +182,9 @@
     visibility: visible;
     z-index: 999;
     color: white;
+    visibility: hidden;
 
-    &--visible {
+    &--active {
       visibility: visible;
     }
 

@@ -4,6 +4,17 @@ import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 import { BiMinus } from "@react-icons/all-files/bi/BiMinus";
 
 const OverlaySelect = (props) => {
+  const [overlayClass, setOverlayState] = useState({
+    class: "",
+  });
+
+  const toggleOverlaySelect = () => {
+    console.log("hi");
+    overlayClass.class === ""
+      ? setOverlayState({ class: "list__overlay-select--active" })
+      : setOverlayState({ class: "" });
+  };
+
   let selectInput = "";
   props.type === "students"
     ? (selectInput = (
@@ -32,11 +43,11 @@ const OverlaySelect = (props) => {
       ));
 
   return (
-    <div class="list__overlay-select-container">
-      <button className="list__btn">
+    <div className="list__overlay-select-container">
+      <button className="list__btn" onClick={toggleOverlaySelect}>
         <IoEllipsisVerticalSharp />
       </button>
-      <div class="list__overlay-select">
+      <div class={"list__overlay-select " + overlayClass.class}>
         <ul>{selectInput}</ul>
       </div>
     </div>
