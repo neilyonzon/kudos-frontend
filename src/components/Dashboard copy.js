@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
 import StudentCard from "./students/StudentCard";
@@ -12,7 +12,7 @@ import Listing from "../components/listing/Listing";
 
 const Dashboard = (props) => {
   const [listingData, setClassData] = useState({
-    type: "studentsTeacherDash",
+    type: "dashboardTeacher",
     columns: [
       {
         name: "Name",
@@ -20,6 +20,7 @@ const Dashboard = (props) => {
       },
       { name: "Kudos", dataQuery: "kudosBalance" },
     ],
+    data: null,
   });
 
   const GET_CLASS_DASHBOARD = gql`
@@ -89,9 +90,6 @@ const Dashboard = (props) => {
 
   if (data) {
     const classStudents = data.getClassInfo.students;
-    // const updatedListingData = { ...listingData };
-    // updatedListingData.data = classStudents;
-    // setClassData(updatedListingData);
     let numPendingApproval = 0;
     let pendingApprovals = [];
     for (const student of classStudents) {
@@ -139,17 +137,13 @@ const Dashboard = (props) => {
                   <StudentCard
                     key={student.id}
                     studentData={student}
-                 
+                    refreshData={getClassData}
                   />
                 );
               })}
             </div>
           </div> */}
-          <Listing
-            rows={classStudents}
-            config={listingData}
-            refreshData={getClassData}
-          />
+          <Listing />
         </div>
         <div className="panel dashboard-panel-treasure">
           <h4 className="panel__title">Treasure Box</h4>
