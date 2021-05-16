@@ -52,8 +52,8 @@ const ListingCard = (props) => {
         </button>
       </div>
       <StudentModal
-        editStudent={openEditStudent}
-        onCloseEditStudent={handleEditStudentModal}
+        isOpen={openEditStudent}
+        onClose={handleEditStudentModal}
         refreshData={props.refreshData}
         id={props.itemData.id}
         firstName={props.itemData.firstName}
