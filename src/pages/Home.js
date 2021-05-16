@@ -10,6 +10,7 @@ import Dashboard from "../components/Dashboard";
 import Students from "../components/Students";
 import TreasureBox from "../components/TreasureBox";
 import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
+import { AiOutlineUnlock } from "@react-icons/all-files/ai/AiOutlineUnlock";
 import dashboardStyles from "../components/dashboard.module.css";
 
 const Home = (props) => {

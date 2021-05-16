@@ -7,7 +7,11 @@ const ListingCard = (props) => {
   const [openEditStudent, setOpenEditStudent] = useState(false);
 
   const handleEditStudentModal = () => {
-    setOpenEditStudent(!openEditStudent);
+    if (props.type === "studentsTeacherDash" || props.type === "students") {
+      setOpenEditStudent(!openEditStudent);
+    } else {
+      alert("Not complete for this type");
+    }
   };
 
   const getItemColumns = (columnsData) => {
@@ -20,7 +24,11 @@ const ListingCard = (props) => {
         query = props.itemData[data];
       }
 
-      return <span className="list__col">{query}</span>;
+      return (
+        <span className="list__col" key={column.dataQuery}>
+          {query}
+        </span>
+      );
     });
     return columns;
   };

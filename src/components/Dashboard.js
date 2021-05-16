@@ -12,7 +12,7 @@ import Listing from "../components/listing/Listing";
 
 const Dashboard = (props) => {
   const [listingData, setClassData] = useState({
-    type: "dashboardTeacher",
+    type: "studentsTeacherDash",
     columns: [
       {
         name: "Name",
@@ -20,7 +20,6 @@ const Dashboard = (props) => {
       },
       { name: "Kudos", dataQuery: "kudosBalance" },
     ],
-    data: null,
   });
 
   const GET_CLASS_DASHBOARD = gql`
@@ -140,13 +139,17 @@ const Dashboard = (props) => {
                   <StudentCard
                     key={student.id}
                     studentData={student}
-                    refreshData={getClassData}
+                 
                   />
                 );
               })}
             </div>
           </div> */}
-          <Listing rows={classStudents} config={listingData} />
+          <Listing
+            rows={classStudents}
+            config={listingData}
+            refreshData={getClassData}
+          />
         </div>
         <div className="panel dashboard-panel-treasure">
           <h4 className="panel__title">Treasure Box</h4>

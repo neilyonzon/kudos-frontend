@@ -13,11 +13,19 @@ const Listing = (props) => {
   const listingHeader = (columnsData) => {
     return columnsData.map((column) => {
       return (
-        <div className="list__col">
+        <div className="list__col" key={column.name}>
           {column.name} <span className="icon list__header-icon"></span>
         </div>
       );
     });
+  };
+
+  const getUtilitySearch = () => {
+    return <AiOutlineSearch className="icon-search" />;
+  };
+
+  const getUtilityPoints = () => {
+    return <FaDollarSign className="icon-pts" />;
   };
 
   return (
@@ -31,8 +39,14 @@ const Listing = (props) => {
           <div className="list__action-btns">
             <AiOutlineSearch className="icon-search" />
 
-            {/* display below if type is not dashboard */}
+            {props.config.type == "students" ? (
+              <FaDollarSign className="icon-pts" />
+            ) : null}
 
+            {props.config.type == "students" ||
+            props.config.type == "prizes" ? (
+              <IoEllipsisVerticalSharp />
+            ) : null}
             {/* <FaDollarSign className="icon-pts" />
             <IoEllipsisVerticalSharp /> */}
           </div>
@@ -44,7 +58,8 @@ const Listing = (props) => {
                 key={item.id}
                 itemData={item}
                 columns={props.config.columns}
-                // refreshData={getClassData}
+                refreshData={props.refreshData}
+                type={props.config.type}
               />
             );
           })}
