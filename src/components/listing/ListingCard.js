@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
-import EditStudentCardModal from "../students/EditStudentModal";
+import StudentModal from "../students/StudentModal";
 
 const ListingCard = (props) => {
   const [openEditStudent, setOpenEditStudent] = useState(false);
@@ -51,9 +51,9 @@ const ListingCard = (props) => {
           <FaEdit className="icon-edit" onClick={handleEditStudentModal} />
         </button>
       </div>
-      <EditStudentCardModal
-        editStudent={openEditStudent}
-        onCloseEditStudent={handleEditStudentModal}
+      <StudentModal
+        isOpen={openEditStudent}
+        onClose={handleEditStudentModal}
         refreshData={props.refreshData}
         id={props.itemData.id}
         firstName={props.itemData.firstName}

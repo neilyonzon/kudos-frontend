@@ -22,7 +22,7 @@ const customStyles = {
   // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
   //Modal.setAppElement('#yourAppElement')
 
-const EditStudentModal = props => {
+const StudentModal = props => {
 
     const [form, setForm] = useState({
         username: {
@@ -101,15 +101,26 @@ const EditStudentModal = props => {
 
     const [formIsValid, setFormIsValid] = useState(false);
 
-    const EDIT_STUDENT = gql`
-        mutation postEditStudent($id: Int!, $firstName: String!, $lastName: String!, $username: String!, $password: String!){
-            editStudent(studentInput: {id: $id, firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
-                id
-            }
+    let QUERY
+    if(props.add){
+      QUERY = gql`
+        mutation postCreateStudent($firstName: String!, $lastName: String!, $username: String!, $password: String!){
+          createStudent(studentInput: {firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
+            id
+          }
         }
-    `
+      `
+    } else {
+      QUERY = gql`
+      mutation postEditStudent($id: Int!, $firstName: String!, $lastName: String!, $username: String!, $password: String!){
+          editStudent(studentInput: {id: $id, firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
+              id
+          }
+        }
+      `
+    }
 
-    const [editStudent] = useMutation(EDIT_STUDENT, {
+    const [student] = useMutation(QUERY, {
         onCompleted(){
             props.refreshData()
         },
@@ -138,18 +149,18 @@ const EditStudentModal = props => {
         setFormIsValid(formIsValid);
     };
 
-    const submitEditStudentHandler = async (event) => {
+    const submitStudentHandler = async (event) => {
         event.preventDefault()
-        editStudent({
+        student({
             variables: {
-                id: props.id,
+                id: props.id ? props.id : '',
                 firstName: form.firstName.value,
                 lastName: form.lastName.value,
                 username: form.username.value,
                 password: form.password.value
             }
         })
-        props.onCloseEditStudent()
+        props.onClose()
     }
 
     const formInputArray = [];
@@ -162,14 +173,14 @@ const EditStudentModal = props => {
 
     return(
         <Modal
-            isOpen={props.editStudent}
-            onRequestClose={props.onCloseEditStudent}
+            isOpen={props.isOpen}
+            onRequestClose={props.onClose}
             style={customStyles}
         >
             <p>{props.firstName + " " + props.lastName}</p>
             <form 
                 className="form"
-                onSubmit={submitEditStudentHandler}
+                onSubmit={submitStudentHandler}
             >
                 {formInputArray.map((formInput) => (
                     <Input
@@ -195,4 +206,4 @@ const EditStudentModal = props => {
     )
 }
 
-export default EditStudentModal;
+export default StudentModal;
