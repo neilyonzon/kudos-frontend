@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
-import StudentCard from "./students/StudentCard";
 import TBSummary from "./dashboard/TBSummary";
 import Approval from "./treasureBox/Approval";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
