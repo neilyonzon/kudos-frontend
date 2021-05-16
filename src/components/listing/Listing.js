@@ -2,12 +2,12 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 
 import ListingCard from "./ListingCard";
+import OverlaySelect from "./OverlaySelect";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
-import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
+import { BsFillGridFill } from "@react-icons/all-files/bs/BsFillGridFill";
 import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVerticalSharp";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
-import StudentCard from "../Students/StudentCard";
 
 const Listing = (props) => {
   const listingHeader = (columnsData) => {
@@ -18,14 +18,6 @@ const Listing = (props) => {
         </div>
       );
     });
-  };
-
-  const getUtilitySearch = () => {
-    return <AiOutlineSearch className="icon-search" />;
-  };
-
-  const getUtilityPoints = () => {
-    return <FaDollarSign className="icon-pts" />;
   };
 
   return (
@@ -45,10 +37,10 @@ const Listing = (props) => {
 
             {props.config.type == "students" ||
             props.config.type == "prizes" ? (
-              <IoEllipsisVerticalSharp />
+              <OverlaySelect type={props.config.type} />
             ) : null}
-            {/* <FaDollarSign className="icon-pts" />
-            <IoEllipsisVerticalSharp /> */}
+
+            {props.config.type == "treasureBox" ? <BsFillGridFill /> : null}
           </div>
         </div>
         <div className="list__items-container">

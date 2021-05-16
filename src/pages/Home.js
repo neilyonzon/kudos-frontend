@@ -22,10 +22,10 @@ const Home = (props) => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       const acsToken = await retrieveAcsToken();
-      if(!!acsToken){
-        setShow(true)
+      if (!!acsToken) {
+        setShow(true);
       } else {
-        return navigate("/")
+        return navigate("/");
       }
     };
 
@@ -107,7 +107,7 @@ const Home = (props) => {
         );
         break;
       case selectedTab === "Students":
-        tabComponent = <Students />;
+        tabComponent = <Students selectedClassId={selectedClassId} />;
         tabClass = "students";
         break;
       case selectedTab === "TreasureBox":
