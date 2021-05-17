@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
-import TBSummary from "./dashboard/TBSummary";
 import Approval from "./treasureBox/Approval";
-import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
-import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
-import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import Listing from "../components/listing/Listing";
 
 const Dashboard = (props) => {
-  const [listingData, setClassData] = useState({
-    type: "studentsTeacherDash",
-    columns: [
-      {
-        name: "Name",
-        dataQuery: "name",
-      },
-      { name: "Kudos", dataQuery: "kudosBalance" },
-    ],
-  });
+
+  useEffect(() => {
+    getClassData();
+  }, []);
 
   const GET_CLASS_DASHBOARD = gql`
     query getClassDashboard($classId: Int!) {
@@ -53,10 +43,6 @@ const Dashboard = (props) => {
     }
   `;
 
-  useEffect(() => {
-    getClassData();
-  }, []);
-
   const [getClassData, { loading, error, data }] = useLazyQuery(
     GET_CLASS_DASHBOARD,
     {
@@ -64,6 +50,17 @@ const Dashboard = (props) => {
       fetchPolicy: "network-only",
     }
   );
+
+  const listingData = {
+    type: "studentsTeacherDash",
+    columns: [
+      {
+        name: "Name",
+        dataQuery: "name",
+      },
+      { name: "Kudos", dataQuery: "kudosBalance" },
+    ],
+  }
 
   if (loading) {
     return (
@@ -153,7 +150,7 @@ const Dashboard = (props) => {
         <div className="panel dashboard-panel-treasure">
           <h4 className="panel__title">Treasure Box</h4>
           <div className="panel__content">
-            <GiOpenTreasureChest className="icon-treasure" />
+            <GiOpenTreasureChest className="icon-treasure" /> 
             <div className="dashboard-panel-treasure__links">
               <p>
                 <a href="#">{numPendingApproval} Pending Approvals</a>
