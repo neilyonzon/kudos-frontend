@@ -52,9 +52,11 @@ const Home = (props) => {
     {
       fetchPolicy: "network-only",
       onCompleted({ teacher }) {
-        if (teacher && teacher.classes.length > 0 && !selectedClassId) {
-          setClasses(teacher.classes);
-          setSelectedClassId(teacher.classes[0].id);
+        if (teacher && teacher.classes.length > 0) {
+          setClasses(teacher.classes)
+          if(!selectedClassId){
+            setSelectedClassId(teacher.classes[0].id)
+          }
         }
       },
     }
