@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
 import { retrieveAcsToken, logout } from "../utils/auth";
 
@@ -41,14 +41,16 @@ const Home = (props) => {
         classes {
           id
           className
+          treasureBoxOpen
         }
       }
     }
   `;
 
-  const [loadTeacherInfo, { called, loading, error }] = useLazyQuery(
+  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
     GET_TEACHER_INFO,
     {
+      fetchPolicy: "network-only",
       onCompleted({ teacher }) {
         if (teacher && teacher.classes.length > 0) {
           setClasses(teacher.classes);
@@ -69,6 +71,29 @@ const Home = (props) => {
     });
     setSelectedClassId(selectedClass.id);
   };
+
+  const TOGGLE_TREASURE_BOX = gql`
+    mutation toggleBox($classId: Int!) {
+      toggleTreasureBox(classId: $classId) 
+    }
+  `
+
+  const [toggleTreasureBox] = useMutation(TOGGLE_TREASURE_BOX, {
+    onCompleted(){
+      loadTeacherInfo()
+    },
+    onError(){
+      console.log("error toggling treasure box!")
+    }
+  })
+
+  const handleToggleTB = async (classId) =>{
+    toggleTreasureBox({
+      variables: {
+        classId: classId
+      }
+    })
+  }
 
   if (!called && show) {
     loadTeacherInfo();
@@ -119,6 +144,18 @@ const Home = (props) => {
         tabClass = "dashboard";
     }
 
+    let treasureBoxIcon
+    if(selectedClassId){
+      const selectedClass = classes.find((cls) => {
+        return cls.id === selectedClassId;
+      });
+      if(selectedClass.treasureBoxOpen){
+        treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+      } else {
+        treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+      }
+    }
+
     return (
       <div className="main">
         <div className="message-banner">
@@ -146,7 +183,7 @@ const Home = (props) => {
               onSelectClass={onSelectClassHandler}
               classes={classes}
             />
-            <AiOutlineLock className="treasure-lock" />
+            {treasureBoxIcon}
           </div>
           {tabComponent}
         </div>
