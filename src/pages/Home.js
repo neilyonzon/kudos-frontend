@@ -52,7 +52,7 @@ const Home = (props) => {
     {
       fetchPolicy: "network-only",
       onCompleted({ teacher }) {
-        if (teacher && teacher.classes.length > 0) {
+        if (teacher && teacher.classes.length > 0 && !selectedClassId) {
           setClasses(teacher.classes);
           setSelectedClassId(teacher.classes[0].id);
         }
@@ -119,6 +119,7 @@ const Home = (props) => {
   if (called && !loading) {
     let tabComponent;
     let tabClass;
+    console.log(selectedClassId)
     switch (true) {
       case selectedTab === "Settings":
         tabComponent = <TreasureBox />;
@@ -145,6 +146,8 @@ const Home = (props) => {
     }
 
     let treasureBoxIcon
+    let sortedClasses = [...classes]
+    console.log(classes)
     if(selectedClassId){
       const selectedClass = classes.find((cls) => {
         return cls.id === selectedClassId;
@@ -154,7 +157,14 @@ const Home = (props) => {
       } else {
         treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
       }
-    }
+
+      sortedClasses.forEach((cls, i) => {
+        if(cls.id === selectedClassId){
+          sortedClasses.splice(i, 1)
+          sortedClasses.unshift(cls)
+        }
+      })
+    }    
 
     return (
       <div className="main">
@@ -181,7 +191,7 @@ const Home = (props) => {
           <div className="utility-bar">
             <ClassSelector
               onSelectClass={onSelectClassHandler}
-              classes={classes}
+              classes={sortedClasses}
             />
             {treasureBoxIcon}
           </div>
