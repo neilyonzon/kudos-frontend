@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
 import { retrieveAcsToken, logout } from "../utils/auth";
 
@@ -41,18 +41,22 @@ const Home = (props) => {
         classes {
           id
           className
+          treasureBoxOpen
         }
       }
     }
   `;
 
-  const [loadTeacherInfo, { called, loading, error }] = useLazyQuery(
+  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
     GET_TEACHER_INFO,
     {
+      fetchPolicy: "network-only",
       onCompleted({ teacher }) {
         if (teacher && teacher.classes.length > 0) {
-          setClasses(teacher.classes);
-          setSelectedClassId(teacher.classes[0].id);
+          setClasses(teacher.classes)
+          if(!selectedClassId){
+            setSelectedClassId(teacher.classes[0].id)
+          }
         }
       },
     }
@@ -69,6 +73,29 @@ const Home = (props) => {
     });
     setSelectedClassId(selectedClass.id);
   };
+
+  const TOGGLE_TREASURE_BOX = gql`
+    mutation toggleBox($classId: Int!) {
+      toggleTreasureBox(classId: $classId) 
+    }
+  `
+
+  const [toggleTreasureBox] = useMutation(TOGGLE_TREASURE_BOX, {
+    onCompleted(){
+      loadTeacherInfo()
+    },
+    onError(){
+      console.log("error toggling treasure box!")
+    }
+  })
+
+  const handleToggleTB = async (classId) =>{
+    toggleTreasureBox({
+      variables: {
+        classId: classId
+      }
+    })
+  }
 
   if (!called && show) {
     loadTeacherInfo();
@@ -94,6 +121,7 @@ const Home = (props) => {
   if (called && !loading) {
     let tabComponent;
     let tabClass;
+    console.log(selectedClassId)
     switch (true) {
       case selectedTab === "Settings":
         tabComponent = <TreasureBox />;
@@ -118,6 +146,27 @@ const Home = (props) => {
         tabComponent = <Dashboard selectedClassId={selectedClassId} />;
         tabClass = "dashboard";
     }
+
+    let treasureBoxIcon
+    let sortedClasses = [...classes]
+    console.log(classes)
+    if(selectedClassId){
+      const selectedClass = classes.find((cls) => {
+        return cls.id === selectedClassId;
+      });
+      if(selectedClass.treasureBoxOpen){
+        treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+      } else {
+        treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+      }
+
+      sortedClasses.forEach((cls, i) => {
+        if(cls.id === selectedClassId){
+          sortedClasses.splice(i, 1)
+          sortedClasses.unshift(cls)
+        }
+      })
+    }    
 
     return (
       <div className="main">
@@ -144,9 +193,9 @@ const Home = (props) => {
           <div className="utility-bar">
             <ClassSelector
               onSelectClass={onSelectClassHandler}
-              classes={classes}
+              classes={sortedClasses}
             />
-            <AiOutlineLock className="treasure-lock" />
+            {treasureBoxIcon}
           </div>
           {tabComponent}
         </div>
