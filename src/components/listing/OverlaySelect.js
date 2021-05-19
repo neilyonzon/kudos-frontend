@@ -3,23 +3,30 @@ import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVe
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 import { BiMinus } from "@react-icons/all-files/bi/BiMinus";
 
+import StudentModal from '../students/StudentModal'
+
 const OverlaySelect = (props) => {
   const [overlayClass, setOverlayState] = useState({
     class: "",
   });
 
+  const [openAddStudent, setOpenAddStudent] = useState(false)
+
   const toggleOverlaySelect = () => {
-    console.log("hi");
     overlayClass.class === ""
       ? setOverlayState({ class: "list__overlay-select--active" })
       : setOverlayState({ class: "" });
   };
 
+  const handleAddStudentModal = () => {
+    setOpenAddStudent(!openAddStudent)
+  }
+
   let selectInput = "";
   props.type === "students"
     ? (selectInput = (
         <>
-          <li className="list__overlay-select-item">
+          <li className="list__overlay-select-item" onClick={handleAddStudentModal}>
             <a href="#">Add Students</a>
             <BiPlus />
           </li>
@@ -47,9 +54,16 @@ const OverlaySelect = (props) => {
       <button className="list__btn" onClick={toggleOverlaySelect}>
         <IoEllipsisVerticalSharp />
       </button>
-      <div class={"list__overlay-select " + overlayClass.class}>
+      <div className={"list__overlay-select " + overlayClass.class}>
         <ul>{selectInput}</ul>
       </div>
+      <StudentModal
+        addStudent={true}
+        isOpen={openAddStudent}
+        onClose={handleAddStudentModal}
+        refreshData={props.refreshData}
+        classId={props.classId}
+      />
     </div>
   );
 };

@@ -37,7 +37,7 @@ const Listing = (props) => {
 
             {props.config.type == "students" ||
             props.config.type == "prizes" ? (
-              <OverlaySelect type={props.config.type} />
+              <OverlaySelect type={props.config.type} refreshData={props.refreshData} classId={props.classId}/>
             ) : null}
 
             {props.config.type == "treasureBox" ? <BsFillGridFill /> : null}

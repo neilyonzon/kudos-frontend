@@ -85,13 +85,13 @@ const Students = (props) => {
 
     return (
       <>
-        <h4 className="panel__title">Your Groups</h4>
         <div className="panel">
           <h4 className="panel__title">{data.getClassInfo.className}</h4>
           <Listing
             rows={classStudents}
             config={listingData}
             refreshData={getClassData}
+            classId={props.selectedClassId}
           />
         </div>
       </>
