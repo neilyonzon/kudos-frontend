@@ -102,10 +102,10 @@ const StudentModal = props => {
     const [formIsValid, setFormIsValid] = useState(false);
 
     let QUERY
-    if(props.add){
+    if(props.addStudent){
       QUERY = gql`
-        mutation postCreateStudent($firstName: String!, $lastName: String!, $username: String!, $password: String!){
-          createStudent(studentInput: {firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
+        mutation postCreateStudent($firstName: String!, $lastName: String!, $username: String!, $password: String!, $classId: Int!){
+          createStudent(studentInput: {firstName: $firstName, lastName: $lastName, username: $username, password: $password, classId: $classId}){
             id
           }
         }
@@ -154,6 +154,7 @@ const StudentModal = props => {
         student({
             variables: {
                 id: props.id ? props.id : '',
+                classId: props.classId ? props.classId : '',
                 firstName: form.firstName.value,
                 lastName: form.lastName.value,
                 username: form.username.value,
@@ -177,7 +178,7 @@ const StudentModal = props => {
             onRequestClose={props.onClose}
             style={customStyles}
         >
-            <p>{props.firstName + " " + props.lastName}</p>
+            <p>{props.addStudent ? "Add a new student" : props.firstName + " " + props.lastName}</p>
             <form 
                 className="form"
                 onSubmit={submitStudentHandler}
@@ -198,7 +199,7 @@ const StudentModal = props => {
                 ))}
 
                 <Button btnColor="green" disabled={!formIsValid}>
-                    Update
+                  { props.addStudent ? 'Add' : 'Update' }
                 </Button>
             </form>
 
