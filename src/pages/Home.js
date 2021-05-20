@@ -121,7 +121,6 @@ const Home = (props) => {
   if (called && !loading) {
     let tabComponent;
     let tabClass;
-    console.log(selectedClassId)
     switch (true) {
       case selectedTab === "Settings":
         tabComponent = <TreasureBox />;
@@ -149,7 +148,6 @@ const Home = (props) => {
 
     let treasureBoxIcon
     let sortedClasses = [...classes]
-    console.log(classes)
     if(selectedClassId){
       const selectedClass = classes.find((cls) => {
         return cls.id === selectedClassId;
