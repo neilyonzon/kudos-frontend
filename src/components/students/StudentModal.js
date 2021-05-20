@@ -101,9 +101,9 @@ const StudentModal = props => {
 
     const [formIsValid, setFormIsValid] = useState(false);
 
-    let QUERY
+    let STUDENT
     if(props.addStudent){
-      QUERY = gql`
+      STUDENT = gql`
         mutation postCreateStudent($firstName: String!, $lastName: String!, $username: String!, $password: String!, $classId: Int!){
           createStudent(studentInput: {firstName: $firstName, lastName: $lastName, username: $username, password: $password, classId: $classId}){
             id
@@ -111,7 +111,7 @@ const StudentModal = props => {
         }
       `
     } else {
-      QUERY = gql`
+      STUDENT = gql`
       mutation postEditStudent($id: Int!, $firstName: String!, $lastName: String!, $username: String!, $password: String!){
           editStudent(studentInput: {id: $id, firstName: $firstName, lastName: $lastName, username: $username, password: $password}){
               id
@@ -120,13 +120,30 @@ const StudentModal = props => {
       `
     }
 
-    const [student] = useMutation(QUERY, {
+    const [student] = useMutation(STUDENT, {
         onCompleted(){
             props.refreshData()
         },
         onError(){
             console.log('error editing student')
         }
+    })
+
+    const DELETE = gql`
+      mutation deleteStudent($id: Int!){
+        deleteStudents(studentInput: {studentIds: [$id]}){
+          id
+        }
+      }
+    `
+
+    const [deleteStudent] = useMutation(DELETE, {
+      onCompleted(){
+        props.refreshData()
+      },
+      onError(){
+        console.log('unable to delete student!')
+      }
     })
 
     const inputChangeHandler = (event, inputIdentifier) => {
@@ -162,6 +179,16 @@ const StudentModal = props => {
             }
         })
         props.onClose()
+    }
+
+    const deleteStudentHandler = async (event) => {
+      event.preventDefault()
+      console.log('clicked!')
+      deleteStudent({
+        variables: {
+          id: props.id ? props.id : ''
+        }
+      })
     }
 
     const formInputArray = [];
@@ -202,6 +229,12 @@ const StudentModal = props => {
                   { props.addStudent ? 'Add' : 'Update' }
                 </Button>
             </form>
+
+            {!props.addStudent ? (
+              <Button btnColor="green" clicked={deleteStudentHandler}>
+                Delete Student
+              </Button>
+            ) : null}
 
         </Modal>
     )

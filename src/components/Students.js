@@ -19,7 +19,6 @@ const Students = (props) => {
     query getClassDashboard($classId: Int!) {
       getClassInfo(classId: $classId) {
         className
-        treasureBoxOpen
         students {
           id
           firstName
@@ -35,13 +34,6 @@ const Students = (props) => {
             prizeCost
             prizeImageUrl
           }
-        }
-        prizes {
-          id
-          name
-          kudosCost
-          quantity
-          category
         }
       }
     }
