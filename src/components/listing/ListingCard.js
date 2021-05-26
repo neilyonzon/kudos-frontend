@@ -20,7 +20,10 @@ const ListingCard = (props) => {
     const columns = columnsData.map((column) => {
       const data = column.dataQuery;
       let query = null;
-      if (data == "name") {
+      if (
+        (data == "name" && props.type === "studentsTeacherDash") ||
+        (data == "name" && props.type == "students")
+      ) {
         query = props.itemData.firstName + " " + props.itemData.lastName;
       } else {
         query = props.itemData[data];

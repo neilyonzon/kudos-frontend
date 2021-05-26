@@ -4,7 +4,7 @@ import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChe
 import Listing from "../components/listing/Listing";
 
 const Students = (props) => {
-  const [listingData, setClassData] = useState({
+  const listingData = {
     type: "students",
     columns: [
       {
@@ -13,7 +13,7 @@ const Students = (props) => {
       },
       { name: "Kudos", dataQuery: "kudosBalance" },
     ],
-  });
+  };
 
   const GET_CLASS_DASHBOARD = gql`
     query getClassDashboard($classId: Int!) {
