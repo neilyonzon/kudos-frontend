@@ -4,40 +4,32 @@ import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChe
 import Listing from "../components/listing/Listing";
 
 const TreasureBox = (props) => {
-  const [listingData, setClassData] = useState({
+  const listingData = {
     type: "prizes",
     columns: [
       {
         name: "Name",
         dataQuery: "name",
       },
-      { name: "Cost", dataQuery: "kudosBalance" },
-      { name: "Qty", dataQuery: "kudosBalance" },
-      { name: "Category", dataQuery: "kudosBalance" },
+      {
+        name: "Cost",
+        dataQuery: "kudosCost",
+      },
+      {
+        name: "Qty",
+        dataQuery: "quantity",
+      },
+      {
+        name: "Category",
+        dataQuery: "category",
+      },
     ],
-  });
+  };
 
   const GET_CLASS_DASHBOARD = gql`
     query getClassDashboard($classId: Int!) {
       getClassInfo(classId: $classId) {
         className
-        treasureBoxOpen
-        students {
-          id
-          firstName
-          lastName
-          username
-          imageUrl
-          kudosBalance
-          transactions {
-            id
-            approved
-            prizeId
-            prizeName
-            prizeCost
-            prizeImageUrl
-          }
-        }
         prizes {
           id
           name
@@ -50,10 +42,10 @@ const TreasureBox = (props) => {
   `;
 
   useEffect(() => {
-    getClassData();
+    getPrizesData();
   }, []);
 
-  const [getClassData, { loading, error, data }] = useLazyQuery(
+  const [getPrizesData, { loading, error, data }] = useLazyQuery(
     GET_CLASS_DASHBOARD,
     {
       variables: { classId: props.selectedClassId },
@@ -77,25 +69,23 @@ const TreasureBox = (props) => {
     );
   }
 
-  // if no students, prompt teacher to add students
-  // if(data && !data.getClassInfo.students){
-
-  // }
+  if (data && data.getClassInfo.prizes.length == 0) {
+    return <p>There are no prizes</p>;
+  }
 
   if (data) {
-    const classStudents = data.getClassInfo.students;
+    const classPrizes = data.getClassInfo.prizes;
 
     return (
       <>
-        <h4 className="panel__title">Your Prizes</h4>
         <div className="panel">
           <h4 className="panel__title">
             Prizes for {data.getClassInfo.className}
           </h4>
           <Listing
-            rows={classStudents}
+            rows={classPrizes}
             config={listingData}
-            refreshData={getClassData}
+            refreshData={getPrizesData}
           />
         </div>
       </>
