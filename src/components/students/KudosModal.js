@@ -56,14 +56,14 @@ const KudosModal = (props) => {
     const editKudosHandler = async (editType, event) => {
         event.preventDefault()
 
+        const editNumberInt = parseInt(editNumber)
+
         let adjustedKudosBalance
         if(editType === "add"){
-            adjustedKudosBalance = props.studentKudos + editNumber
+            adjustedKudosBalance = props.studentKudos + editNumberInt
         } else {
-            adjustedKudosBalance = props.studentKudos - editNumber
+            adjustedKudosBalance = props.studentKudos - editNumberInt
         }
-
-        adjustedKudosBalance = parseInt(adjustedKudosBalance)
 
         editBalance({
             variables: {
@@ -90,7 +90,7 @@ const KudosModal = (props) => {
                     type="number"
                     value={editNumber}
                     min="0" 
-                    onChange={(event) => setEditNumber(event.target.value)}
+                    onChange={(event) => setEditNumber(parseInt(event.target.value))}
                 />
                 <AiOutlinePlus onClick={() => editHandler("add")} />
             </div>
