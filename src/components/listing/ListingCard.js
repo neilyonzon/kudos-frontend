@@ -1,13 +1,25 @@
 import React, { useState } from "react";
+
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
-import StudentModal from "../students/StudentModal";
 import { FaExchangeAlt } from "@react-icons/all-files/fa/FaExchangeAlt";
 import { SiWish } from "@react-icons/all-files/si/SiWish";
 
+import KudosModal from '../students/KudosModal'
+import StudentModal from "../students/StudentModal";
+
 const ListingCard = (props) => {
+  const [openEditKudos, setOpenEditKudos] = useState(false)
   const [openEditStudent, setOpenEditStudent] = useState(false);
 
+  const handleEditKudosModal = () => {
+    if (props.type === "studentsTeacherDash" || props.type === "students") {
+      setOpenEditKudos(!openEditKudos);
+    } else {
+      alert("Not complete for this type");
+    }
+  }
+  
   const handleEditStudentModal = () => {
     if (props.type === "studentsTeacherDash" || props.type === "students") {
       setOpenEditStudent(!openEditStudent);
@@ -51,7 +63,7 @@ const ListingCard = (props) => {
       <div className="list__col-btns">
         {props.type == "students" || props.type == "studentsTeacherDash" ? (
           <button className="list__btn list__btn--pts">
-            <FaDollarSign className="icon-pts" />
+            <FaDollarSign className="icon-pts" onClick={handleEditKudosModal} />
           </button>
         ) : null}
 
@@ -72,6 +84,15 @@ const ListingCard = (props) => {
           </button>
         ) : null}
       </div>
+      <KudosModal 
+        isOpen={openEditKudos}
+        onClose={handleEditKudosModal}
+        refreshData={props.refreshData}
+        studentId={props.itemData.id}
+        firstName={props.itemData.firstName}
+        lastName={props.itemData.lastName}
+        studentKudos={props.itemData.kudosBalance}
+      />
       <StudentModal
         isOpen={openEditStudent}
         onClose={handleEditStudentModal}
