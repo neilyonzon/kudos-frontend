@@ -130,4 +130,22 @@
     left: 50%;
     transform: translateX(-50%);
   }
+
+  &__image {
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+    background: $color-gray-light;
+    align-self: center;
+    margin-bottom: 2rem;
+  }
+
+  &__image-btn {
+    display: block;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+  }
 }
