@@ -170,6 +170,9 @@ class Form extends Component {
 
     let formOuput = (
       <form onSubmit={this.submitHandler} className="form" id="example-form">
+        <div className="form__image">
+          <button className="form__image-btn">Upload/Edit</button>
+        </div>
         {formInputArray.map((formInput) => (
           <Input
             key={formInput.id}
