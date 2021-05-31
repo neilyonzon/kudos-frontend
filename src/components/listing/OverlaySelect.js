@@ -3,14 +3,17 @@ import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVe
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 import { BiMinus } from "@react-icons/all-files/bi/BiMinus";
 
-import StudentModal from '../students/StudentModal'
+import StudentModal from "../students/StudentModal";
+import PrizeModal from "../treasureBox/PrizeModal";
 
 const OverlaySelect = (props) => {
   const [overlayClass, setOverlayState] = useState({
     class: "",
   });
 
-  const [openAddStudent, setOpenAddStudent] = useState(false)
+  const [openAddStudent, setOpenAddStudent] = useState(false);
+
+  const [openAddPrize, setOpenAddPrize] = useState(false);
 
   const toggleOverlaySelect = () => {
     overlayClass.class === ""
@@ -19,14 +22,21 @@ const OverlaySelect = (props) => {
   };
 
   const handleAddStudentModal = () => {
-    setOpenAddStudent(!openAddStudent)
-  }
+    setOpenAddStudent(!openAddStudent);
+  };
+
+  const handleAddPrizeModal = () => {
+    setOpenAddPrize(!openAddPrize);
+  };
 
   let selectInput = "";
   props.type === "students"
     ? (selectInput = (
         <>
-          <li className="list__overlay-select-item" onClick={handleAddStudentModal}>
+          <li
+            className="list__overlay-select-item"
+            onClick={handleAddStudentModal}
+          >
             <a href="#">Add Students</a>
             <BiPlus />
           </li>
@@ -38,7 +48,10 @@ const OverlaySelect = (props) => {
       ))
     : (selectInput = (
         <>
-          <li className="list__overlay-select-item">
+          <li
+            className="list__overlay-select-item"
+            onClick={handleAddPrizeModal}
+          >
             <a href="#">Add Prizes</a>
             <BiPlus />
           </li>
@@ -61,6 +74,13 @@ const OverlaySelect = (props) => {
         addStudent={true}
         isOpen={openAddStudent}
         onClose={handleAddStudentModal}
+        refreshData={props.refreshData}
+        classId={props.classId}
+      />
+      <PrizeModal
+        addPrize={true}
+        isOpen={openAddPrize}
+        onClose={handleAddPrizeModal}
         refreshData={props.refreshData}
         classId={props.classId}
       />

@@ -86,6 +86,7 @@ const TreasureBox = (props) => {
             rows={classPrizes}
             config={listingData}
             refreshData={getPrizesData}
+            classId={props.selectedClassId}
           />
         </div>
       </>
