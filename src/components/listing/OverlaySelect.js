@@ -78,7 +78,7 @@ const OverlaySelect = (props) => {
         classId={props.classId}
       />
       <PrizeModal
-        addStudent={true}
+        addPrize={true}
         isOpen={openAddPrize}
         onClose={handleAddPrizeModal}
         refreshData={props.refreshData}

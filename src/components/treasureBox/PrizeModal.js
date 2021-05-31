@@ -97,21 +97,25 @@ const PrizeModal = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   let PRIZE;
-  if (props.addStudent) {
+  if (props.addPrize) {
     PRIZE = gql`
-      mutation postCreateStudent(
-        $firstName: String!
-        $lastName: String!
-        $username: String!
-        $password: String!
+      mutation postCreatePrize(
+        $name: String!
+        $imageUrl: String!
+        $description: String
+        $category: String
+        $kudosCost: Int!
+        $quantity: Int!
         $classId: Int!
       ) {
-        createStudent(
-          studentInput: {
-            firstName: $firstName
-            lastName: $lastName
-            username: $username
-            password: $password
+        createPrize(
+          prizeInput: {
+            name: $name
+            imageUrl: $imageUrl
+            description: $description
+            category: $category
+            kudosCost: $kudosCost
+            quantity: $quantity
             classId: $classId
           }
         ) {
@@ -121,20 +125,27 @@ const PrizeModal = (props) => {
     `;
   } else {
     PRIZE = gql`
-      mutation postEditStudent(
+      mutation postEditPrize(
         $id: Int!
-        $firstName: String!
-        $lastName: String!
-        $username: String!
-        $password: String!
+        $prizeId: Int!
+        $name: String!
+        $imageUrl: String!
+        $description: String
+        $category: String
+        $kudosCost: Int!
+        $quantity: Int!
+        $classId: Int!
       ) {
-        editStudent(
-          studentInput: {
+        editPrize(
+          prizeInput: {
             id: $id
-            firstName: $firstName
-            lastName: $lastName
-            username: $username
-            password: $password
+            prizeId: $prizeId
+            name: $name
+            imageUrl: $imageUrl
+            description: $description
+            category: $category
+            kudosCost: $kudosCost
+            quantity: $quantity
           }
         ) {
           id
@@ -143,24 +154,24 @@ const PrizeModal = (props) => {
     `;
   }
 
-  const [student] = useMutation(PRIZE, {
+  const [prize] = useMutation(PRIZE, {
     onCompleted() {
       props.refreshData();
     },
     onError() {
-      console.log("error editing student");
+      console.log("error editing prize");
     },
   });
 
   const DELETE = gql`
-    mutation deleteStudent($id: Int!) {
-      deleteStudents(studentInput: { studentIds: [$id] }) {
+    mutation deletePrize($id: Int!) {
+      deletePrize(prizeInput: { prizeIds: [$id] }) {
         id
       }
     }
   `;
 
-  const [deleteStudent] = useMutation(DELETE, {
+  const [deletePrize] = useMutation(DELETE, {
     onCompleted() {
       props.refreshData();
     },
@@ -190,35 +201,39 @@ const PrizeModal = (props) => {
   };
 
   const pointsIncrementHandler = (inputIdentifier, operator) => {
-    console.log(inputIdentifier);
-    let updatedForm = { ...this.state.form };
-    let updatedInput = this.state.form[inputIdentifier];
-    operator == "plus" ? updatedInput.value++ : updatedInput.value--;
+    let updatedForm = { ...form };
+    let updatedInput = updatedForm[inputIdentifier];
+    if (operator == "plus") {
+      updatedInput.value++;
+    }
+    if (operator != "plus" && updatedInput.value > 0) {
+      updatedInput.value--;
+    }
     updatedForm[inputIdentifier] = updatedInput;
-    this.setState({
-      form: updatedForm,
-    });
+    setForm(updatedForm);
   };
 
-  const submitStudentHandler = async (event) => {
+  const submitPrizeHandler = async (event) => {
     event.preventDefault();
-    student({
+    prize({
       variables: {
         id: props.id ? props.id : "",
         classId: props.classId ? props.classId : "",
-        firstName: form.firstName.value,
-        lastName: form.lastName.value,
-        username: form.username.value,
-        password: form.password.value,
+        name: form.prizename.value,
+        imageUrl: "",
+        kudosCost: parseInt(form.kudoscost.value),
+        quantity: form.points.value,
+        description: form.description.value,
+        category: "Toy",
       },
     });
     props.onClose();
   };
 
-  const deleteStudentHandler = async (event) => {
+  const deletePrizeHandler = async (event) => {
     event.preventDefault();
     console.log("clicked!");
-    deleteStudent({
+    deletePrize({
       variables: {
         id: props.id ? props.id : "",
       },
@@ -240,11 +255,11 @@ const PrizeModal = (props) => {
       style={customStyles}
     >
       <p>
-        {props.addStudent
+        {props.addPrize
           ? "Add a New Prize"
           : props.firstName + " " + props.lastName}
       </p>
-      <form className="form" onSubmit={submitStudentHandler}>
+      <form className="form" onSubmit={submitPrizeHandler}>
         <div className="form__image">
           <button className="form__image-btn">Upload/Edit</button>
         </div>
@@ -265,12 +280,12 @@ const PrizeModal = (props) => {
         ))}
 
         <Button btnColor="green" disabled={!formIsValid}>
-          {props.addStudent ? "Add" : "Update"}
+          {props.addPrize ? "Add" : "Update"}
         </Button>
       </form>
 
-      {!props.addStudent ? (
-        <Button btnColor="green" clicked={deleteStudentHandler}>
+      {!props.addPrize ? (
+        <Button btnColor="green" clicked={deletePrizeHandler}>
           Delete Student
         </Button>
       ) : null}
