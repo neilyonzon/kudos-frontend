@@ -5,12 +5,14 @@ import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
 import { FaExchangeAlt } from "@react-icons/all-files/fa/FaExchangeAlt";
 import { SiWish } from "@react-icons/all-files/si/SiWish";
 
-import KudosModal from '../students/KudosModal'
+import KudosModal from "../students/KudosModal";
 import StudentModal from "../students/StudentModal";
+import PrizeModal from "../treasureBox/PrizeModal";
 
 const ListingCard = (props) => {
-  const [openEditKudos, setOpenEditKudos] = useState(false)
+  const [openEditKudos, setOpenEditKudos] = useState(false);
   const [openEditStudent, setOpenEditStudent] = useState(false);
+  const [openEditPrize, setOpenEditPrize] = useState(false);
 
   const handleEditKudosModal = () => {
     if (props.type === "studentsTeacherDash" || props.type === "students") {
@@ -18,11 +20,13 @@ const ListingCard = (props) => {
     } else {
       alert("Not complete for this type");
     }
-  }
-  
-  const handleEditStudentModal = () => {
+  };
+
+  const handleEditModal = () => {
     if (props.type === "studentsTeacherDash" || props.type === "students") {
       setOpenEditStudent(!openEditStudent);
+    } else if (props.type === "prizes") {
+      setOpenEditPrize(!openEditPrize);
     } else {
       alert("Not complete for this type");
     }
@@ -80,11 +84,11 @@ const ListingCard = (props) => {
 
         {props.type !== "treasureBox" ? (
           <button className="list__btn list__btn--edit">
-            <FaEdit className="icon-edit" onClick={handleEditStudentModal} />
+            <FaEdit className="icon-edit" onClick={handleEditModal} />
           </button>
         ) : null}
       </div>
-      <KudosModal 
+      <KudosModal
         isOpen={openEditKudos}
         onClose={handleEditKudosModal}
         refreshData={props.refreshData}
@@ -95,12 +99,24 @@ const ListingCard = (props) => {
       />
       <StudentModal
         isOpen={openEditStudent}
-        onClose={handleEditStudentModal}
+        onClose={handleEditModal}
         refreshData={props.refreshData}
         id={props.itemData.id}
         firstName={props.itemData.firstName}
         lastName={props.itemData.lastName}
         username={props.itemData.username}
+      />
+      <PrizeModal
+        isOpen={openEditPrize}
+        onClose={handleEditModal}
+        refreshData={props.refreshData}
+        id={props.itemData.id}
+        edit={true}
+        prizename={props.itemData.name}
+        kudoscost={props.itemData.kudosCost}
+        quantity={props.itemData.quantity}
+        category={props.itemData.category}
+        description={props.itemData.description}
       />
     </div>
   );
