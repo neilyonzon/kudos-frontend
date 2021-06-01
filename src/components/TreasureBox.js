@@ -36,6 +36,7 @@ const TreasureBox = (props) => {
           kudosCost
           quantity
           category
+          description
         }
       }
     }

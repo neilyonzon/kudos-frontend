@@ -43,6 +43,24 @@ const PrizeModal = (props) => {
       valid: false,
       touched: false,
     },
+    category: {
+      inputType: "input",
+      labelConfig: {
+        display: false,
+        label: "Category",
+      },
+      config: {
+        type: "text",
+        placeholder: "Category",
+      },
+      helper: "Category",
+      value: props.category,
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
     kudoscost: {
       inputType: "input",
       labelConfig: {
@@ -72,7 +90,7 @@ const PrizeModal = (props) => {
         placeholder: "Description",
       },
       helper: "Description",
-      value: props.lastName,
+      value: props.description,
       validation: {
         required: true,
       },
@@ -89,7 +107,7 @@ const PrizeModal = (props) => {
         placeholder: "",
       },
       helper: "",
-      value: 0,
+      value: props.quantity,
       valid: true,
     },
   });
@@ -126,7 +144,6 @@ const PrizeModal = (props) => {
   } else {
     PRIZE = gql`
       mutation postEditPrize(
-        $id: Int!
         $prizeId: Int!
         $name: String!
         $imageUrl: String!
@@ -134,11 +151,9 @@ const PrizeModal = (props) => {
         $category: String
         $kudosCost: Int!
         $quantity: Int!
-        $classId: Int!
       ) {
         editPrize(
           prizeInput: {
-            id: $id
             prizeId: $prizeId
             name: $name
             imageUrl: $imageUrl
@@ -180,6 +195,19 @@ const PrizeModal = (props) => {
     },
   });
 
+  // const populateFormData = () => {
+  //   const updatedForm = { ...form };
+  //   updatedForm["prizename"].value = props.prizename;
+  //   updatedForm["kudoscost"].value = props.kudoscost;
+  //   updatedForm["points"].value = props.quantity;
+  //   updatedForm["category"].value = props.category;
+  //   updatedForm["description"].value = props.description;
+  // };
+
+  // if (props.edit === true) {
+  //   populateFormData();
+  // }
+
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...form };
     const updatedFormInput = { ...updatedForm[inputIdentifier] };
@@ -203,10 +231,10 @@ const PrizeModal = (props) => {
   const pointsIncrementHandler = (inputIdentifier, operator) => {
     let updatedForm = { ...form };
     let updatedInput = updatedForm[inputIdentifier];
-    if (operator == "plus") {
+    if (operator === "plus") {
       updatedInput.value++;
     }
-    if (operator != "plus" && updatedInput.value > 0) {
+    if (operator !== "plus" && updatedInput.value > 0) {
       updatedInput.value--;
     }
     updatedForm[inputIdentifier] = updatedInput;
@@ -217,7 +245,7 @@ const PrizeModal = (props) => {
     event.preventDefault();
     prize({
       variables: {
-        id: props.id ? props.id : "",
+        prizeId: props.id ? props.id : "",
         classId: props.classId ? props.classId : "",
         name: form.prizename.value,
         imageUrl: "",
@@ -257,7 +285,7 @@ const PrizeModal = (props) => {
       <p>
         {props.addPrize
           ? "Add a New Prize"
-          : props.firstName + " " + props.lastName}
+          : "Edit details for " + props.prizename}
       </p>
       <form className="form" onSubmit={submitPrizeHandler}>
         <div className="form__image">
