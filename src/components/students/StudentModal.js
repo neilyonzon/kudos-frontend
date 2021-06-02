@@ -271,7 +271,9 @@ const StudentModal = (props) => {
         <div 
           className="form__image"
           style={{
-            backgroundImage: `url('${imagePreview}')`
+            backgroundImage: `url('${imagePreview}')`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center'
           }}
         >
           <button className="form__image-btn" onClick={openImageFilePicker}>Upload/Edit</button> 
