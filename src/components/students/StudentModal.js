@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Modal from "react-modal";
 
 import { gql, useMutation } from "@apollo/client";
@@ -7,6 +7,7 @@ import Input from "../forms/Input";
 import Button from "../elements/Button";
 
 import { checkValidity } from "../../utils/formValidity";
+import { generateImageBase64, postImage } from '../../utils/image';
 
 const customStyles = {
   content: {
@@ -100,6 +101,10 @@ const StudentModal = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
 
+  const [imagePreview, setImagePreview] = useState(null)
+  const [imagePath, setImagePath] = useState(null)
+  const inputFile = useRef(null)
+
   let STUDENT;
   if (props.addStudent) {
     STUDENT = gql`
@@ -108,6 +113,7 @@ const StudentModal = (props) => {
         $lastName: String!
         $username: String!
         $password: String!
+        $imageUrl: String!
         $classId: Int!
       ) {
         createStudent(
@@ -116,6 +122,7 @@ const StudentModal = (props) => {
             lastName: $lastName
             username: $username
             password: $password
+            imageUrl: $imageUrl
             classId: $classId
           }
         ) {
@@ -193,8 +200,31 @@ const StudentModal = (props) => {
     setFormIsValid(formIsValid);
   };
 
+  const openImageFilePicker = (event) => {
+    event.preventDefault()
+    inputFile.current.click()
+  }
+
+  const selectImageHandler = (event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    const file = event.target.files[0]
+    generateImageBase64(file)
+      .then(b64 => {
+        setImagePreview(b64)
+        setImagePath(file)
+      })
+      .catch(err => console.log(err))
+  }
+
   const submitStudentHandler = async (event) => {
     event.preventDefault();
+
+    const formData = new FormData()
+    formData.append('image', imagePath)
+    const responseData = await postImage(formData)
+    const imageUrl = await responseData.filePath
+
     student({
       variables: {
         id: props.id ? props.id : "",
@@ -203,6 +233,7 @@ const StudentModal = (props) => {
         lastName: form.lastName.value,
         username: form.username.value,
         password: form.password.value,
+        imageUrl: imageUrl ? imageUrl : "undefined"
       },
     });
     props.onClose();
@@ -210,7 +241,6 @@ const StudentModal = (props) => {
 
   const deleteStudentHandler = async (event) => {
     event.preventDefault();
-    console.log("clicked!");
     deleteStudent({
       variables: {
         id: props.id ? props.id : "",
@@ -238,9 +268,22 @@ const StudentModal = (props) => {
           : props.firstName + " " + props.lastName}
       </p>
       <form className="form" onSubmit={submitStudentHandler}>
-        <div className="form__image">
-          <button className="form__image-btn">Upload/Edit</button>
+        <div 
+          className="form__image"
+          style={{
+            backgroundImage: `url('${imagePreview}')`
+          }}
+        >
+          <button className="form__image-btn" onClick={openImageFilePicker}>Upload/Edit</button> 
         </div>
+
+        <input 
+          type='file'
+          ref={inputFile}
+          style={{ display: 'none' }}
+          onChange={selectImageHandler}
+        />
+
         {formInputArray.map((formInput) => (
           <Input
             key={formInput.id}
