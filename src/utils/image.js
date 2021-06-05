@@ -11,15 +11,11 @@ export const generateImageBase64 = imageFile => {
     return promise
 }
 
-export const postImage = async (formData) => {
-    const acsToken = await retrieveAcsToken()
-    const response = await fetch('http://localhost:3000/post-image', {
-        method: 'PUT',
-        headers: {
-            Authorization: 'Bearer ' + acsToken 
-        },
-        body: formData
-    })
-    const responseData = await response.json()
-    return responseData
+export const formatFileName = fileName => {
+    let date = new Date()
+    date = date.toISOString().split('T')[0]
+    const randomString = Math.random().toString(36).substring(2, 7)
+    const cleanFileName = fileName.toLowerCase().replace(/[^a-z0-9]/g, "-")
+    const newFileName = `images/${date}-${randomString}-${cleanFileName}`
+    return newFileName.substring(0, 60)
 }
