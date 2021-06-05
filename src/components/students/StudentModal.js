@@ -2,12 +2,13 @@ import React, { useState, useRef } from "react";
 import Modal from "react-modal";
 
 import { gql, useMutation } from "@apollo/client";
+import axios from 'axios';
 
 import Input from "../forms/Input";
 import Button from "../elements/Button";
 
 import { checkValidity } from "../../utils/formValidity";
-import { generateImageBase64, postImage } from '../../utils/image';
+import { generateImageBase64, formatFileName } from '../../utils/image';
 
 const customStyles = {
   content: {
@@ -102,8 +103,48 @@ const StudentModal = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [imagePreview, setImagePreview] = useState(null)
-  const [imagePath, setImagePath] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
   const inputFile = useRef(null)
+
+  const S3SIGN = gql`
+    mutation s3Signature($fileName: String!, $fileType: String!) {
+      signS3(fileName: $fileName, fileType: $fileType) {
+        signedRequest
+        url
+      }
+    }
+  `
+
+  const uploadToS3 = async (file, signedRequest) => {
+    const options = {
+      headers: {
+        "Content-Type": file.type
+      }
+    }
+    await axios.put(signedRequest, file, options)
+  }
+
+  const [getS3Signature] = useMutation(S3SIGN, {
+    async onCompleted({ signS3 }) {
+      await uploadToS3(imageFile, signS3.signedRequest)
+
+      student({
+        variables: {
+          id: props.id ? props.id : "",
+          classId: props.classId ? props.classId : "",
+          firstName: form.firstName.value,
+          lastName: form.lastName.value,
+          username: form.username.value,
+          password: form.password.value,
+          imageUrl: signS3.url
+        },
+      });
+
+    },
+    onError() {
+      console.log("unable to get s3 signature!");
+    },
+  })
 
   let STUDENT;
   if (props.addStudent) {
@@ -211,8 +252,9 @@ const StudentModal = (props) => {
     const file = event.target.files[0]
     generateImageBase64(file)
       .then(b64 => {
+        console.log(file)
         setImagePreview(b64)
-        setImagePath(file)
+        setImageFile(file)
       })
       .catch(err => console.log(err))
   }
@@ -220,22 +262,27 @@ const StudentModal = (props) => {
   const submitStudentHandler = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData()
-    formData.append('image', imagePath)
-    const responseData = await postImage(formData)
-    const imageUrl = await responseData.filePath
+    if(imageFile){
+      getS3Signature({
+        variables: {
+          fileName: formatFileName(imageFile.name),
+          fileType: imageFile.type
+        }
+      })
+    } else{
+      student({
+        variables: {
+          id: props.id ? props.id : "",
+          classId: props.classId ? props.classId : "",
+          firstName: form.firstName.value,
+          lastName: form.lastName.value,
+          username: form.username.value,
+          password: form.password.value,
+          imageUrl: "undefined"
+        },
+      });
+    }
 
-    student({
-      variables: {
-        id: props.id ? props.id : "",
-        classId: props.classId ? props.classId : "",
-        firstName: form.firstName.value,
-        lastName: form.lastName.value,
-        username: form.username.value,
-        password: form.password.value,
-        imageUrl: imageUrl ? imageUrl : "undefined"
-      },
-    });
     props.onClose();
   };
 
