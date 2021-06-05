@@ -60,7 +60,7 @@ const ListingCard = (props) => {
       <div className="list__details">
         <img
           className="list__img list__col"
-          src={`http://localhost:3000/${props.itemData.imageUrl}`}
+          src={props.itemData.imageUrl}
         ></img>
         {getItemColumns(props.columns)}
       </div>
