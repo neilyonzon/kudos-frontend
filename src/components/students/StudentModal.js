@@ -300,6 +300,8 @@ const StudentModal = (props) => {
 
   const closeModalHandler = () => {
     setForm(formStructure)
+    setImagePreview(null)
+    setImageFile(null)
     props.onClose()
   }
 
@@ -331,7 +333,11 @@ const StudentModal = (props) => {
             backgroundPosition: 'center'
           }}
         >
-          <button className="form__image-btn" onClick={openImageFilePicker}>Upload/Edit</button> 
+          <button className="form__image-btn" 
+            onClick={openImageFilePicker}
+          >
+            {imagePreview ? null : "Upload/Edit"}
+          </button> 
         </div>
 
         <input 
