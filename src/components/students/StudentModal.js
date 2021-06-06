@@ -25,7 +25,8 @@ const customStyles = {
 //Modal.setAppElement('#yourAppElement')
 
 const StudentModal = (props) => {
-  const [form, setForm] = useState({
+
+  const formStructure = {
     username: {
       inputType: "input",
       labelConfig: {
@@ -98,7 +99,9 @@ const StudentModal = (props) => {
       valid: false,
       touched: false,
     },
-  });
+  }
+
+  const [form, setForm] = useState(formStructure);
 
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -295,6 +298,11 @@ const StudentModal = (props) => {
     });
   };
 
+  const closeModalHandler = () => {
+    setForm(formStructure)
+    props.onClose()
+  }
+
   const formInputArray = [];
   for (let key in form) {
     formInputArray.push({
@@ -306,7 +314,7 @@ const StudentModal = (props) => {
   return (
     <Modal
       isOpen={props.isOpen}
-      onRequestClose={props.onClose}
+      onRequestClose={closeModalHandler}
       style={customStyles}
     >
       <p>
