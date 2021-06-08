@@ -150,7 +150,7 @@ const PrizeModal = (props) => {
           prizeId: props.id ? props.id : "",
           classId: props.classId ? props.classId : "",
           name: form.prizename.value,
-          imageUrl: "",
+          imageUrl: signS3.url,
           kudosCost: parseInt(form.kudoscost.value),
           quantity: form.points.value,
           description: form.description.value,
@@ -174,6 +174,7 @@ const PrizeModal = (props) => {
         $category: String
         $kudosCost: Int!
         $quantity: Int!
+        $imageUrl: String!
         $classId: Int!
       ) {
         createPrize(
@@ -184,6 +185,7 @@ const PrizeModal = (props) => {
             category: $category
             kudosCost: $kudosCost
             quantity: $quantity
+            imageUrl: $imageUrl
             classId: $classId
           }
         ) {
@@ -325,7 +327,7 @@ const PrizeModal = (props) => {
           prizeId: props.id ? props.id : "",
           classId: props.classId ? props.classId : "",
           name: form.prizename.value,
-          imageUrl: "",
+          imageUrl: "undefined",
           kudosCost: parseInt(form.kudoscost.value),
           quantity: form.points.value,
           description: form.description.value,
