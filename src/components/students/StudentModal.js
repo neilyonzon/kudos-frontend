@@ -328,7 +328,7 @@ const StudentModal = (props) => {
         <div 
           className="form__image"
           style={{
-            backgroundImage: `url('${imagePreview}')`,
+            backgroundImage: `url('${props.imageUrl ? props.imageUrl : imagePreview}')`,
             backgroundSize: 'contain',
             backgroundPosition: 'center'
           }}
