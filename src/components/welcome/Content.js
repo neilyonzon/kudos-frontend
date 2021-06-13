@@ -22,13 +22,15 @@ const Content = (props) => {
             >
               Login
             </Button>
-            <Button
-              clicked={(e) => props.welcomeTypeHandler(e, "register")}
-              btnColor="green"
-              btnClass={null}
-            >
-              Sign-Up
-            </Button>
+            {props.studentLogin ? null : 
+              <Button
+                clicked={(e) => props.welcomeTypeHandler(e, "register")}
+                btnColor="green"
+                btnClass={null}
+              >
+                Sign-Up
+              </Button>
+            }
           </div>
         </div>
       );
