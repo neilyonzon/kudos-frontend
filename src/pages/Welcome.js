@@ -58,7 +58,7 @@ class Welcome extends React.Component {
                   contentType={this.state.contentType}
                   welcomeTypeHandler={this.chooseWelcomeTypeHandler}
                   contentClass={this.state.contentClass}
-                  studentLogin={this.props.studentLogin}
+                  teacherLogin={this.props.teacherLogin}
                 />
                 <div className="login-panel__line"></div>
                 <div className="login-panel__img">

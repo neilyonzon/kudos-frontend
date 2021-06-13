@@ -22,7 +22,7 @@ const Content = (props) => {
             >
               Login
             </Button>
-            {props.studentLogin ? null : 
+            {props.teacherLogin ?  
               <Button
                 clicked={(e) => props.welcomeTypeHandler(e, "register")}
                 btnColor="green"
@@ -30,6 +30,7 @@ const Content = (props) => {
               >
                 Sign-Up
               </Button>
+              : null
             }
           </div>
         </div>
