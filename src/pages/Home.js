@@ -2,6 +2,7 @@ import React, { useState, useEffect, Component } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
 import { retrieveAcsToken, logout } from "../utils/auth";
+import { getUserType } from '../utils/userType';
 
 import ControlNav from "../components/home/ControlNav";
 import ClassSelector from "../components/home/ClassSelector";
@@ -18,14 +19,17 @@ const Home = (props) => {
   const [selectedTab, setSelectedTab] = useState("Dashboard");
   const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState(null);
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
+      const userType = getUserType();
       const acsToken = await retrieveAcsToken();
       if (!!acsToken) {
+        setUserType(userType)
         setShow(true);
       } else {
-        return navigate("/");
+        return navigate(`/${userType}`);
       }
     };
 

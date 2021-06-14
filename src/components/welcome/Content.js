@@ -44,7 +44,7 @@ const Content = (props) => {
             <p>Lorem ipsum dolor sit amet, consecte</p>
           </div>
           <div className={props.contentClass.login}>
-            <LoginForm />
+            <LoginForm teacherLogin={props.teacherLogin}/>
           </div>
         </div>
       );
