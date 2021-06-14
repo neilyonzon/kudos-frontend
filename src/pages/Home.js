@@ -69,7 +69,7 @@ const Home = (props) => {
     `
   }
 
-  const [loadUserInfo, { called, loading, error }] = useLazyQuery(
+  const [loadUserInfo, { called, loading, error, data }] = useLazyQuery(
     GET_USER_INFO,
     {
       fetchPolicy: "network-only",
@@ -226,7 +226,7 @@ const Home = (props) => {
     return (
       <div className="main">
         <div className="message-banner">
-          <h1>Welcome Back Oscar Cano</h1>
+          <h1>Welcome Back {userType === 'teacher' ? `${data.teacher.firstName} ${data.teacher.lastName}!` : `${data.student.firstName} ${data.student.lastName}!`}</h1>
         </div>
 
         <a
