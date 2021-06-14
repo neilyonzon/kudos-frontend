@@ -23,48 +23,101 @@ const Home = (props) => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const userType = getUserType();
+      const savedUserType = getUserType();
       const acsToken = await retrieveAcsToken();
       if (!!acsToken) {
-        setUserType(userType)
+        setUserType(savedUserType)
         setShow(true);
       } else {
-        return navigate(`/${userType}`);
+        return navigate(`/${savedUserType}`);
       }
     };
 
     checkLoginStatus();
   }, []);
 
-  const GET_TEACHER_INFO = gql`
-    query getTeacherInfo {
-      teacher {
-        firstName
-        lastName
-        email
-        classes {
-          id
-          className
-          treasureBoxOpen
+  let GET_USER_INFO
+  if(userType === 'teacher'){
+    GET_USER_INFO = gql`
+      query getTeacherInfo {
+        teacher {
+          firstName
+          lastName
+          email
+          classes {
+            id
+            className
+            treasureBoxOpen
+          }
+        }
+      }
+    `
+  } else{
+    GET_USER_INFO = gql`
+      query getStudentInfo {
+        student {
+          firstName
+          lastName
+          username
+          imageUrl
+          kudosBalance
+          classId
+          transactions
+          wishList
+        }
+      }
+    `
+  }
+
+  const [loadUserInfo, { called, loading, error }] = useLazyQuery(
+    GET_USER_INFO,
+    {
+      fetchPolicy: "network-only",
+      onCompleted(data){
+        if(data && userType==='teacher' && data.teacher.classes.length > 0){
+          setClasses(data.teacher.classes)
+          if(!selectedClassId){
+            setSelectedClassId(data.teacher.classes[0].id)
+          }
+          return
+        }
+        if(data){
+          setSelectedClassId(data.student.classId)
         }
       }
     }
-  `;
+  )
 
-  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
-    GET_TEACHER_INFO,
-    {
-      fetchPolicy: "network-only",
-      onCompleted({ teacher }) {
-        if (teacher && teacher.classes.length > 0) {
-          setClasses(teacher.classes)
-          if(!selectedClassId){
-            setSelectedClassId(teacher.classes[0].id)
-          }
-        }
-      },
-    }
-  );
+  // const GET_TEACHER_INFO = gql`
+  //   query getTeacherInfo {
+  //     teacher {
+  //       firstName
+  //       lastName
+  //       email
+  //       classes {
+  //         id
+  //         className
+  //         treasureBoxOpen
+  //       }
+  //     }
+  //   }
+  // `
+
+  // const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
+  //   GET_TEACHER_INFO,
+  //   {
+  //     fetchPolicy: "network-only",
+  //     onCompleted(teacher) {
+  //       console.log('heres the finished teacher object!!!', teacher)
+  //       if (teacher && teacher.classes.length > 0) {
+  //         setClasses(teacher.classes)
+  //         if(!selectedClassId){
+  //           setSelectedClassId(teacher.classes[0].id)
+  //         }
+  //       }
+  //     },
+  //   }
+  // );
 
   const onTabSelectHandler = (tabName) => {
     setSelectedTab(tabName);
@@ -86,7 +139,7 @@ const Home = (props) => {
 
   const [toggleTreasureBox] = useMutation(TOGGLE_TREASURE_BOX, {
     onCompleted(){
-      loadTeacherInfo()
+      loadUserInfo()
     },
     onError(){
       console.log("error toggling treasure box!")
@@ -102,7 +155,7 @@ const Home = (props) => {
   }
 
   if (!called && show) {
-    loadTeacherInfo();
+    loadUserInfo();
     return null;
   }
 
