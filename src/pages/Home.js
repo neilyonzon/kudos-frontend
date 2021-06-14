@@ -29,7 +29,8 @@ const Home = (props) => {
         setUserType(savedUserType)
         setShow(true);
       } else {
-        return navigate(`/${savedUserType}`);
+        const loginDomain = savedUserType ? savedUserType : ''
+        return navigate(`/${loginDomain}`);
       }
     };
 
@@ -62,8 +63,14 @@ const Home = (props) => {
           imageUrl
           kudosBalance
           classId
-          transactions
-          wishList
+          transactions {
+            id
+            approved
+            prizeId
+            prizeName
+            prizeImageUrl
+            prizeCost
+          }
         }
       }
     `
@@ -87,37 +94,6 @@ const Home = (props) => {
       }
     }
   )
-
-  // const GET_TEACHER_INFO = gql`
-  //   query getTeacherInfo {
-  //     teacher {
-  //       firstName
-  //       lastName
-  //       email
-  //       classes {
-  //         id
-  //         className
-  //         treasureBoxOpen
-  //       }
-  //     }
-  //   }
-  // `
-
-  // const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
-  //   GET_TEACHER_INFO,
-  //   {
-  //     fetchPolicy: "network-only",
-  //     onCompleted(teacher) {
-  //       console.log('heres the finished teacher object!!!', teacher)
-  //       if (teacher && teacher.classes.length > 0) {
-  //         setClasses(teacher.classes)
-  //         if(!selectedClassId){
-  //           setSelectedClassId(teacher.classes[0].id)
-  //         }
-  //       }
-  //     },
-  //   }
-  // );
 
   const onTabSelectHandler = (tabName) => {
     setSelectedTab(tabName);
@@ -204,24 +180,27 @@ const Home = (props) => {
     }
 
     let treasureBoxIcon
-    let sortedClasses = [...classes]
-    if(selectedClassId){
-      const selectedClass = classes.find((cls) => {
-        return cls.id === selectedClassId;
-      });
-      if(selectedClass.treasureBoxOpen){
-        treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
-      } else {
-        treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
-      }
-
-      sortedClasses.forEach((cls, i) => {
-        if(cls.id === selectedClassId){
-          sortedClasses.splice(i, 1)
-          sortedClasses.unshift(cls)
+    let sortedClasses
+    if(userType === 'teacher'){
+      sortedClasses = [...classes]
+      if(selectedClassId){
+        const selectedClass = classes.find((cls) => {
+          return cls.id === selectedClassId;
+        });
+        if(selectedClass.treasureBoxOpen){
+          treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+        } else {
+          treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
         }
-      })
-    }    
+  
+        sortedClasses.forEach((cls, i) => {
+          if(cls.id === selectedClassId){
+            sortedClasses.splice(i, 1)
+            sortedClasses.unshift(cls)
+          }
+        })
+      }    
+    }
 
     return (
       <div className="main">
@@ -242,18 +221,24 @@ const Home = (props) => {
         <ControlNav
           onSelectTab={onTabSelectHandler}
           selectedTab={selectedTab}
+          userType={userType}
         />
 
+        
         <div className={`control-panel ${tabClass}`}>
-          <div className="utility-bar">
-            <ClassSelector
-              onSelectClass={onSelectClassHandler}
-              classes={sortedClasses}
-            />
-            {treasureBoxIcon}
-          </div>
+          {userType === 'teacher' ? 
+            <div className="utility-bar">
+              <ClassSelector
+                onSelectClass={onSelectClassHandler}
+                classes={sortedClasses}
+              />
+              {treasureBoxIcon}
+            </div>
+            : null
+          }
           {tabComponent}
         </div>
+          
       </div>
     );
   }
