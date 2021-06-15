@@ -17,7 +17,7 @@ const Dashboard = (props) => {
     } else {
       getDashboardData()
     }
-  }, []);
+  }, [props.selectedClassId]);
 
   let GET_DASHBOARD
   if(props.userType === 'teacher'){

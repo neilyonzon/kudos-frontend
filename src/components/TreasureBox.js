@@ -15,7 +15,7 @@ const TreasureBox = (props) => {
     } else {
       getTreasureBoxData()
     }
-  }, []);
+  }, [props.selectedClassId]);
 
   const listingData = {
     type: "prizes",
