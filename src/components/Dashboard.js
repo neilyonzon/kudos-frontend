@@ -8,48 +8,75 @@ import Listing from "../components/listing/Listing";
 const Dashboard = (props) => {
 
   useEffect(() => {
-    getClassData();
+    if(props.userType === 'teacher'){
+      getDashboardData({
+        variables: {
+          classId: props.selectedClassId
+        }
+      })
+    } else {
+      getDashboardData()
+    }
   }, []);
 
-  const GET_CLASS_DASHBOARD = gql`
-    query getClassDashboard($classId: Int!) {
-      getClassInfo(classId: $classId) {
-        className
-        treasureBoxOpen
-        students {
-          id
-          firstName
-          lastName
-          username
-          imageUrl
+  let GET_DASHBOARD
+  if(props.userType === 'teacher'){
+    GET_DASHBOARD = gql`
+      query getClassDashboard($classId: Int!) {
+        getClassInfo(classId: $classId) {
+          className
+          treasureBoxOpen
+          students {
+            id
+            firstName
+            lastName
+            username
+            imageUrl
+            kudosBalance
+            transactions {
+              id
+              approved
+              prizeId
+              prizeName
+              prizeCost
+              prizeImageUrl
+            }
+          }
+          prizes {
+            id
+            name
+            kudosCost
+            quantity
+            category
+          }
+        }
+      }
+    `
+  } else {
+    GET_DASHBOARD = gql`
+      query getStudentDashboard {
+        student {
           kudosBalance
+          classId
           transactions {
             id
             approved
             prizeId
             prizeName
-            prizeCost
             prizeImageUrl
+            prizeCost
           }
         }
-        prizes {
-          id
-          name
-          kudosCost
-          quantity
-          category
-        }
       }
-    }
-  `;
+    `
+  }
 
-  const [getClassData, { loading, error, data }] = useLazyQuery(
-    GET_CLASS_DASHBOARD,
+  const [getDashboardData, { loading, error, data }] = useLazyQuery(
+    GET_DASHBOARD, 
     {
-      variables: { classId: props.selectedClassId },
-      fetchPolicy: "network-only",
+      fetchPolicy: "network-only"
     }
-  );
+  ) 
 
   const listingData = {
     type: "studentsTeacherDash",
@@ -83,7 +110,7 @@ const Dashboard = (props) => {
 
   // }
 
-  if (data) {
+  if (props.userType === 'teacher' && data) {
     const classStudents = data.getClassInfo.students;
     // const updatedListingData = { ...listingData };
     // updatedListingData.data = classStudents;
@@ -116,35 +143,10 @@ const Dashboard = (props) => {
       <>
         <div className="panel dashboard-groups">
           <h4 className="panel__title">{data.getClassInfo.className}</h4>
-          {/* <div className="list list--dash">
-            <div className="list__header list__header--dash">
-              <div className="list__col-img list__header-item" />
-              <div className="list__col-name list__col-name--dash list__header-item">
-                Name <span className="icon list__header-icon"></span>
-              </div>
-              <div className="list__col-kudos list__col-kudos--dash list__header-item">
-                Kudos <span className="icon list__header-icon"></span>
-              </div>
-              <div className="list__search icon-search">
-                <AiOutlineSearch className="icon-search" />
-              </div>
-            </div>
-            <div className="list__items-container list__items-container--dash">
-              {classStudents.map((student) => {
-                return (
-                  <StudentCard
-                    key={student.id}
-                    studentData={student}
-                 
-                  />
-                );
-              })}
-            </div>
-          </div> */}
           <Listing
             rows={classStudents}
             config={listingData}
-            refreshData={getClassData}
+            refreshData={getDashboardData}
           />
         </div>
         <div className="panel dashboard-panel-treasure">
@@ -167,17 +169,16 @@ const Dashboard = (props) => {
             <p>{numPendingApproval} Pending Approvals</p>
           </div>
         </div>
-        {/* {classStudents.map((student) => {
-          return (
-            <StudentCard
-              key={student.id}
-              name={student.firstName}
-              kudosBalance={student.kudosBalance}
-            />
-          );
-        })} */}
       </>
     );
+  }
+
+  if(data){
+    return (
+      <div>
+        <h1>hello</h1>
+      </div>
+    )
   }
 
   return (

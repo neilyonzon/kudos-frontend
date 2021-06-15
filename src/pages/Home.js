@@ -63,14 +63,6 @@ const Home = (props) => {
           imageUrl
           kudosBalance
           classId
-          transactions {
-            id
-            approved
-            prizeId
-            prizeName
-            prizeImageUrl
-            prizeCost
-          }
         }
       }
     `
@@ -175,7 +167,7 @@ const Home = (props) => {
         tabClass = "treasurebox";
         break;
       default:
-        tabComponent = <Dashboard selectedClassId={selectedClassId} />;
+        tabComponent = <Dashboard selectedClassId={selectedClassId} userType={userType} />;
         tabClass = "dashboard";
     }
 
@@ -224,7 +216,6 @@ const Home = (props) => {
           userType={userType}
         />
 
-        
         <div className={`control-panel ${tabClass}`}>
           {userType === 'teacher' ? 
             <div className="utility-bar">
