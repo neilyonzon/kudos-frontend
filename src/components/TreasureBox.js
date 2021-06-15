@@ -4,6 +4,19 @@ import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChe
 import Listing from "../components/listing/Listing";
 
 const TreasureBox = (props) => {
+
+  useEffect(() => {
+    if(props.userType === 'teacher'){
+      getTreasureBoxData({
+        variables: {
+          classId: props.selectedClassId
+        }
+      })
+    } else {
+      getTreasureBoxData()
+    }
+  }, []);
+
   const listingData = {
     type: "prizes",
     columns: [
@@ -26,30 +39,43 @@ const TreasureBox = (props) => {
     ],
   };
 
-  const GET_CLASS_DASHBOARD = gql`
-    query getClassDashboard($classId: Int!) {
-      getClassInfo(classId: $classId) {
-        className
-        prizes {
-          id
-          name
-          kudosCost
-          quantity
-          category
-          description
+  let GET_TREASURE_BOX 
+  if(props.userType === 'teacher'){
+    GET_TREASURE_BOX = gql`
+      query getTreasureBox($classId: Int!) {
+        getClassInfo(classId: $classId) {
+          className
+          prizes {
+            id
+            name
+            imageUrl
+            description
+            category
+            kudosCost
+            quantity
+          }
         }
       }
-    }
-  `;
+    `
+  } else {
+    GET_TREASURE_BOX = gql`
+      query getTreasureBox {
+        getClassPrizes {
+          id
+          name
+          imageUrl
+          description
+          category
+          kudosCost
+          quantity
+        }
+      }
+    `
+  }
 
-  useEffect(() => {
-    getPrizesData();
-  }, []);
-
-  const [getPrizesData, { loading, error, data }] = useLazyQuery(
-    GET_CLASS_DASHBOARD,
+  const [getTreasureBoxData, { loading, error, data }] = useLazyQuery(
+    GET_TREASURE_BOX,
     {
-      variables: { classId: props.selectedClassId },
       fetchPolicy: "network-only",
     }
   );
@@ -70,25 +96,27 @@ const TreasureBox = (props) => {
     );
   }
 
-  if (data && data.getClassInfo.prizes.length == 0) {
-    return <p>There are no prizes</p>;
-  }
-
   if (data) {
-    const classPrizes = data.getClassInfo.prizes;
+    const classPrizes = props.userType === 'teacher' ? data.getClassInfo.prizes : data.getClassPrizes
+    if(classPrizes.length === 0){
+      return <p>There are no prizes</p>
+    }
 
     return (
       <>
         <div className="panel">
-          <h4 className="panel__title">
-            Prizes for {data.getClassInfo.className}
-          </h4>
-          <Listing
+          {props.userType === 'teacher' ?
+            <h4 className="panel__title">
+              Prizes for {data.getClassInfo.className}
+            </h4>
+            : null
+          }
+          {/* <Listing
             rows={classPrizes}
             config={listingData}
-            refreshData={getPrizesData}
-            classId={props.selectedClassId}
-          />
+            refreshData={getTreasureBoxData}
+            classId={props.userType === 'teacher' ? props.selectedClassId : null}
+          /> */}
         </div>
       </>
     );

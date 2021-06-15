@@ -163,7 +163,7 @@ const Home = (props) => {
         tabClass = "students";
         break;
       case selectedTab === "TreasureBox":
-        tabComponent = <TreasureBox selectedClassId={selectedClassId} />;
+        tabComponent = <TreasureBox selectedClassId={selectedClassId} userType={userType} />;
         tabClass = "treasurebox";
         break;
       default:
