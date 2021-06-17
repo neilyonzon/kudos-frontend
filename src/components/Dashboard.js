@@ -100,7 +100,7 @@ const Dashboard = (props) => {
   if (error) {
     return (
       <div>
-        <h2>there was an error :(</h2>
+        <h2>there was an errooooooooor :(</h2>
       </div>
     );
   }
@@ -109,14 +109,14 @@ const Dashboard = (props) => {
   // if(data && !data.getClassInfo.students){
 
   // }
-
+  let numPendingApproval = 0
+  let pendingApprovals = []
   if (props.userType === 'teacher' && data) {
     const classStudents = data.getClassInfo.students;
     // const updatedListingData = { ...listingData };
     // updatedListingData.data = classStudents;
     // setClassData(updatedListingData);
-    let numPendingApproval = 0;
-    let pendingApprovals = [];
+    
     for (const student of classStudents) {
       for (const transaction of student.transactions) {
         if (!transaction.approved) {
@@ -174,10 +174,48 @@ const Dashboard = (props) => {
   }
 
   if(data){
+    let approvedPurchases = []
+    const studentTransactions = data.student.transactions
+    for(const transaction of studentTransactions){
+      if(transaction.approved){
+        approvedPurchases.push(transaction)
+      } else{
+        numPendingApproval += 1
+        pendingApprovals.push(transaction)
+      }
+    }
+
     return (
-      <div>
-        <h1>hello</h1>
-      </div>
+      <>
+        <div className="panel dashboard-groups">
+          <h4 className="panel__title">Your Prizes!</h4>
+          {/* <Listing
+            rows={classStudents}
+            config={listingData}
+            refreshData={getDashboardData}
+          /> */}
+        </div>
+        <div className="panel dashboard-panel-treasure">
+          <h4 className="panel__title">Kudos Points</h4>
+          <div className="panel__content">
+            <GiOpenTreasureChest className="icon-treasure" /> 
+            <div className="dashboard-panel-treasure__links">
+              <p>
+                <a href="#">{data.student.kudosBalance} Kudos Points Remaining</a>
+              </p>
+              {/* <p>
+                <a href="#">{remainingPrizes} Prizes Remaining</a>
+              </p> */}
+            </div>
+          </div>
+        </div>
+        <div className="panel dashboard-lorem">
+          <h4 className="panel__title">Approvals</h4>
+          <div className="panel__content">
+            <p>{numPendingApproval} Pending Approvals</p>
+          </div>
+        </div>
+      </>
     )
   }
 
