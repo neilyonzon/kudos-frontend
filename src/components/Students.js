@@ -84,6 +84,7 @@ const Students = (props) => {
             config={listingData}
             refreshData={getClassData}
             classId={props.selectedClassId}
+            userType={props.userType}
           />
         </div>
       </>
