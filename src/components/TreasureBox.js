@@ -7,6 +7,7 @@ const TreasureBox = (props) => {
 
   useEffect(() => {
     if(props.userType === 'teacher'){
+      console.log('for some reason made it here')
       getTreasureBoxData({
         variables: {
           classId: props.selectedClassId
@@ -18,7 +19,7 @@ const TreasureBox = (props) => {
   }, [props.selectedClassId]);
 
   const listingData = {
-    type: "prizes",
+    type: props.userType === 'teacher' ? "prizes" : 'treasureBox',
     columns: [
       {
         name: "Name",
@@ -29,7 +30,7 @@ const TreasureBox = (props) => {
         dataQuery: "kudosCost",
       },
       {
-        name: "Qty",
+        name: props.userType === 'teacher' ? "Qty" : "# Available",
         dataQuery: "quantity",
       },
       {
@@ -89,9 +90,10 @@ const TreasureBox = (props) => {
   }
 
   if (error) {
+    console.log('error!!!',error)
     return (
       <div>
-        <h2>there was an error :(</h2>
+        <h2>there was an error</h2>
       </div>
     );
   }
@@ -104,19 +106,17 @@ const TreasureBox = (props) => {
 
     return (
       <>
-        <div className="panel">
-          {props.userType === 'teacher' ?
-            <h4 className="panel__title">
-              Prizes for {data.getClassInfo.className}
-            </h4>
-            : null
-          }
-          {/* <Listing
+        <div className="panel">          
+          <h4 className="panel__title">
+            {props.userType === 'teacher' ? `Prizes for ${data.getClassInfo.className}` : 'Available Prizes'}
+          </h4>
+          <Listing
             rows={classPrizes}
             config={listingData}
             refreshData={getTreasureBoxData}
             classId={props.userType === 'teacher' ? props.selectedClassId : null}
-          /> */}
+            userType={props.userType}
+          />
         </div>
       </>
     );
