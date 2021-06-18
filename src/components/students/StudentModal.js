@@ -266,9 +266,11 @@ const StudentModal = (props) => {
     event.preventDefault();
 
     if(imageFile){
+      const prevFileName = props.imageUrl ? 'images/' + props.imageUrl.split('/').slice(-1)[0] : null 
+      console.log('here is the file name!!!',prevFileName)
       getS3Signature({
         variables: {
-          fileName: formatFileName(imageFile.name),
+          fileName: prevFileName ? prevFileName : formatFileName(imageFile.name),
           fileType: imageFile.type
         }
       })
@@ -281,7 +283,7 @@ const StudentModal = (props) => {
           lastName: form.lastName.value,
           username: form.username.value,
           password: form.password.value,
-          imageUrl: "undefined"
+          imageUrl: props.imageUrl ? props.imageUrl : null
         },
       });
     }
@@ -328,7 +330,7 @@ const StudentModal = (props) => {
         <div 
           className="form__image"
           style={{
-            backgroundImage: `url('${imagePreview}')`,
+            backgroundImage: `url('${imagePreview ? imagePreview : props.imageUrl}')`,
             backgroundSize: 'contain',
             backgroundPosition: 'center'
           }}

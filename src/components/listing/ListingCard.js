@@ -105,6 +105,7 @@ const ListingCard = (props) => {
         firstName={props.itemData.firstName}
         lastName={props.itemData.lastName}
         username={props.itemData.username}
+        imageUrl={props.itemData.imageUrl}
       />
       <PrizeModal
         isOpen={openEditPrize}
@@ -117,6 +118,7 @@ const ListingCard = (props) => {
         quantity={props.itemData.quantity}
         category={props.itemData.category}
         description={props.itemData.description}
+        imageUrl={props.itemData.imageUrl}
       />
     </div>
   );
