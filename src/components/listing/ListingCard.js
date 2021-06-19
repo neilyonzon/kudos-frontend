@@ -8,13 +8,14 @@ import { SiWish } from "@react-icons/all-files/si/SiWish";
 import KudosModal from "../students/KudosModal";
 import StudentModal from "../students/StudentModal";
 import PrizeModal from "../treasureBox/PrizeModal";
-import TransactionModal from '../treasureBox/TransactionModal';
+import ActionModal from '../treasureBox/ActionModal';
 
 const ListingCard = (props) => {
   const [openEditKudos, setOpenEditKudos] = useState(false);
   const [openEditStudent, setOpenEditStudent] = useState(false);
   const [openEditPrize, setOpenEditPrize] = useState(false);
   const [openTransaction, setOpenTransaction] = useState(false);
+  const [openWish, setOpenWish] = useState(false);
 
   const handleEditKudosModal = () => {
     if (props.type === "studentsTeacherDash" || props.type === "students") {
@@ -34,8 +35,12 @@ const ListingCard = (props) => {
     }
   };
 
-  const handleTransactionModal = () => {
-    setOpenTransaction(!openTransaction)
+  const handleActionModal = (actionType) => {
+    if(actionType === 'transaction'){
+      setOpenTransaction(!openTransaction)
+    } else {
+      setOpenWish(!openWish)
+    }
   }
 
   const getItemColumns = (columnsData) => {
@@ -80,10 +85,10 @@ const ListingCard = (props) => {
         {props.type == "treasureBox" ? (
           <>
             <button className="list__btn">
-              <FaExchangeAlt className="icon-pts" onClick={handleTransactionModal}/>
+              <FaExchangeAlt className="icon-pts" onClick={() => handleActionModal('transaction')} />
             </button>
             <button className="list__btn">
-              <SiWish className="icon-pts" />
+              <SiWish className="icon-pts" onClick={() => handleActionModal('wish')} />
             </button>
           </>
         ) : null}
@@ -126,14 +131,25 @@ const ListingCard = (props) => {
         description={props.itemData.description}
         imageUrl={props.itemData.imageUrl}
       />
-      <TransactionModal 
+      <ActionModal 
         isOpen={openTransaction}
-        onClose={handleTransactionModal}
+        onClose={() => handleActionModal('transaction')}
         refreshData={props.refreshData}
         id={props.itemData.id}
         prizename={props.itemData.name}
         kudoscost={props.itemData.kudosCost}
         imageUrl={props.itemData.imageUrl}
+        actionType={'transaction'}
+      />
+      <ActionModal 
+        isOpen={openWish}
+        onClose={() => handleActionModal('wish')}
+        refreshData={props.refreshData}
+        id={props.itemData.id}
+        prizename={props.itemData.name}
+        kudoscost={props.itemData.kudosCost}
+        imageUrl={props.itemData.imageUrl}
+        actionType={'wish'}
       />
     </div>
   );

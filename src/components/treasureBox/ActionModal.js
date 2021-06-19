@@ -16,17 +16,24 @@ const customStyles = {
     },
   };
 
-const TransactionModal = props => {
+const ActionModal = props => {
 
-    const SUBMIT = gql`
+    const ACTION = props.actionType === 'transaction' ? gql`
         mutation makeTransaction($prizeId: Int!){
             postTransaction(transactionInput: {prizeId: $prizeId}){
                 id
             }
         }
+    ` : 
+    gql`
+        mutation addWish($prizeId: Int!){
+            addToWishlist(wishlistInput: {prizeId: $prizeId}){
+                id
+            }
+        }
     `
 
-    const [submitTransaction] = useMutation(SUBMIT, {
+    const [submitAction] = useMutation(ACTION, {
         onCompleted() {
           props.refreshData();
         },
@@ -37,7 +44,7 @@ const TransactionModal = props => {
     
     const makeTransactionHandler = (event) => {
         event.preventDefault()
-        submitTransaction({
+        submitAction({
             variables: {
                 prizeId: props.id
             }
@@ -56,10 +63,10 @@ const TransactionModal = props => {
             <h2>{props.prizename}</h2>
             <h3>{props.kudoscost}</h3>
             <Button btnColor="green" clicked={makeTransactionHandler}>
-                Buy!
+                {props.actionType==='transaction' ? 'Buy!' : 'Wish!'}
             </Button>
         </Modal>
     )
 }
 
-export default TransactionModal
+export default ActionModal
