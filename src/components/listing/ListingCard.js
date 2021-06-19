@@ -8,11 +8,13 @@ import { SiWish } from "@react-icons/all-files/si/SiWish";
 import KudosModal from "../students/KudosModal";
 import StudentModal from "../students/StudentModal";
 import PrizeModal from "../treasureBox/PrizeModal";
+import TransactionModal from '../treasureBox/TransactionModal';
 
 const ListingCard = (props) => {
   const [openEditKudos, setOpenEditKudos] = useState(false);
   const [openEditStudent, setOpenEditStudent] = useState(false);
   const [openEditPrize, setOpenEditPrize] = useState(false);
+  const [openTransaction, setOpenTransaction] = useState(false);
 
   const handleEditKudosModal = () => {
     if (props.type === "studentsTeacherDash" || props.type === "students") {
@@ -31,6 +33,10 @@ const ListingCard = (props) => {
       alert("Not complete for this type");
     }
   };
+
+  const handleTransactionModal = () => {
+    setOpenTransaction(!openTransaction)
+  }
 
   const getItemColumns = (columnsData) => {
     const columns = columnsData.map((column) => {
@@ -74,7 +80,7 @@ const ListingCard = (props) => {
         {props.type == "treasureBox" ? (
           <>
             <button className="list__btn">
-              <FaExchangeAlt className="icon-pts" />
+              <FaExchangeAlt className="icon-pts" onClick={handleTransactionModal}/>
             </button>
             <button className="list__btn">
               <SiWish className="icon-pts" />
@@ -118,6 +124,15 @@ const ListingCard = (props) => {
         quantity={props.itemData.quantity}
         category={props.itemData.category}
         description={props.itemData.description}
+        imageUrl={props.itemData.imageUrl}
+      />
+      <TransactionModal 
+        isOpen={openTransaction}
+        onClose={handleTransactionModal}
+        refreshData={props.refreshData}
+        id={props.itemData.id}
+        prizename={props.itemData.name}
+        kudoscost={props.itemData.kudosCost}
         imageUrl={props.itemData.imageUrl}
       />
     </div>
