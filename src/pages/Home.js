@@ -20,6 +20,7 @@ const Home = (props) => {
   const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [userType, setUserType] = useState(null);
+  const [kudosBalance, setKudosBalance] = useState(0)
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -73,15 +74,16 @@ const Home = (props) => {
     {
       fetchPolicy: "network-only",
       onCompleted(data){
-        if(data && userType==='teacher' && data.teacher.classes.length > 0){
+        if(data && userType ==='teacher' && data.teacher.classes.length > 0){
           setClasses(data.teacher.classes)
           if(!selectedClassId){
             setSelectedClassId(data.teacher.classes[0].id)
           }
           return
         }
-        if(data){
+        if(data && userType !== 'teacher'){
           setSelectedClassId(data.student.classId)
+          setKudosBalance(data.student.kudosBalance)
         }
       }
     }
@@ -163,7 +165,7 @@ const Home = (props) => {
         tabClass = "students";
         break;
       case selectedTab === "TreasureBox":
-        tabComponent = <TreasureBox selectedClassId={selectedClassId} userType={userType} />;
+        tabComponent = <TreasureBox selectedClassId={selectedClassId} userType={userType} kudosBalance={kudosBalance}/>;
         tabClass = "treasurebox";
         break;
       default:
