@@ -2,6 +2,7 @@ import React, { useState, useEffect, Component } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
 import { retrieveAcsToken, logout } from "../utils/auth";
+import { getUserType } from '../utils/userType';
 
 import ControlNav from "../components/home/ControlNav";
 import ClassSelector from "../components/home/ClassSelector";
@@ -18,49 +19,73 @@ const Home = (props) => {
   const [selectedTab, setSelectedTab] = useState("Dashboard");
   const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState(null);
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
+      const savedUserType = getUserType();
       const acsToken = await retrieveAcsToken();
       if (!!acsToken) {
+        setUserType(savedUserType)
         setShow(true);
       } else {
-        return navigate("/");
+        const loginDomain = savedUserType ? savedUserType : ''
+        return navigate(`/${loginDomain}`);
       }
     };
 
     checkLoginStatus();
   }, []);
 
-  const GET_TEACHER_INFO = gql`
-    query getTeacherInfo {
-      teacher {
-        firstName
-        lastName
-        email
-        classes {
-          id
-          className
-          treasureBoxOpen
+  let GET_USER_INFO
+  if(userType === 'teacher'){
+    GET_USER_INFO = gql`
+      query getTeacherInfo {
+        teacher {
+          firstName
+          lastName
+          email
+          classes {
+            id
+            className
+            treasureBoxOpen
+          }
+        }
+      }
+    `
+  } else{
+    GET_USER_INFO = gql`
+      query getStudentInfo {
+        student {
+          firstName
+          lastName
+          username
+          imageUrl
+          kudosBalance
+          classId
+        }
+      }
+    `
+  }
+
+  const [loadUserInfo, { called, loading, error, data }] = useLazyQuery(
+    GET_USER_INFO,
+    {
+      fetchPolicy: "network-only",
+      onCompleted(data){
+        if(data && userType==='teacher' && data.teacher.classes.length > 0){
+          setClasses(data.teacher.classes)
+          if(!selectedClassId){
+            setSelectedClassId(data.teacher.classes[0].id)
+          }
+          return
+        }
+        if(data){
+          setSelectedClassId(data.student.classId)
         }
       }
     }
-  `;
-
-  const [loadTeacherInfo, { called, loading, data, error }] = useLazyQuery(
-    GET_TEACHER_INFO,
-    {
-      fetchPolicy: "network-only",
-      onCompleted({ teacher }) {
-        if (teacher && teacher.classes.length > 0) {
-          setClasses(teacher.classes)
-          if(!selectedClassId){
-            setSelectedClassId(teacher.classes[0].id)
-          }
-        }
-      },
-    }
-  );
+  )
 
   const onTabSelectHandler = (tabName) => {
     setSelectedTab(tabName);
@@ -82,7 +107,7 @@ const Home = (props) => {
 
   const [toggleTreasureBox] = useMutation(TOGGLE_TREASURE_BOX, {
     onCompleted(){
-      loadTeacherInfo()
+      loadUserInfo()
     },
     onError(){
       console.log("error toggling treasure box!")
@@ -98,7 +123,7 @@ const Home = (props) => {
   }
 
   if (!called && show) {
-    loadTeacherInfo();
+    loadUserInfo();
     return null;
   }
 
@@ -134,42 +159,45 @@ const Home = (props) => {
         );
         break;
       case selectedTab === "Students":
-        tabComponent = <Students selectedClassId={selectedClassId} />;
+        tabComponent = <Students selectedClassId={selectedClassId} userType={userType} />;
         tabClass = "students";
         break;
       case selectedTab === "TreasureBox":
-        tabComponent = <TreasureBox selectedClassId={selectedClassId} />;
+        tabComponent = <TreasureBox selectedClassId={selectedClassId} userType={userType} />;
         tabClass = "treasurebox";
         break;
       default:
-        tabComponent = <Dashboard selectedClassId={selectedClassId} />;
+        tabComponent = <Dashboard selectedClassId={selectedClassId} userType={userType} />;
         tabClass = "dashboard";
     }
 
     let treasureBoxIcon
-    let sortedClasses = [...classes]
-    if(selectedClassId){
-      const selectedClass = classes.find((cls) => {
-        return cls.id === selectedClassId;
-      });
-      if(selectedClass.treasureBoxOpen){
-        treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
-      } else {
-        treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
-      }
-
-      sortedClasses.forEach((cls, i) => {
-        if(cls.id === selectedClassId){
-          sortedClasses.splice(i, 1)
-          sortedClasses.unshift(cls)
+    let sortedClasses
+    if(userType === 'teacher'){
+      sortedClasses = [...classes]
+      if(selectedClassId){
+        const selectedClass = classes.find((cls) => {
+          return cls.id === selectedClassId;
+        });
+        if(selectedClass.treasureBoxOpen){
+          treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+        } else {
+          treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
         }
-      })
-    }    
+  
+        sortedClasses.forEach((cls, i) => {
+          if(cls.id === selectedClassId){
+            sortedClasses.splice(i, 1)
+            sortedClasses.unshift(cls)
+          }
+        })
+      }    
+    }
 
     return (
       <div className="main">
         <div className="message-banner">
-          <h1>Welcome Back Oscar Cano</h1>
+          <h1>Welcome Back {userType === 'teacher' ? `${data.teacher.firstName} ${data.teacher.lastName}!` : `${data.student.firstName} ${data.student.lastName}!`}</h1>
         </div>
 
         <a
@@ -185,18 +213,23 @@ const Home = (props) => {
         <ControlNav
           onSelectTab={onTabSelectHandler}
           selectedTab={selectedTab}
+          userType={userType}
         />
 
         <div className={`control-panel ${tabClass}`}>
-          <div className="utility-bar">
-            <ClassSelector
-              onSelectClass={onSelectClassHandler}
-              classes={sortedClasses}
-            />
-            {treasureBoxIcon}
-          </div>
+          {userType === 'teacher' ? 
+            <div className="utility-bar">
+              <ClassSelector
+                onSelectClass={onSelectClassHandler}
+                classes={sortedClasses}
+              />
+              {treasureBoxIcon}
+            </div>
+            : null
+          }
           {tabComponent}
         </div>
+          
       </div>
     );
   }

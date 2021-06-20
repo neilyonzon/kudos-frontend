@@ -21,16 +21,19 @@ const ControlNav = (props) => {
         >
           <IoIosHome />
         </li>
-        <li
-          onClick={() => props.onSelectTab("Students")}
-          className={
-            props.selectedTab === "Students"
-              ? "control-nav__item selected"
-              : "control-nav__item"
-          }
-        >
-          <IoIosPeople />
-        </li>
+        {props.userType === 'teacher' ? 
+          <li
+            onClick={() => props.onSelectTab("Students")}
+            className={
+              props.selectedTab === "Students"
+                ? "control-nav__item selected"
+                : "control-nav__item"
+            }
+          >
+            <IoIosPeople />
+          </li>
+          : null
+        }
         <li
           onClick={() => props.onSelectTab("TreasureBox")}
           className={
@@ -41,16 +44,19 @@ const ControlNav = (props) => {
         >
           <FaAward />
         </li>
-        <li
-          onClick={() => props.onSelectTab("Settings")}
-          className={
-            props.selectedTab === "Settings"
-              ? "control-nav__item selected"
-              : "control-nav__item"
-          }
-        >
-          <IoIosSettings />
-        </li>
+        {props.userType === 'teacher' ? 
+          <li
+            onClick={() => props.onSelectTab("Settings")}
+            className={
+              props.selectedTab === "Settings"
+                ? "control-nav__item selected"
+                : "control-nav__item"
+            }
+          >
+            <IoIosSettings />
+          </li>
+          : null
+        }
       </ul>
     </nav>
   );

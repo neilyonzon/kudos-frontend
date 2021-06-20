@@ -5,8 +5,9 @@ import { navigate } from "gatsby";
 import Input from "../forms/Input";
 import Button from "../elements/Button";
 import { setAcsToken } from "../../utils/auth";
+import { setUserType } from "../../utils/userType";
 
-const Login = (props) => {
+const Login = ({ teacherLogin }) => {
   const [loginError, setLoginError] = useState(false);
   const [form, setForm] = useState({
     username: {
@@ -92,18 +93,18 @@ const Login = (props) => {
   };
 
   const LOGIN_USER = gql`
-    mutation LoginUser($username: String!, $password: String!) {
-      loginTeacher(teacherInput: { username: $username, password: $password }) {
+    mutation LoginUser($username: String!, $password: String!, $userType: String!) {
+      loginUser(userInput: { username: $username, password: $password, userType: $userType}) {
         accessToken
       }
     }
   `;
 
   const [login] = useMutation(LOGIN_USER, {
-    onCompleted({ loginTeacher }) {
-      if (loginTeacher) {
-        console.log(loginTeacher.accessToken);
-        setAcsToken(loginTeacher.accessToken);
+    onCompleted({ loginUser }) {
+      if (loginUser) {
+        teacherLogin ? setUserType('teacher') : setUserType('')
+        setAcsToken(loginUser.accessToken);
         return navigate("/home");
       }
     },
@@ -119,9 +120,10 @@ const Login = (props) => {
       config: form[key],
     });
   }
-  let display;
 
+  let display;
   if (!loginError) {
+    const userType = teacherLogin ? 'teacher' : 'student'
     display = (
       <form
         method="POST"
@@ -131,6 +133,7 @@ const Login = (props) => {
             variables: {
               username: form.username.value,
               password: form.password.value,
+              userType
             },
           });
         }}

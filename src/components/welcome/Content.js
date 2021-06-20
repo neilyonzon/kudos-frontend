@@ -22,13 +22,16 @@ const Content = (props) => {
             >
               Login
             </Button>
-            <Button
-              clicked={(e) => props.welcomeTypeHandler(e, "register")}
-              btnColor="green"
-              btnClass={null}
-            >
-              Sign-Up
-            </Button>
+            {props.teacherLogin ?  
+              <Button
+                clicked={(e) => props.welcomeTypeHandler(e, "register")}
+                btnColor="green"
+                btnClass={null}
+              >
+                Sign-Up
+              </Button>
+              : null
+            }
           </div>
         </div>
       );
@@ -41,7 +44,7 @@ const Content = (props) => {
             <p>Lorem ipsum dolor sit amet, consecte</p>
           </div>
           <div className={props.contentClass.login}>
-            <LoginForm />
+            <LoginForm teacherLogin={props.teacherLogin}/>
           </div>
         </div>
       );

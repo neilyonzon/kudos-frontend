@@ -8,48 +8,75 @@ import Listing from "../components/listing/Listing";
 const Dashboard = (props) => {
 
   useEffect(() => {
-    getClassData();
-  }, []);
+    if(props.userType === 'teacher'){
+      getDashboardData({
+        variables: {
+          classId: props.selectedClassId
+        }
+      })
+    } else {
+      getDashboardData()
+    }
+  }, [props.selectedClassId]);
 
-  const GET_CLASS_DASHBOARD = gql`
-    query getClassDashboard($classId: Int!) {
-      getClassInfo(classId: $classId) {
-        className
-        treasureBoxOpen
-        students {
-          id
-          firstName
-          lastName
-          username
-          imageUrl
+  let GET_DASHBOARD
+  if(props.userType === 'teacher'){
+    GET_DASHBOARD = gql`
+      query getClassDashboard($classId: Int!) {
+        getClassInfo(classId: $classId) {
+          className
+          treasureBoxOpen
+          students {
+            id
+            firstName
+            lastName
+            username
+            imageUrl
+            kudosBalance
+            transactions {
+              id
+              approved
+              prizeId
+              prizeName
+              prizeCost
+              prizeImageUrl
+            }
+          }
+          prizes {
+            id
+            name
+            kudosCost
+            quantity
+            category
+          }
+        }
+      }
+    `
+  } else {
+    GET_DASHBOARD = gql`
+      query getStudentDashboard {
+        student {
           kudosBalance
+          classId
           transactions {
             id
             approved
             prizeId
             prizeName
-            prizeCost
             prizeImageUrl
+            prizeCost
           }
         }
-        prizes {
-          id
-          name
-          kudosCost
-          quantity
-          category
-        }
       }
-    }
-  `;
+    `
+  }
 
-  const [getClassData, { loading, error, data }] = useLazyQuery(
-    GET_CLASS_DASHBOARD,
+  const [getDashboardData, { loading, error, data }] = useLazyQuery(
+    GET_DASHBOARD, 
     {
-      variables: { classId: props.selectedClassId },
-      fetchPolicy: "network-only",
+      fetchPolicy: "network-only"
     }
-  );
+  ) 
 
   const listingData = {
     type: "studentsTeacherDash",
@@ -73,7 +100,7 @@ const Dashboard = (props) => {
   if (error) {
     return (
       <div>
-        <h2>there was an error :(</h2>
+        <h2>there was an errooooooooor :(</h2>
       </div>
     );
   }
@@ -82,14 +109,14 @@ const Dashboard = (props) => {
   // if(data && !data.getClassInfo.students){
 
   // }
-
-  if (data) {
+  let numPendingApproval = 0
+  let pendingApprovals = []
+  if (props.userType === 'teacher' && data) {
     const classStudents = data.getClassInfo.students;
     // const updatedListingData = { ...listingData };
     // updatedListingData.data = classStudents;
     // setClassData(updatedListingData);
-    let numPendingApproval = 0;
-    let pendingApprovals = [];
+    
     for (const student of classStudents) {
       for (const transaction of student.transactions) {
         if (!transaction.approved) {
@@ -116,35 +143,10 @@ const Dashboard = (props) => {
       <>
         <div className="panel dashboard-groups">
           <h4 className="panel__title">{data.getClassInfo.className}</h4>
-          {/* <div className="list list--dash">
-            <div className="list__header list__header--dash">
-              <div className="list__col-img list__header-item" />
-              <div className="list__col-name list__col-name--dash list__header-item">
-                Name <span className="icon list__header-icon"></span>
-              </div>
-              <div className="list__col-kudos list__col-kudos--dash list__header-item">
-                Kudos <span className="icon list__header-icon"></span>
-              </div>
-              <div className="list__search icon-search">
-                <AiOutlineSearch className="icon-search" />
-              </div>
-            </div>
-            <div className="list__items-container list__items-container--dash">
-              {classStudents.map((student) => {
-                return (
-                  <StudentCard
-                    key={student.id}
-                    studentData={student}
-                 
-                  />
-                );
-              })}
-            </div>
-          </div> */}
           <Listing
             rows={classStudents}
             config={listingData}
-            refreshData={getClassData}
+            refreshData={getDashboardData}
           />
         </div>
         <div className="panel dashboard-panel-treasure">
@@ -167,17 +169,54 @@ const Dashboard = (props) => {
             <p>{numPendingApproval} Pending Approvals</p>
           </div>
         </div>
-        {/* {classStudents.map((student) => {
-          return (
-            <StudentCard
-              key={student.id}
-              name={student.firstName}
-              kudosBalance={student.kudosBalance}
-            />
-          );
-        })} */}
       </>
     );
+  }
+
+  if(data){
+    let approvedPurchases = []
+    const studentTransactions = data.student.transactions
+    for(const transaction of studentTransactions){
+      if(transaction.approved){
+        approvedPurchases.push(transaction)
+      } else{
+        numPendingApproval += 1
+        pendingApprovals.push(transaction)
+      }
+    }
+
+    return (
+      <>
+        <div className="panel dashboard-groups">
+          <h4 className="panel__title">Your Prizes!</h4>
+          {/* <Listing
+            rows={classStudents}
+            config={listingData}
+            refreshData={getDashboardData}
+          /> */}
+        </div>
+        <div className="panel dashboard-panel-treasure">
+          <h4 className="panel__title">Kudos Points</h4>
+          <div className="panel__content">
+            <GiOpenTreasureChest className="icon-treasure" /> 
+            <div className="dashboard-panel-treasure__links">
+              <p>
+                <a href="#">{data.student.kudosBalance} Kudos Points Remaining</a>
+              </p>
+              {/* <p>
+                <a href="#">{remainingPrizes} Prizes Remaining</a>
+              </p> */}
+            </div>
+          </div>
+        </div>
+        <div className="panel dashboard-lorem">
+          <h4 className="panel__title">Approvals</h4>
+          <div className="panel__content">
+            <p>{numPendingApproval} Pending Approvals</p>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (

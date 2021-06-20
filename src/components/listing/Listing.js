@@ -35,8 +35,8 @@ const Listing = (props) => {
               <FaDollarSign className="icon-pts" />
             ) : null}
 
-            {props.config.type == "students" ||
-            props.config.type == "prizes" ? (
+            {props.userType && (props.config.type == "students" ||
+            props.config.type == "prizes") ? (
               <OverlaySelect type={props.config.type} refreshData={props.refreshData} classId={props.classId}/>
             ) : null}
 

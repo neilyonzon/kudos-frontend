@@ -4,8 +4,22 @@ import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChe
 import Listing from "../components/listing/Listing";
 
 const TreasureBox = (props) => {
+
+  useEffect(() => {
+    if(props.userType === 'teacher'){
+      console.log('for some reason made it here')
+      getTreasureBoxData({
+        variables: {
+          classId: props.selectedClassId
+        }
+      })
+    } else {
+      getTreasureBoxData()
+    }
+  }, [props.selectedClassId]);
+
   const listingData = {
-    type: "prizes",
+    type: props.userType === 'teacher' ? "prizes" : 'treasureBox',
     columns: [
       {
         name: "Name",
@@ -16,7 +30,7 @@ const TreasureBox = (props) => {
         dataQuery: "kudosCost",
       },
       {
-        name: "Qty",
+        name: props.userType === 'teacher' ? "Qty" : "# Available",
         dataQuery: "quantity",
       },
       {
@@ -26,30 +40,43 @@ const TreasureBox = (props) => {
     ],
   };
 
-  const GET_CLASS_DASHBOARD = gql`
-    query getClassDashboard($classId: Int!) {
-      getClassInfo(classId: $classId) {
-        className
-        prizes {
-          id
-          name
-          kudosCost
-          quantity
-          category
-          description
+  let GET_TREASURE_BOX 
+  if(props.userType === 'teacher'){
+    GET_TREASURE_BOX = gql`
+      query getTreasureBox($classId: Int!) {
+        getClassInfo(classId: $classId) {
+          className
+          prizes {
+            id
+            name
+            imageUrl
+            description
+            category
+            kudosCost
+            quantity
+          }
         }
       }
-    }
-  `;
+    `
+  } else {
+    GET_TREASURE_BOX = gql`
+      query getTreasureBox {
+        getClassPrizes {
+          id
+          name
+          imageUrl
+          description
+          category
+          kudosCost
+          quantity
+        }
+      }
+    `
+  }
 
-  useEffect(() => {
-    getPrizesData();
-  }, []);
-
-  const [getPrizesData, { loading, error, data }] = useLazyQuery(
-    GET_CLASS_DASHBOARD,
+  const [getTreasureBoxData, { loading, error, data }] = useLazyQuery(
+    GET_TREASURE_BOX,
     {
-      variables: { classId: props.selectedClassId },
       fetchPolicy: "network-only",
     }
   );
@@ -63,31 +90,32 @@ const TreasureBox = (props) => {
   }
 
   if (error) {
+    console.log('error!!!',error)
     return (
       <div>
-        <h2>there was an error :(</h2>
+        <h2>there was an error</h2>
       </div>
     );
   }
 
-  if (data && data.getClassInfo.prizes.length == 0) {
-    return <p>There are no prizes</p>;
-  }
-
   if (data) {
-    const classPrizes = data.getClassInfo.prizes;
+    const classPrizes = props.userType === 'teacher' ? data.getClassInfo.prizes : data.getClassPrizes
+    if(classPrizes.length === 0){
+      return <p>There are no prizes</p>
+    }
 
     return (
       <>
-        <div className="panel">
+        <div className="panel">          
           <h4 className="panel__title">
-            Prizes for {data.getClassInfo.className}
+            {props.userType === 'teacher' ? `Prizes for ${data.getClassInfo.className}` : 'Available Prizes'}
           </h4>
           <Listing
             rows={classPrizes}
             config={listingData}
-            refreshData={getPrizesData}
-            classId={props.selectedClassId}
+            refreshData={getTreasureBoxData}
+            classId={props.userType === 'teacher' ? props.selectedClassId : null}
+            userType={props.userType}
           />
         </div>
       </>

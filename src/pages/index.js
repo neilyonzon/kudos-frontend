@@ -15,6 +15,7 @@ const IndexPage = () => {
       </Helmet>
       <Router>
         <Welcome path="/" />
+        <Welcome path="/teacher" teacherLogin={true}/>
         <Home path="/home" />
       </Router>
     </Layout>
