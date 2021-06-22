@@ -116,6 +116,7 @@ const TreasureBox = (props) => {
             refreshData={getTreasureBoxData}
             classId={props.userType === 'teacher' ? props.selectedClassId : null}
             userType={props.userType}
+            kudosBalance={props.kudosBalance}
           />
         </div>
       </>

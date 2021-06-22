@@ -17,6 +17,11 @@ const ListingCard = (props) => {
   const [openTransaction, setOpenTransaction] = useState(false);
   const [openWish, setOpenWish] = useState(false);
 
+  let hasEnoughKudos
+  if(props.type === 'treasureBox'){
+    hasEnoughKudos = props.itemData.kudosCost <= props.kudosBalance
+  }
+
   const handleEditKudosModal = () => {
     if (props.type === "studentsTeacherDash" || props.type === "students") {
       setOpenEditKudos(!openEditKudos);
@@ -36,10 +41,10 @@ const ListingCard = (props) => {
   };
 
   const handleActionModal = (actionType) => {
-    if(actionType === 'transaction'){
-      setOpenTransaction(!openTransaction)
-    } else {
+    if(!hasEnoughKudos || actionType === 'wish'){
       setOpenWish(!openWish)
+    } else {
+      setOpenTransaction(!openTransaction)
     }
   }
 
@@ -150,6 +155,8 @@ const ListingCard = (props) => {
         kudoscost={props.itemData.kudosCost}
         imageUrl={props.itemData.imageUrl}
         actionType={'wish'}
+        hasEnoughKudos={hasEnoughKudos}
+        kudosBalance={props.kudosBalance}
       />
     </div>
   );

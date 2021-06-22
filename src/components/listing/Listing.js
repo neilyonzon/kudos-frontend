@@ -52,6 +52,7 @@ const Listing = (props) => {
                 columns={props.config.columns}
                 refreshData={props.refreshData}
                 type={props.config.type}
+                kudosBalance={props.kudosBalance}
               />
             );
           })}
