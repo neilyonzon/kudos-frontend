@@ -179,8 +179,8 @@ const PrizeModal = (props) => {
   });
 
   const DELETE = gql`
-    mutation deletePrize($id: Int!) {
-      deletePrize(prizeInput: { prizeIds: [$id] }) {
+    mutation deletePrizes($id: Int!) {
+      deletePrizes(prizeInput: { prizeIds: [$id] }) {
         id
       }
     }
