@@ -89,6 +89,10 @@
   grid-template-areas:
     "nav message"
     "nav panel";
+
+  &--settings {
+    height: 105rem;
+  }
 }
 
 @import "control-zone";

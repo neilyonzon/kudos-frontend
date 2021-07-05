@@ -65,7 +65,6 @@ const input = (props) => {
           className={inputClass}
           id={label}
           name={label}
-          aria-controls={helperId}
           aria-describedby={helperId}
           {...props.inputConfig}
           value={props.value}
@@ -79,7 +78,6 @@ const input = (props) => {
           className={inputClass}
           id={label}
           name={label}
-          aria-controls={helperId}
           aria-describedby={helperId}
           rows="4"
           {...props.inputConfig}
@@ -145,7 +143,6 @@ const input = (props) => {
           className="form__input"
           id={label}
           name={label}
-          aria-controls={`helper-text__${label}`}
           aria-describedby={`helper-text__${label}`}
           {...props.inputConfig}
           value={props.value}
