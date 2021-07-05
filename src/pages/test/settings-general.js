@@ -60,7 +60,10 @@ class Dashboard extends Component {
                 <div className="tabs__content active" id="tabcontent-1">
                   <form className="settings-form">
                     <div className="settings-form__group">
-                      <label className="" htmlFor="teacher-name">
+                      <label
+                        className="settings-form__label"
+                        htmlFor="teacher-name"
+                      >
                         Name
                       </label>
                       <input
@@ -70,13 +73,16 @@ class Dashboard extends Component {
                         name="teacher-name"
                         aria-describedby="settings-form__helper-text__name"
                       />
-                      <span className="settings-form__helper-text__name">
+                      <span
+                        id="settings-form__helper-text__name"
+                        class="settings-form__helper"
+                      >
                         Update your First and Last Name
                       </span>
                     </div>
 
                     <div className="settings-form__group">
-                      <label className="" htmlFor="name">
+                      <label className="settings-form__label" htmlFor="name">
                         Username
                       </label>
                       <input
@@ -84,15 +90,18 @@ class Dashboard extends Component {
                         className="settings-form__input-text"
                         id="name"
                         name="teacher-name"
-                        aria-describedby="settings-form__helper-text__name"
+                        aria-describedby="settings-form__helper-text__username"
                       />
-                      <span className="settings-form__helper-text__name">
+                      <span
+                        id="settings-form__helper-text__username"
+                        class="settings-form__helper"
+                      >
                         Update your First and Last Name
                       </span>
                     </div>
 
                     <div className="settings-form__group">
-                      <label className="" htmlFor="name">
+                      <label className="settings-form__label" htmlFor="name">
                         Name
                       </label>
                       <input
