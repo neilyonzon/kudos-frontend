@@ -2,13 +2,13 @@ import React, { useState, useRef } from "react";
 import Modal from "react-modal";
 
 import { gql, useMutation } from "@apollo/client";
-import axios from 'axios';
+import axios from "axios";
 
 import Input from "../forms/Input";
 import Button from "../elements/Button";
 
 import { checkValidity } from "../../utils/formValidity";
-import { generateImageBase64, formatFileName } from '../../utils/image';
+import { generateImageBase64, formatFileName } from "../../utils/image";
 
 const customStyles = {
   content: {
@@ -25,7 +25,6 @@ const customStyles = {
 //Modal.setAppElement('#yourAppElement')
 
 const StudentModal = (props) => {
-
   const formStructure = {
     username: {
       inputType: "input",
@@ -99,15 +98,15 @@ const StudentModal = (props) => {
       valid: false,
       touched: false,
     },
-  }
+  };
 
   const [form, setForm] = useState(formStructure);
 
   const [formIsValid, setFormIsValid] = useState(false);
 
-  const [imagePreview, setImagePreview] = useState(null)
-  const [imageFile, setImageFile] = useState(null)
-  const inputFile = useRef(null)
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const inputFile = useRef(null);
 
   const S3SIGN = gql`
     mutation s3Signature($fileName: String!, $fileType: String!) {
@@ -116,20 +115,20 @@ const StudentModal = (props) => {
         url
       }
     }
-  `
+  `;
 
   const uploadToS3 = async (file, signedRequest) => {
     const options = {
       headers: {
-        "Content-Type": file.type
-      }
-    }
-    await axios.put(signedRequest, file, options)
-  }
+        "Content-Type": file.type,
+      },
+    };
+    await axios.put(signedRequest, file, options);
+  };
 
   const [getS3Signature] = useMutation(S3SIGN, {
     async onCompleted({ signS3 }) {
-      await uploadToS3(imageFile, signS3.signedRequest)
+      await uploadToS3(imageFile, signS3.signedRequest);
 
       student({
         variables: {
@@ -139,15 +138,14 @@ const StudentModal = (props) => {
           lastName: form.lastName.value,
           username: form.username.value,
           password: form.password.value,
-          imageUrl: signS3.url
+          imageUrl: signS3.url,
         },
       });
-
     },
     onError() {
       console.log("unable to get s3 signature!");
     },
-  })
+  });
 
   let STUDENT;
   if (props.addStudent) {
@@ -245,36 +243,40 @@ const StudentModal = (props) => {
   };
 
   const openImageFilePicker = (event) => {
-    event.preventDefault()
-    inputFile.current.click()
-  }
+    event.preventDefault();
+    inputFile.current.click();
+  };
 
   const selectImageHandler = (event) => {
-    event.stopPropagation()
-    event.preventDefault()
-    const file = event.target.files[0]
+    event.stopPropagation();
+    event.preventDefault();
+    const file = event.target.files[0];
     generateImageBase64(file)
-      .then(b64 => {
-        console.log(file)
-        setImagePreview(b64)
-        setImageFile(file)
+      .then((b64) => {
+        console.log(file);
+        setImagePreview(b64);
+        setImageFile(file);
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
   const submitStudentHandler = async (event) => {
     event.preventDefault();
 
-    if(imageFile){
-      const prevFileName = props.imageUrl ? 'images/' + props.imageUrl.split('/').slice(-1)[0] : null 
-      console.log('here is the file name!!!',prevFileName)
+    if (imageFile) {
+      const prevFileName = props.imageUrl
+        ? "images/" + props.imageUrl.split("/").slice(-1)[0]
+        : null;
+      console.log("here is the file name!!!", prevFileName);
       getS3Signature({
         variables: {
-          fileName: prevFileName ? prevFileName : formatFileName(imageFile.name),
-          fileType: imageFile.type
-        }
-      })
-    } else{
+          fileName: prevFileName
+            ? prevFileName
+            : formatFileName(imageFile.name),
+          fileType: imageFile.type,
+        },
+      });
+    } else {
       student({
         variables: {
           id: props.id ? props.id : "",
@@ -283,7 +285,7 @@ const StudentModal = (props) => {
           lastName: form.lastName.value,
           username: form.username.value,
           password: form.password.value,
-          imageUrl: props.imageUrl ? props.imageUrl : null
+          imageUrl: props.imageUrl ? props.imageUrl : null,
         },
       });
     }
@@ -301,11 +303,11 @@ const StudentModal = (props) => {
   };
 
   const closeModalHandler = () => {
-    setForm(formStructure)
-    setImagePreview(null)
-    setImageFile(null)
-    props.onClose()
-  }
+    setForm(formStructure);
+    setImagePreview(null);
+    setImageFile(null);
+    props.onClose();
+  };
 
   const formInputArray = [];
   for (let key in form) {
@@ -327,25 +329,25 @@ const StudentModal = (props) => {
           : props.firstName + " " + props.lastName}
       </p>
       <form className="form" onSubmit={submitStudentHandler}>
-        <div 
+        <div
           className="form__image"
           style={{
-            backgroundImage: `url('${imagePreview ? imagePreview : props.imageUrl}')`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center'
+            backgroundImage: `url('${
+              imagePreview ? imagePreview : props.imageUrl
+            }')`,
+            backgroundSize: "contain",
+            backgroundPosition: "center",
           }}
         >
-          <button className="form__image-btn" 
-            onClick={openImageFilePicker}
-          >
+          <button className="form__image-btn" onClick={openImageFilePicker}>
             {imagePreview ? null : "Upload/Edit"}
-          </button> 
+          </button>
         </div>
 
-        <input 
-          type='file'
+        <input
+          type="file"
           ref={inputFile}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           onChange={selectImageHandler}
         />
 
@@ -367,13 +369,13 @@ const StudentModal = (props) => {
         <Button btnColor="green" disabled={!formIsValid}>
           {props.addStudent ? "Add" : "Update"}
         </Button>
-      </form>
 
-      {!props.addStudent ? (
-        <Button btnColor="green" clicked={deleteStudentHandler}>
-          Delete Student
-        </Button>
-      ) : null}
+        {!props.addStudent ? (
+          <Button btnColor="green" clicked={deleteStudentHandler}>
+            Delete Student
+          </Button>
+        ) : null}
+      </form>
     </Modal>
   );
 };

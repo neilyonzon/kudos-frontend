@@ -1,14 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 
 import { gql, useMutation } from "@apollo/client";
-import axios from 'axios';
 
 import Input from "../forms/Input";
 import Button from "../elements/Button";
 
 import { checkValidity } from "../../utils/formValidity";
-import { generateImageBase64, formatFileName } from '../../utils/image';
 
 const customStyles = {
   content: {
@@ -26,8 +24,7 @@ const customStyles = {
 //Modal.setAppElement('#yourAppElement')
 
 const PrizeModal = (props) => {
-
-  const formStructure = {
+  const [form, setForm] = useState({
     prizename: {
       inputType: "input",
       labelConfig: {
@@ -113,56 +110,9 @@ const PrizeModal = (props) => {
       value: props.quantity,
       valid: true,
     },
-  }
-
-  const [form, setForm] = useState(formStructure);
+  });
 
   const [formIsValid, setFormIsValid] = useState(false);
-
-  const [imagePreview, setImagePreview] = useState(null)
-  const [imageFile, setImageFile] = useState(null)
-  const inputFile = useRef(null)
-
-  const S3SIGN = gql`
-    mutation s3Signature($fileName: String!, $fileType: String!) {
-      signS3(fileName: $fileName, fileType: $fileType) {
-        signedRequest
-        url
-      }
-    }
-  `
-
-  const uploadToS3 = async (file, signedRequest) => {
-    const options = {
-      headers: {
-        "Content-Type": file.type
-      }
-    }
-    await axios.put(signedRequest, file, options)
-  }
-
-  const [getS3Signature] = useMutation(S3SIGN, {
-    async onCompleted({ signS3 }) {
-      await uploadToS3(imageFile, signS3.signedRequest)
-
-      prize({
-        variables: {
-          prizeId: props.id ? props.id : "",
-          classId: props.classId ? props.classId : "",
-          name: form.prizename.value,
-          imageUrl: signS3.url,
-          kudosCost: parseInt(form.kudoscost.value),
-          quantity: form.points.value,
-          description: form.description.value,
-          category: "Toy",
-        },
-      });
-
-    },
-    onError() {
-      console.log("unable to get s3 signature!");
-    },
-  })
 
   let PRIZE;
   if (props.addPrize) {
@@ -174,7 +124,6 @@ const PrizeModal = (props) => {
         $category: String
         $kudosCost: Int!
         $quantity: Int!
-        $imageUrl: String!
         $classId: Int!
       ) {
         createPrize(
@@ -185,7 +134,6 @@ const PrizeModal = (props) => {
             category: $category
             kudosCost: $kudosCost
             quantity: $quantity
-            imageUrl: $imageUrl
             classId: $classId
           }
         ) {
@@ -231,8 +179,8 @@ const PrizeModal = (props) => {
   });
 
   const DELETE = gql`
-    mutation deletePrize($id: Int!) {
-      deletePrize(prizeInput: { prizeIds: [$id] }) {
+    mutation deletePrizes($id: Int!) {
+      deletePrizes(prizeInput: { prizeIds: [$id] }) {
         id
       }
     }
@@ -293,67 +241,32 @@ const PrizeModal = (props) => {
     setForm(updatedForm);
   };
 
-  const openImageFilePicker = (event) => {
-    event.preventDefault()
-    inputFile.current.click()
-  }
-
-  const selectImageHandler = (event) => {
-    event.stopPropagation()
-    event.preventDefault()
-    const file = event.target.files[0]
-    generateImageBase64(file)
-      .then(b64 => {
-        console.log(file)
-        setImagePreview(b64)
-        setImageFile(file)
-      })
-      .catch(err => console.log(err))
-  }
-
   const submitPrizeHandler = async (event) => {
     event.preventDefault();
-
-    if(imageFile){
-      getS3Signature({
-        variables: {
-          fileName: formatFileName(imageFile.name),
-          fileType: imageFile.type
-        }
-      })
-    } else{
-      prize({
-        variables: {
-          prizeId: props.id ? props.id : "",
-          classId: props.classId ? props.classId : "",
-          name: form.prizename.value,
-          imageUrl: "undefined",
-          kudosCost: parseInt(form.kudoscost.value),
-          quantity: form.points.value,
-          description: form.description.value,
-          category: "Toy",
-        },
-      });
-    }
-
+    prize({
+      variables: {
+        prizeId: props.id ? props.id : "",
+        classId: props.classId ? props.classId : "",
+        name: form.prizename.value,
+        imageUrl: "",
+        kudosCost: parseInt(form.kudoscost.value),
+        quantity: form.points.value,
+        description: form.description.value,
+        category: "Toy",
+      },
+    });
     props.onClose();
   };
 
   const deletePrizeHandler = async (event) => {
     event.preventDefault();
+    console.log("clicked!");
     deletePrize({
       variables: {
         id: props.id ? props.id : "",
       },
     });
   };
-
-  const closeModalHandler = () => {
-    setForm(formStructure)
-    setImagePreview(null)
-    setImageFile(null)
-    props.onClose()
-  }
 
   const formInputArray = [];
   for (let key in form) {
@@ -366,7 +279,7 @@ const PrizeModal = (props) => {
   return (
     <Modal
       isOpen={props.isOpen}
-      onRequestClose={closeModalHandler}
+      onRequestClose={props.onClose}
       style={customStyles}
     >
       <p>
@@ -375,28 +288,9 @@ const PrizeModal = (props) => {
           : "Edit details for " + props.prizename}
       </p>
       <form className="form" onSubmit={submitPrizeHandler}>
-        <div 
-          className="form__image"
-          style={{
-            backgroundImage: `url('${props.imageUrl ? props.imageUrl : imagePreview}')`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center'
-          }}
-        >
-          <button className="form__image-btn"
-            onClick={openImageFilePicker}
-          >
-            {imagePreview ? null : "Upload/Edit"}
-          </button>
+        <div className="form__image">
+          <button className="form__image-btn">Upload/Edit</button>
         </div>
-
-        <input 
-          type='file'
-          ref={inputFile}
-          style={{ display: 'none' }}
-          onChange={selectImageHandler}
-        />
-
         {formInputArray.map((formInput) => (
           <Input
             key={formInput.id}
@@ -416,13 +310,13 @@ const PrizeModal = (props) => {
         <Button btnColor="green" disabled={!formIsValid}>
           {props.addPrize ? "Add" : "Update"}
         </Button>
-      </form>
 
-      {!props.addPrize ? (
-        <Button btnColor="green" clicked={deletePrizeHandler}>
-          Delete Student
-        </Button>
-      ) : null}
+        {!props.addPrize ? (
+          <Button btnColor="green" clicked={deletePrizeHandler}>
+            Delete Prize
+          </Button>
+        ) : null}
+      </form>
     </Modal>
   );
 };

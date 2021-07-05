@@ -58,6 +58,7 @@ p {
 .btn {
   min-width: 20rem;
   max-width: 26rem;
+  height: 4.5rem;
   margin: 0.75rem;
   padding: 1rem 2rem;
   border-style: none;
@@ -91,6 +92,17 @@ p {
   &:disabled {
     background: $color-gray;
     cursor: not-allowed;
+  }
+
+  &--settings {
+    color: $color-gray;
+    border: 1px $color-gray solid;
+    background: white;
+
+    &:hover {
+      color: white;
+      background: $color-gray;
+    }
   }
 }
 
