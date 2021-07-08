@@ -1,0 +1,54 @@
+.class-settings {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.6rem;
+  margin-top: 2rem;
+  justify-content: flex-start;
+
+  &__group {
+    width: 38rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7rem;
+
+    &:nth-child(odd) {
+      margin-right: 20rem;
+    }
+  }
+
+  &__name {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 3rem;
+
+    & label {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__img {
+    & > img {
+      width: 13rem;
+      height: 13rem;
+      border-radius: 5px;
+    }
+  }
+
+  &__delete {
+    display: block;
+    background: white;
+    border: 0;
+    position: relative;
+    text-decoration: underline;
+    left: 100%;
+    top: 3rem;
+    transform: translateX(-100%);
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(211, 94, 94);
+    }
+  }
+}

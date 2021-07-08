@@ -250,7 +250,7 @@ const PrizeModal = (props) => {
         name: form.prizename.value,
         imageUrl: "",
         kudosCost: parseInt(form.kudoscost.value),
-        quantity: form.points.value,
+        quantity: parseInt(form.points.value),
         description: form.description.value,
         category: "Toy",
       },
