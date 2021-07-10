@@ -6,10 +6,6 @@ import { IoIosPeople } from "@react-icons/all-files/io/IoIosPeople";
 import { IoIosSettings } from "@react-icons/all-files/io/IoIosSettings";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
-import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
-import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
-import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVerticalSharp";
-import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 
 class Dashboard extends Component {
   state = {};

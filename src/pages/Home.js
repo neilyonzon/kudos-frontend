@@ -2,14 +2,14 @@ import React, { useState, useEffect, Component } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
 import { retrieveAcsToken, logout } from "../utils/auth";
-import { getUserType } from '../utils/userType';
+import { getUserType } from "../utils/userType";
 
 import ControlNav from "../components/home/ControlNav";
 import ClassSelector from "../components/home/ClassSelector";
-
 import Dashboard from "../components/Dashboard";
 import Students from "../components/Students";
 import TreasureBox from "../components/TreasureBox";
+import Settings from "../components/settings/Settings";
 import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
 import { AiOutlineUnlock } from "@react-icons/all-files/ai/AiOutlineUnlock";
 import dashboardStyles from "../components/dashboard.module.css";
@@ -20,17 +20,17 @@ const Home = (props) => {
   const [classes, setClasses] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [userType, setUserType] = useState(null);
-  const [kudosBalance, setKudosBalance] = useState(0)
+  const [kudosBalance, setKudosBalance] = useState(0);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       const savedUserType = getUserType();
       const acsToken = await retrieveAcsToken();
       if (!!acsToken) {
-        setUserType(savedUserType)
+        setUserType(savedUserType);
         setShow(true);
       } else {
-        const loginDomain = savedUserType ? savedUserType : ''
+        const loginDomain = savedUserType ? savedUserType : "";
         return navigate(`/${loginDomain}`);
       }
     };
@@ -38,8 +38,8 @@ const Home = (props) => {
     checkLoginStatus();
   }, []);
 
-  let GET_USER_INFO
-  if(userType === 'teacher'){
+  let GET_USER_INFO;
+  if (userType === "teacher") {
     GET_USER_INFO = gql`
       query getTeacherInfo {
         teacher {
@@ -53,8 +53,8 @@ const Home = (props) => {
           }
         }
       }
-    `
-  } else{
+    `;
+  } else {
     GET_USER_INFO = gql`
       query getStudentInfo {
         student {
@@ -66,28 +66,28 @@ const Home = (props) => {
           classId
         }
       }
-    `
+    `;
   }
 
   const [loadUserInfo, { called, loading, error, data }] = useLazyQuery(
     GET_USER_INFO,
     {
       fetchPolicy: "network-only",
-      onCompleted(data){
-        if(data && userType ==='teacher' && data.teacher.classes.length > 0){
-          setClasses(data.teacher.classes)
-          if(!selectedClassId){
-            setSelectedClassId(data.teacher.classes[0].id)
+      onCompleted(data) {
+        if (data && userType === "teacher" && data.teacher.classes.length > 0) {
+          setClasses(data.teacher.classes);
+          if (!selectedClassId) {
+            setSelectedClassId(data.teacher.classes[0].id);
           }
-          return
+          return;
         }
-        if(data && userType !== 'teacher'){
-          setSelectedClassId(data.student.classId)
-          setKudosBalance(data.student.kudosBalance)
+        if (data && userType !== "teacher") {
+          setSelectedClassId(data.student.classId);
+          setKudosBalance(data.student.kudosBalance);
         }
-      }
+      },
     }
-  )
+  );
 
   const onTabSelectHandler = (tabName) => {
     setSelectedTab(tabName);
@@ -103,26 +103,26 @@ const Home = (props) => {
 
   const TOGGLE_TREASURE_BOX = gql`
     mutation toggleBox($classId: Int!) {
-      toggleTreasureBox(classId: $classId) 
+      toggleTreasureBox(classId: $classId)
     }
-  `
+  `;
 
   const [toggleTreasureBox] = useMutation(TOGGLE_TREASURE_BOX, {
-    onCompleted(){
-      loadUserInfo()
+    onCompleted() {
+      loadUserInfo();
     },
-    onError(){
-      console.log("error toggling treasure box!")
-    }
-  })
+    onError() {
+      console.log("error toggling treasure box!");
+    },
+  });
 
-  const handleToggleTB = async (classId) =>{
+  const handleToggleTB = async (classId) => {
     toggleTreasureBox({
       variables: {
-        classId: classId
-      }
-    })
-  }
+        classId: classId,
+      },
+    });
+  };
 
   if (!called && show) {
     loadUserInfo();
@@ -150,8 +150,8 @@ const Home = (props) => {
     let tabClass;
     switch (true) {
       case selectedTab === "Settings":
-        tabComponent = <TreasureBox />;
-        tabClass = "dashboard";
+        tabComponent = <Settings />;
+        tabClass = "";
         break;
       case !selectedClassId:
         tabComponent = (
@@ -161,45 +161,70 @@ const Home = (props) => {
         );
         break;
       case selectedTab === "Students":
-        tabComponent = <Students selectedClassId={selectedClassId} userType={userType} />;
+        tabComponent = (
+          <Students selectedClassId={selectedClassId} userType={userType} />
+        );
         tabClass = "students";
         break;
       case selectedTab === "TreasureBox":
-        tabComponent = <TreasureBox selectedClassId={selectedClassId} userType={userType} kudosBalance={kudosBalance}/>;
+        tabComponent = (
+          <TreasureBox
+            selectedClassId={selectedClassId}
+            userType={userType}
+            kudosBalance={kudosBalance}
+          />
+        );
         tabClass = "treasurebox";
         break;
       default:
-        tabComponent = <Dashboard selectedClassId={selectedClassId} userType={userType} />;
+        tabComponent = (
+          <Dashboard selectedClassId={selectedClassId} userType={userType} />
+        );
         tabClass = "dashboard";
     }
 
-    let treasureBoxIcon
-    let sortedClasses
-    if(userType === 'teacher'){
-      sortedClasses = [...classes]
-      if(selectedClassId){
+    let treasureBoxIcon;
+    let sortedClasses;
+    if (userType === "teacher") {
+      sortedClasses = [...classes];
+      if (selectedClassId) {
         const selectedClass = classes.find((cls) => {
           return cls.id === selectedClassId;
         });
-        if(selectedClass.treasureBoxOpen){
-          treasureBoxIcon = <AiOutlineUnlock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+        if (selectedClass.treasureBoxOpen) {
+          treasureBoxIcon = (
+            <AiOutlineUnlock
+              className="treasure-lock"
+              onClick={() => handleToggleTB(selectedClassId)}
+            />
+          );
         } else {
-          treasureBoxIcon = <AiOutlineLock className="treasure-lock" onClick={() => handleToggleTB(selectedClassId)} />
+          treasureBoxIcon = (
+            <AiOutlineLock
+              className="treasure-lock"
+              onClick={() => handleToggleTB(selectedClassId)}
+            />
+          );
         }
-  
+
         sortedClasses.forEach((cls, i) => {
-          if(cls.id === selectedClassId){
-            sortedClasses.splice(i, 1)
-            sortedClasses.unshift(cls)
+          if (cls.id === selectedClassId) {
+            sortedClasses.splice(i, 1);
+            sortedClasses.unshift(cls);
           }
-        })
-      }    
+        });
+      }
     }
 
     return (
       <div className="main">
         <div className="message-banner">
-          <h1>Welcome Back {userType === 'teacher' ? `${data.teacher.firstName} ${data.teacher.lastName}!` : `${data.student.firstName} ${data.student.lastName}!`}</h1>
+          <h1>
+            Welcome Back{" "}
+            {userType === "teacher"
+              ? `${data.teacher.firstName} ${data.teacher.lastName}!`
+              : `${data.student.firstName} ${data.student.lastName}!`}
+          </h1>
         </div>
 
         <a
@@ -219,7 +244,7 @@ const Home = (props) => {
         />
 
         <div className={`control-panel ${tabClass}`}>
-          {userType === 'teacher' ? 
+          {userType === "teacher" ? (
             <div className="utility-bar">
               <ClassSelector
                 onSelectClass={onSelectClassHandler}
@@ -227,11 +252,9 @@ const Home = (props) => {
               />
               {treasureBoxIcon}
             </div>
-            : null
-          }
+          ) : null}
           {tabComponent}
         </div>
-          
       </div>
     );
   }
