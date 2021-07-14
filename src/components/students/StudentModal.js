@@ -285,7 +285,7 @@ const StudentModal = (props) => {
           lastName: form.lastName.value,
           username: form.username.value,
           password: form.password.value,
-          imageUrl: props.imageUrl ? props.imageUrl : null,
+          imageUrl: props.imageUrl ? props.imageUrl : "dummyImageUrl",
         },
       });
     }
