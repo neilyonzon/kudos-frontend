@@ -153,6 +153,8 @@
 
 .settings-form {
   font-size: 1.6rem;
+  overflow-y: scroll;
+  height: 80%;
 
   &__group {
     display: flex;
@@ -176,5 +178,6 @@
     border-radius: 5px;
     border: 1px $color-gray solid;
     padding: 0.5rem 0.75rem;
+    max-width: 25rem;
   }
 }

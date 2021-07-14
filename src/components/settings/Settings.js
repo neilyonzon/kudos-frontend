@@ -1,83 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
-import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
+import GeneralForm from "./GeneralForm";
+import ClassesForm from "./ClassesForm";
 
 const Settings = (props) => {
+  //Hook for State
+  //State -> Array of Classes
+  const [tabClasses, setTabClasses] = useState([
+    { tabClass: "tabs__header active", contentClass: "tabs__content active" },
+    { tabClass: "tabs__header", contentClass: "tabs__content" },
+    { tabClass: "tabs__header", contentClass: "tabs__content" },
+  ]);
+
+  const handleTabChange = (index) => {
+    let tabs = JSON.parse(JSON.stringify(tabClasses));
+    for (let i = 0; i < tabs.length; i++) {
+      tabs[i] = {
+        tabClass: "tabs__header",
+        contentClass: "tabs__content",
+      };
+    }
+    tabs[index] = {
+      tabClass: "tabs__header active",
+      contentClass: "tabs__content active",
+    };
+    setTabClasses(tabs);
+  };
+
   return (
     <>
       <h4 className="panel__title">Settings</h4>
       <div className="tabs">
         <div className="tabs__headers">
-          <div className="tabs__header active" id="tabhead-1">
+          <div
+            className={tabClasses[0].tabClass}
+            id="tabhead-1"
+            onClick={() => handleTabChange(0)}
+          >
             General
           </div>
-          <div className="tabs__header" id="tabhead-2">
-            Security
+          <div
+            className={tabClasses[1].tabClass}
+            id="tabhead-2"
+            onClick={() => handleTabChange(1)}
+          >
+            Classes
           </div>
-          <div className="tabs__header" id="tabhead-3">
-            Treasure Box
+          <div
+            className={tabClasses[2].tabClass}
+            id="tabhead-3"
+            onClick={() => handleTabChange(2)}
+          >
+            Categories
           </div>
         </div>
         <div className="tabs__content-container">
-          <div className="tabs__content active" id="tabcontent-1">
-            <form className="settings-form">
-              <div className="settings-form__group">
-                <label className="settings-form__label" htmlFor="teacher-name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="settings-form__input-text"
-                  id="name"
-                  name="teacher-name"
-                  aria-describedby="settings-form__helper-text__name"
-                />
-                <span
-                  id="settings-form__helper-text__name"
-                  class="settings-form__helper"
-                >
-                  Update your First and Last Name
-                </span>
-              </div>
-
-              <div className="settings-form__group">
-                <label className="settings-form__label" htmlFor="name">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  className="settings-form__input-text"
-                  id="name"
-                  name="teacher-name"
-                  aria-describedby="settings-form__helper-text__username"
-                />
-                <span
-                  id="settings-form__helper-text__username"
-                  class="settings-form__helper"
-                >
-                  Update your First and Last Name
-                </span>
-              </div>
-
-              <div className="settings-form__group">
-                <label className="settings-form__label" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="settings-form__input-text"
-                  id="name"
-                  name="teacher-name"
-                  aria-describedby="settings-form__helper-text__name"
-                />
-                <span id="settings-form__helper-text__name">
-                  Update your First and Last Name
-                </span>
-              </div>
-            </form>
+          <div className={tabClasses[0].contentClass} id="tabcontent-1">
+            <GeneralForm data={props.data.teacher} />
           </div>
-          <div className="tabs__content" id="tabcontent-2">
+          <div className={tabClasses[1].contentClass} id="tabcontent-2">
             <h4>Tab 2</h4>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -88,8 +69,13 @@ const Settings = (props) => {
               nulla pariatur. Excepteur sint occaecat cupidatat non proident,
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
+            <div className="tabs__actions">
+              <button className="tabs__action-save btn btn--settings">
+                Save Update
+              </button>
+            </div>
           </div>
-          <div className="tabs__content" id="tabcontent-3">
+          <div className={tabClasses[2].contentClass} id="tabcontent-3">
             <h4>Tab 3</h4>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -100,12 +86,12 @@ const Settings = (props) => {
               nulla pariatur. Excepteur sint occaecat cupidatat non proident,
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
+            <div className="tabs__actions">
+              <button className="tabs__action-save btn btn--settings">
+                Save Update
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="tabs__actions">
-          <button className="tabs__action-save btn btn--settings">
-            Save Update
-          </button>
         </div>
       </div>
     </>

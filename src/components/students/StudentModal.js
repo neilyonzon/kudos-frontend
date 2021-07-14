@@ -8,6 +8,7 @@ import Input from "../forms/Input";
 import Button from "../elements/Button";
 
 import { checkValidity } from "../../utils/formValidity";
+import { inputChangeHandler } from "../../utils/inputChangeHandler";
 import { generateImageBase64, formatFileName } from "../../utils/image";
 
 const customStyles = {

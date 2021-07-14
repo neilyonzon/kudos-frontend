@@ -38,21 +38,21 @@
 
   &__content-container {
     position: relative;
-    height: 45rem;
+    height: 55rem;
     border: 1px $color-gray-light solid;
     border-radius: 5px;
     border-top-left-radius: 0px;
     padding: 2rem 2.5rem;
-    overflow-y: scroll;
   }
 
   &__content {
     position: absolute;
-    top: 0;
+    top: 2rem;
     padding-right: 2rem;
     padding-top: 2rem;
     display: none;
     width: 97%;
+    height: 100%;
 
     &.active {
       z-index: 10;
@@ -62,10 +62,11 @@
 
   &__actions {
     height: 9rem;
+    width: 100%;
     background: white;
-    border: 1px $color-gray-light solid;
-    position: relative;
-    bottom: 1px;
+    border-top: 1px $color-gray-light solid;
+    position: absolute;
+    top: 80%;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     display: flex;

@@ -52,7 +52,7 @@ class Groups extends Component {
                   <div className="list__header list__header--groups">
                     <div className="list__col-img list__header-item" />
                     <div className="list__col-name list__col-name--dash list__header-item">
-                      Name <span class="icon list__header-icon"></span>
+                      Name <span className="icon list__header-icon"></span>
                     </div>
                     <div className="list__col-kudos list__col-kudos--dash list__header-item">
                       Kudos <span className="icon list__header-icon"></span>

@@ -71,7 +71,7 @@ class Dashboard extends Component {
                       />
                       <span
                         id="settings-form__helper-text__name"
-                        class="settings-form__helper"
+                        className="settings-form__helper"
                       >
                         Update your First and Last Name
                       </span>
@@ -90,7 +90,7 @@ class Dashboard extends Component {
                       />
                       <span
                         id="settings-form__helper-text__username"
-                        class="settings-form__helper"
+                        className="settings-form__helper"
                       >
                         Update your First and Last Name
                       </span>

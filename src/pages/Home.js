@@ -150,7 +150,9 @@ const Home = (props) => {
     let tabClass;
     switch (true) {
       case selectedTab === "Settings":
-        tabComponent = <Settings />;
+        tabComponent = (
+          <Settings selectedClassId={selectedClassId} data={data} />
+        );
         tabClass = "";
         break;
       case !selectedClassId:

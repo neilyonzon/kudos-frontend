@@ -57,7 +57,7 @@ class Dashboard extends Component {
                   <div className="list__header">
                     <div className="list__col-img list__col" />
                     <div className="list__col list__col--lg">
-                      Name <span class="icon list__header-icon"></span>
+                      Name <span className="icon list__header-icon"></span>
                     </div>
                     <div className="list__col">
                       Cost <span className="icon list__header-icon"></span>
