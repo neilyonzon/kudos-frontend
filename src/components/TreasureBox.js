@@ -77,6 +77,7 @@ const TreasureBox = (props) => {
   const [getTreasureBoxData, { loading, error, data }] = useLazyQuery(
     GET_TREASURE_BOX,
     {
+      variables: { classId: props.selectedClassId },
       fetchPolicy: "network-only",
     }
   );
