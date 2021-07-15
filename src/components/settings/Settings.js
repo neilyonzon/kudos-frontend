@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import GeneralForm from "./GeneralForm";
+import CategoriesForm from "./CategoriesForm";
 import ClassesForm from "./ClassesForm";
 
 const Settings = (props) => {
@@ -59,16 +60,7 @@ const Settings = (props) => {
             <GeneralForm data={props.data.teacher} />
           </div>
           <div className={tabClasses[1].contentClass} id="tabcontent-2">
-            <h4>Tab 2</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+            <ClassesForm />
             <div className="tabs__actions">
               <button className="tabs__action-save btn btn--settings">
                 Save Update
@@ -76,21 +68,7 @@ const Settings = (props) => {
             </div>
           </div>
           <div className={tabClasses[2].contentClass} id="tabcontent-3">
-            <h4>Tab 3</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <div className="tabs__actions">
-              <button className="tabs__action-save btn btn--settings">
-                Save Update
-              </button>
-            </div>
+            <CategoriesForm />
           </div>
         </div>
       </div>

@@ -12,6 +12,10 @@ const ClassesForm = (props) => {
 
   const [formData, setFormData] = useState([{}]);
 
+  const [saveBtn, setSaveBtn] = useState({
+    class: "btn--settings-disable",
+  });
+
   return (
     <>
       <div className="utility-bar">
@@ -94,6 +98,11 @@ const ClassesForm = (props) => {
             <button className="class-settings__delete">Delete</button>
           </div>
         </div>
+      </div>
+      <div className="tabs__actions">
+        <button className={`tabs__action-save btn ` + saveBtn.class}>
+          Save Update
+        </button>
       </div>
     </>
   );

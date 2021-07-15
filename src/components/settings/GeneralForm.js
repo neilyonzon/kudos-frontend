@@ -1,8 +1,37 @@
 import React, { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { checkValidity } from "../../utils/formValidity";
+import { compareObjects } from "../../utils/compareObjects";
 
 const GeneralForm = (props) => {
+  //Original Form Data
+  const [ogFormData, setOgFormData] = useState({
+    firstName: {
+      value: props.data.firstName,
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    lastName: {
+      value: props.data.lastName,
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    email: {
+      value: props.data.email,
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+  });
+
   //Initialize states or Hooks
   const [formData, setFormData] = useState({
     firstName: {
@@ -21,7 +50,18 @@ const GeneralForm = (props) => {
       valid: false,
       touched: false,
     },
-    email: props.data.email,
+    email: {
+      value: props.data.email,
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+  });
+
+  const [saveBtn, setSaveBtn] = useState({
+    class: "btn--settings-disable",
   });
 
   //Function to handle form save
@@ -33,21 +73,77 @@ const GeneralForm = (props) => {
     const updatedForm = { ...formData };
     const updatedFormInput = { ...updatedForm[inputIdentifier] };
     updatedFormInput.value = event.target.value;
-    updatedFormInput.valid = checkValidity(
-      updatedFormInput.value,
-      updatedFormInput.validation
-    );
-    updatedFormInput.touched = true;
+    // updatedFormInput.valid = checkValidity(
+    //   updatedFormInput.value,
+    //   updatedFormInput.validation
+    // );
+    // updatedFormInput.touched = true;
     updatedForm[inputIdentifier] = updatedFormInput;
 
-    let formIsValid = true;
-    for (let inputIdentifier in updatedForm) {
-      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
-    }
+    // let formIsValid = true;
+    // for (let inputIdentifier in updatedForm) {
+    //   formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    // }
+    updateSaveBtn(compareObjects(updatedForm, ogFormData));
     setFormData(updatedForm);
-    // setFormIsValid(formIsValid);
   };
 
+  const updateSaveBtn = (objectCompare) => {
+    if (objectCompare == false) {
+      setSaveBtn({
+        class: "btn--settings",
+      });
+    } else {
+      setSaveBtn({
+        class: "btn--settings-disable",
+      });
+    }
+    console.log(objectCompare);
+  };
+
+  let TEACHER;
+  TEACHER = gql`
+    mutation postEditTeacher(
+      $firstName: String!
+      $lastName: String!
+      $username: String!
+    ) {
+      editTeacher(
+        teacherInput: {
+          firstName: $firstName
+          lastName: $lastName
+          email: $email
+        }
+      ) {
+        id
+      }
+    }
+  `;
+
+  const submitTeacherHandler = async (event) => {
+    event.preventDefault();
+
+    teacher({
+      variables: {
+        id: props.id ? props.id : "",
+        classId: props.classId ? props.classId : "",
+        firstName: formData.firstName.value,
+        lastName: formData.lastName.value,
+        email: formData.email.value,
+        // password: formData.password.value,
+        // imageUrl: props.imageUrl ? props.imageUrl : "dummyImageUrl",
+      },
+    });
+  };
+
+  const [teacher] = useMutation(TEACHER, {
+    onCompleted() {
+      props.refreshData();
+    },
+    onError() {
+      console.log("error editing student");
+    },
+  });
   return (
     <>
       <form className="settings-form">
@@ -83,6 +179,7 @@ const GeneralForm = (props) => {
             name="last-name"
             aria-describedby="settings-form__helper-last-name"
             value={formData.lastName.value}
+            onChange={(e) => inputChangeHandler(e, "lastName")}
           />
           <span
             id="settings-form__helper-last-name"
@@ -102,7 +199,8 @@ const GeneralForm = (props) => {
             id="email"
             name="email"
             aria-describedby="settings-form__helper-text__email"
-            value={formData.email}
+            value={formData.email.value}
+            onChange={(e) => inputChangeHandler(e, "email")}
           />
           <span
             id="settings-form__helper-text__email"
@@ -114,7 +212,7 @@ const GeneralForm = (props) => {
       </form>
       <div className="tabs__actions">
         <button
-          className="tabs__action-save btn btn--settings"
+          className={`tabs__action-save btn ` + saveBtn.class}
           onClick={handleGeneralForm}
         >
           Save Update

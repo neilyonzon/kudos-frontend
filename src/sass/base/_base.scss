@@ -104,6 +104,13 @@ p {
       background: $color-gray;
     }
   }
+
+  &--settings-disable {
+    color: $color-gray-light;
+    border: 1px $color-gray-light solid;
+    background: white;
+    cursor: default;
+  }
 }
 
 a {
