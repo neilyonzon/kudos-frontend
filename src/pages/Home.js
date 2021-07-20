@@ -51,6 +51,7 @@ const Home = (props) => {
             className
             treasureBoxOpen
           }
+          username
         }
       }
     `;

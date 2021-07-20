@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { checkValidity } from "../../utils/formValidity";
-import { compareObjects } from "../../utils/compareObjects";
+import { compareFormValues } from "../../utils/compareFormValues";
 
 const GeneralForm = (props) => {
-  //Original Form Data
   const [ogFormData, setOgFormData] = useState({
     firstName: {
       value: props.data.firstName,
@@ -12,7 +11,6 @@ const GeneralForm = (props) => {
         required: true,
       },
       valid: false,
-      touched: false,
     },
     lastName: {
       value: props.data.lastName,
@@ -20,19 +18,16 @@ const GeneralForm = (props) => {
         required: true,
       },
       valid: false,
-      touched: false,
     },
-    email: {
-      value: props.data.email,
+    username: {
+      value: props.data.username,
       validation: {
         required: true,
       },
       valid: false,
-      touched: false,
     },
   });
 
-  //Initialize states or Hooks
   const [formData, setFormData] = useState({
     firstName: {
       value: props.data.firstName,
@@ -40,7 +35,6 @@ const GeneralForm = (props) => {
         required: true,
       },
       valid: false,
-      touched: false,
     },
     lastName: {
       value: props.data.lastName,
@@ -48,15 +42,13 @@ const GeneralForm = (props) => {
         required: true,
       },
       valid: false,
-      touched: false,
     },
-    email: {
-      value: props.data.email,
+    username: {
+      value: "kitakoji",
       validation: {
         required: true,
       },
       valid: false,
-      touched: false,
     },
   });
 
@@ -64,32 +56,40 @@ const GeneralForm = (props) => {
     class: "btn--settings-disable",
   });
 
-  //Function to handle form save
-  const handleGeneralForm = () => {
-    console.log(formData);
+  const submitGeneralForm = () => {
+    if (saveBtn.class == "btn--settings") {
+      console.log(formData);
+    } else {
+      alert("Button is disabled");
+      console.log(saveBtn);
+    }
   };
 
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...formData };
     const updatedFormInput = { ...updatedForm[inputIdentifier] };
     updatedFormInput.value = event.target.value;
-    // updatedFormInput.valid = checkValidity(
-    //   updatedFormInput.value,
-    //   updatedFormInput.validation
-    // );
-    // updatedFormInput.touched = true;
     updatedForm[inputIdentifier] = updatedFormInput;
-
-    // let formIsValid = true;
-    // for (let inputIdentifier in updatedForm) {
-    //   formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
-    // }
-    updateSaveBtn(compareObjects(updatedForm, ogFormData));
+    let formIsValid = true;
+    for (const field in updatedForm) {
+      if (updatedForm[field].value == "") {
+        formIsValid = false;
+        console.log("There is an empty field. Disable button");
+        updateSaveBtn("disable");
+      }
+    }
+    if (formIsValid) {
+      if (!compareFormValues(updatedForm, ogFormData)) {
+        updateSaveBtn("enable");
+      } else {
+        updateSaveBtn("disable");
+      }
+    }
     setFormData(updatedForm);
   };
 
-  const updateSaveBtn = (objectCompare) => {
-    if (objectCompare == false) {
+  const updateSaveBtn = (status) => {
+    if (status == "enable") {
       setSaveBtn({
         class: "btn--settings",
       });
@@ -98,7 +98,6 @@ const GeneralForm = (props) => {
         class: "btn--settings-disable",
       });
     }
-    console.log(objectCompare);
   };
 
   let TEACHER;
@@ -112,7 +111,7 @@ const GeneralForm = (props) => {
         teacherInput: {
           firstName: $firstName
           lastName: $lastName
-          email: $email
+          username: $username
         }
       ) {
         id
@@ -125,13 +124,9 @@ const GeneralForm = (props) => {
 
     teacher({
       variables: {
-        id: props.id ? props.id : "",
-        classId: props.classId ? props.classId : "",
         firstName: formData.firstName.value,
         lastName: formData.lastName.value,
-        email: formData.email.value,
-        // password: formData.password.value,
-        // imageUrl: props.imageUrl ? props.imageUrl : "dummyImageUrl",
+        username: formData.username.value,
       },
     });
   };
@@ -190,30 +185,30 @@ const GeneralForm = (props) => {
         </div>
 
         <div className="settings-form__group">
-          <label className="settings-form__label" htmlFor="email">
-            Email
+          <label className="settings-form__label" htmlFor="username">
+            Username
           </label>
           <input
             type="text"
             className="settings-form__input-text"
-            id="email"
-            name="email"
-            aria-describedby="settings-form__helper-text__email"
-            value={formData.email.value}
-            onChange={(e) => inputChangeHandler(e, "email")}
+            id="username"
+            name="username"
+            aria-describedby="settings-form__helper-text__username"
+            value={formData.username.value}
+            onChange={(e) => inputChangeHandler(e, "username")}
           />
           <span
-            id="settings-form__helper-text__email"
+            id="settings-form__helper-text__username"
             className="settings-form__helper"
           >
-            Update your Email
+            Update your Username
           </span>
         </div>
       </form>
       <div className="tabs__actions">
         <button
           className={`tabs__action-save btn ` + saveBtn.class}
-          onClick={handleGeneralForm}
+          onClick={submitGeneralForm}
         >
           Save Update
         </button>
