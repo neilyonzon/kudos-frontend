@@ -4,22 +4,21 @@ import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChe
 import Listing from "../components/listing/Listing";
 
 const TreasureBox = (props) => {
-
   useEffect(() => {
-    if(props.userType === 'teacher'){
-      console.log('for some reason made it here')
+    if (props.userType === "teacher") {
+      console.log("for some reason made it here");
       getTreasureBoxData({
         variables: {
-          classId: props.selectedClassId
-        }
-      })
+          classId: props.selectedClassId,
+        },
+      });
     } else {
-      getTreasureBoxData()
+      getTreasureBoxData();
     }
   }, [props.selectedClassId]);
 
   const listingData = {
-    type: props.userType === 'teacher' ? "prizes" : 'treasureBox',
+    type: props.userType === "teacher" ? "prizes" : "treasureBox",
     columns: [
       {
         name: "Name",
@@ -30,7 +29,7 @@ const TreasureBox = (props) => {
         dataQuery: "kudosCost",
       },
       {
-        name: props.userType === 'teacher' ? "Qty" : "# Available",
+        name: props.userType === "teacher" ? "Qty" : "# Available",
         dataQuery: "quantity",
       },
       {
@@ -40,8 +39,8 @@ const TreasureBox = (props) => {
     ],
   };
 
-  let GET_TREASURE_BOX 
-  if(props.userType === 'teacher'){
+  let GET_TREASURE_BOX;
+  if (props.userType === "teacher") {
     GET_TREASURE_BOX = gql`
       query getTreasureBox($classId: Int!) {
         getClassInfo(classId: $classId) {
@@ -57,7 +56,7 @@ const TreasureBox = (props) => {
           }
         }
       }
-    `
+    `;
   } else {
     GET_TREASURE_BOX = gql`
       query getTreasureBox {
@@ -71,7 +70,7 @@ const TreasureBox = (props) => {
           quantity
         }
       }
-    `
+    `;
   }
 
   const [getTreasureBoxData, { loading, error, data }] = useLazyQuery(
@@ -91,7 +90,7 @@ const TreasureBox = (props) => {
   }
 
   if (error) {
-    console.log('error!!!',error)
+    console.log("error!!!", error);
     return (
       <div>
         <h2>there was an error</h2>
@@ -100,22 +99,29 @@ const TreasureBox = (props) => {
   }
 
   if (data) {
-    const classPrizes = props.userType === 'teacher' ? data.getClassInfo.prizes : data.getClassPrizes
-    if(classPrizes.length === 0){
-      return <p>There are no prizes</p>
+    const classPrizes =
+      props.userType === "teacher"
+        ? data.getClassInfo.prizes
+        : data.getClassPrizes;
+    if (classPrizes.length === 0) {
+      return <p>There are no prizes</p>;
     }
 
     return (
       <>
-        <div className="panel">          
+        <div className="panel">
           <h4 className="panel__title">
-            {props.userType === 'teacher' ? `Prizes for ${data.getClassInfo.className}` : 'Available Prizes'}
+            {props.userType === "teacher"
+              ? `Prizes for ${data.getClassInfo.className}`
+              : "Available Prizes"}
           </h4>
           <Listing
             rows={classPrizes}
             config={listingData}
             refreshData={getTreasureBoxData}
-            classId={props.userType === 'teacher' ? props.selectedClassId : null}
+            classId={
+              props.userType === "teacher" ? props.selectedClassId : null
+            }
             userType={props.userType}
             kudosBalance={props.kudosBalance}
           />

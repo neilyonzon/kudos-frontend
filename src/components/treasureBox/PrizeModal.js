@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import Modal from "react-modal";
 
 import { gql, useMutation } from "@apollo/client";
-import axios from 'axios';
+import axios from "axios";
 
 import Input from "../forms/Input";
 import Button from "../elements/Button";
@@ -112,8 +112,8 @@ const PrizeModal = (props) => {
       value: props.quantity,
       valid: true,
     },
-  }
-  const [form, setForm] = useState(formStructure)
+  };
+  const [form, setForm] = useState(formStructure);
 
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -141,7 +141,7 @@ const PrizeModal = (props) => {
 
   const [getS3Signature] = useMutation(S3SIGN, {
     async onCompleted({ signS3 }) {
-      await uploadToS3(imageFile, signS3.signedRequest)
+      await uploadToS3(imageFile, signS3.signedRequest);
 
       prize({
         variables: {
@@ -151,15 +151,14 @@ const PrizeModal = (props) => {
           category: form.category.value,
           kudosCost: parseInt(form.kudoscost.value),
           quantity: parseInt(form.points.value),
-          classId: props.classId ? props.classId : '', 
-          prizeId: props.id ? props.id : ''
-        }
-      })
+          classId: props.classId,
+        },
+      });
     },
-    onError(){
-      console.log("unable to get s3 signature")
-    }
-  })
+    onError() {
+      console.log("unable to get s3 signature");
+    },
+  });
 
   let PRIZE;
   if (props.addPrize) {
@@ -291,52 +290,35 @@ const PrizeModal = (props) => {
   const openImageFilePicker = (event) => {
     event.preventDefault();
     inputFile.current.click();
-  }
+  };
 
   const selectImageHandler = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    const file = event.target.files[0]
+    const file = event.target.files[0];
     generateImageBase64(file)
-      .then(b64 => {
-        console.log(file)
-        setImagePreview(b64)
-        setImageFile(file)
+      .then((b64) => {
+        console.log(file);
+        setImagePreview(b64);
+        setImageFile(file);
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
   const submitPrizeHandler = async (event) => {
     event.preventDefault();
-
-    if(imageFile){
-      const prevFileName = props.imageUrl
-        ? "images/" + props.imageUrl.split("/").slice(-1)[0]
-        : null
-      console.log('here is the file name!'. prevFileName)
-      getS3Signature({
-        variables: {
-          fileName: prevFileName
-            ? prevFileName
-            : formatFileName(imageFile.name),
-          fileType: imageFile.type
-        }
-      })
-    } else {
-      prize({
-        variables: {
-          prizeId: props.id ? props.id : "",
-          classId: props.classId ? props.classId : "",
-          name: form.prizename.value,
-          imageUrl: props.imageUrl ? props.imageUrl : "dummyImageUrl",
-          kudosCost: parseInt(form.kudoscost.value),
-          quantity: form.points.value,
-          description: form.description.value,
-          category: "Toy",
-        },
-      });
-    }
-
+    prize({
+      variables: {
+        prizeId: props.id ? props.id : "",
+        classId: props.classId ? props.classId : "",
+        name: form.prizename.value,
+        imageUrl: "",
+        kudosCost: parseInt(form.kudoscost.value),
+        quantity: parseInt(form.points.value),
+        description: form.description.value,
+        category: "Toy",
+      },
+    });
     props.onClose();
   };
 
@@ -351,11 +333,11 @@ const PrizeModal = (props) => {
   };
 
   const closeModalHandler = () => {
-    setForm(formStructure)
-    setImagePreview(null)
-    setImageFile(null)
-    props.onClose()
-  }
+    setForm(formStructure);
+    setImagePreview(null);
+    setImageFile(null);
+    props.onClose();
+  };
 
   const formInputArray = [];
   for (let key in form) {
@@ -377,7 +359,7 @@ const PrizeModal = (props) => {
           : "Edit details for " + props.prizename}
       </p>
       <form className="form" onSubmit={submitPrizeHandler}>
-        <div 
+        <div
           className="form__image"
           style={{
             backgroundImage: `url('${
@@ -392,7 +374,7 @@ const PrizeModal = (props) => {
           </button>
         </div>
 
-        <input 
+        <input
           type="file"
           ref={inputFile}
           style={{ display: "none" }}
