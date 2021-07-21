@@ -151,7 +151,8 @@ const PrizeModal = (props) => {
           category: form.category.value,
           kudosCost: parseInt(form.kudoscost.value),
           quantity: parseInt(form.points.value),
-          classId: props.classId 
+          classId: props.classId ? props.classId : '', 
+          prizeId: props.id ? props.id : ''
         }
       })
     },
@@ -190,7 +191,7 @@ const PrizeModal = (props) => {
   } else {
     PRIZE = gql`
       mutation postEditPrize(
-        $id: Int!
+        $prizeId: Int!
         $name: String!
         $imageUrl: String!
         $description: String
