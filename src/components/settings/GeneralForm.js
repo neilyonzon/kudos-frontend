@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation , useEffect, useLazyQuery} from "@apollo/client";
 import { checkValidity } from "../../utils/formValidity";
 import { compareFormValues } from "../../utils/compareFormValues";
 
@@ -56,15 +56,6 @@ const GeneralForm = (props) => {
     class: "btn--settings-disable",
   });
 
-  const submitGeneralForm = () => {
-    if (saveBtn.class == "btn--settings") {
-      console.log(formData);
-    } else {
-      alert("Button is disabled");
-      console.log(saveBtn);
-    }
-  };
-
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...formData };
     const updatedFormInput = { ...updatedForm[inputIdentifier] };
@@ -99,6 +90,7 @@ const GeneralForm = (props) => {
       });
     }
   };
+  
 
   let TEACHER;
   TEACHER = gql`
@@ -119,26 +111,84 @@ const GeneralForm = (props) => {
     }
   `;
 
-  const submitTeacherHandler = async (event) => {
-    event.preventDefault();
+  const submitGeneralForm = async (event) => {
+    if (saveBtn.class == "btn--settings") {
+      event.preventDefault();
 
-    teacher({
-      variables: {
-        firstName: formData.firstName.value,
-        lastName: formData.lastName.value,
-        username: formData.username.value,
-      },
-    });
+      teacher({
+        variables: {
+          firstName: formData.firstName.value,
+          lastName: formData.lastName.value,
+          username: formData.username.value,
+        },
+      });
+      console.log(formData);
+    } else {
+      alert("Button is disabled");
+      console.log(saveBtn);
+    }
   };
 
   const [teacher] = useMutation(TEACHER, {
     onCompleted() {
-      props.refreshData();
+      updateSaveBtn("disable");
+      setOgFormData(formData);
+      alert("Teacher Info Updated")
     },
     onError() {
-      console.log("error editing student");
+      console.log("error editing teacher");
     },
   });
+
+  // useEffect(() => {
+  //   if(props.userType === 'teacher'){
+  //     getTeacherData({
+  //       variables: {
+  //         classId: props.selectedClassId
+  //       }
+  //     })
+  //   } else {
+  //     getTeacherData()
+  //   }
+  // }, [props.selectedClassId]);
+
+
+  // let GET_TEACHER;
+
+  // const [getTeacherData, { loading, error, data }] = useLazyQuery(
+  //   GET_TEACHER, 
+  //   {
+  //     fetchPolicy: "network-only"
+  //   }
+  // ) 
+
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       <h2>...loading...</h2>
+  //     </div>
+  //   );
+  // }
+
+  // if (error) {
+  //   console.log("error!!!", error);
+  //   return (
+  //     <div>
+  //       <h2>there was an error</h2>
+  //     </div>
+  //   );
+  // }
+
+  // if (data) {
+  //   const classPrizes =
+  //     props.userType === "teacher"
+  //       ? data.getClassInfo.prizes
+  //       : data.getClassPrizes;
+  //   if (classPrizes.length === 0) {
+  //     return <p>There are no prizes</p>;
+  //   }
+  // }
+  
   return (
     <>
       <form className="settings-form">

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useEffect, useLazyQuery} from "@apollo/client";
 import GeneralForm from "./GeneralForm";
 import CategoriesForm from "./CategoriesForm";
 import ClassesForm from "./ClassesForm";
 
 const Settings = (props) => {
-  //Hook for State
-  //State -> Array of Classes
   const [tabClasses, setTabClasses] = useState([
     { tabClass: "tabs__header active", contentClass: "tabs__content active" },
     { tabClass: "tabs__header", contentClass: "tabs__content" },
@@ -57,7 +55,7 @@ const Settings = (props) => {
         </div>
         <div className="tabs__content-container">
           <div className={tabClasses[0].contentClass} id="tabcontent-1">
-            <GeneralForm data={props.data.teacher} />
+            <GeneralForm data={props.data.teacher}/>
           </div>
           <div className={tabClasses[1].contentClass} id="tabcontent-2">
             <ClassesForm />
