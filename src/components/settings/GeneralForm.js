@@ -6,21 +6,21 @@ import { compareFormValues } from "../../utils/compareFormValues";
 const GeneralForm = (props) => {
   const [ogFormData, setOgFormData] = useState({
     firstName: {
-      value: props.data.firstName,
+      value: props.teacherInfo.firstName,
       validation: {
         required: true,
       },
       valid: false,
     },
     lastName: {
-      value: props.data.lastName,
+      value: props.teacherInfo.lastName,
       validation: {
         required: true,
       },
       valid: false,
     },
     username: {
-      value: props.data.username,
+      value: props.teacherInfo.username,
       validation: {
         required: true,
       },
@@ -30,21 +30,21 @@ const GeneralForm = (props) => {
 
   const [formData, setFormData] = useState({
     firstName: {
-      value: props.data.firstName,
+      value: props.teacherInfo.firstName,
       validation: {
         required: true,
       },
       valid: false,
     },
     lastName: {
-      value: props.data.lastName,
+      value: props.teacherInfo.lastName,
       validation: {
         required: true,
       },
       valid: false,
     },
     username: {
-      value: "kitakoji",
+      value: props.teacherInfo.username,
       validation: {
         required: true,
       },
@@ -134,6 +134,7 @@ const GeneralForm = (props) => {
       updateSaveBtn("disable");
       setOgFormData(formData);
       alert("Teacher Info Updated")
+      // props.loadUserInfo()
     },
     onError() {
       console.log("error editing teacher");

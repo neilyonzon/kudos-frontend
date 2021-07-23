@@ -11,6 +11,7 @@ const Settings = (props) => {
     { tabClass: "tabs__header", contentClass: "tabs__content" },
   ]);
 
+
   const handleTabChange = (index) => {
     let tabs = JSON.parse(JSON.stringify(tabClasses));
     for (let i = 0; i < tabs.length; i++) {
@@ -55,10 +56,10 @@ const Settings = (props) => {
         </div>
         <div className="tabs__content-container">
           <div className={tabClasses[0].contentClass} id="tabcontent-1">
-            <GeneralForm data={props.data.teacher}/>
+            <GeneralForm teacherInfo={props.data.teacher}/>
           </div>
           <div className={tabClasses[1].contentClass} id="tabcontent-2">
-            <ClassesForm />
+            <ClassesForm classes={props.data.teacher.classes} />
             <div className="tabs__actions">
               <button className="tabs__action-save btn btn--settings">
                 Save Update
