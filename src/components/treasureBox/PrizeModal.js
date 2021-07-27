@@ -26,6 +26,21 @@ const customStyles = {
 //Modal.setAppElement('#yourAppElement')
 
 const PrizeModal = (props) => {
+
+  // let categoriesList
+  // if(props.category){
+  //   const sortedCategories = [...props.categories]
+  //   sortedCategories.forEach((cat, i) => {
+  //     if(cat.category === props.category){
+  //       sortedCategories.splice(i, 1);
+  //       sortedCategories.unshift(cat);
+  //     }
+  //   })
+  //   categoriesList = sortedCategories
+  // } else {
+  //   categoriesList = [...props.categories]
+  // }
+
   const formStructure = {
     prizename: {
       inputType: "input",
@@ -151,7 +166,8 @@ const PrizeModal = (props) => {
           category: form.category.value,
           kudosCost: parseInt(form.kudoscost.value),
           quantity: parseInt(form.points.value),
-          classId: props.classId,
+          classId: props.classId ? props.classId : '',
+          prizeId: props.id ? props.id : ''
         },
       });
     },
@@ -307,18 +323,35 @@ const PrizeModal = (props) => {
 
   const submitPrizeHandler = async (event) => {
     event.preventDefault();
-    prize({
-      variables: {
-        prizeId: props.id ? props.id : "",
-        classId: props.classId ? props.classId : "",
-        name: form.prizename.value,
-        imageUrl: "",
-        kudosCost: parseInt(form.kudoscost.value),
-        quantity: parseInt(form.points.value),
-        description: form.description.value,
-        category: "Toy",
-      },
-    });
+
+    if(imageFile){
+      const prevFileName = props.imageUrl
+        ? "images/" + props.imageUrl.split("/").slice(-1)[0]
+        : null
+      console.log('here is the file name!', prevFileName)
+      getS3Signature({
+        variables: {
+          fileName: prevFileName
+            ? prevFileName
+            : formatFileName(imageFile.name),
+          fileType: imageFile.type
+        }
+      })
+    } else {
+      prize({
+        variables: {
+          prizeId: props.id ? props.id : "",
+          classId: props.classId ? props.classId : "",
+          name: form.prizename.value,
+          imageUrl: "",
+          kudosCost: parseInt(form.kudoscost.value),
+          quantity: parseInt(form.points.value),
+          description: form.description.value,
+          category: "Toy",
+        },
+      });
+    }
+
     props.onClose();
   };
 
