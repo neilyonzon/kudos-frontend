@@ -133,8 +133,7 @@ const GeneralForm = (props) => {
     onCompleted() {
       updateSaveBtn("disable");
       setOgFormData(formData);
-      alert("Teacher Info Updated")
-      // props.loadUserInfo()
+      props.loadUserInfo()
     },
     onError() {
       console.log("error editing teacher");

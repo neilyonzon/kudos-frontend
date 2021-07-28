@@ -56,7 +56,7 @@ const Settings = (props) => {
         </div>
         <div className="tabs__content-container">
           <div className={tabClasses[0].contentClass} id="tabcontent-1">
-            <GeneralForm teacherInfo={props.data.teacher}/>
+            <GeneralForm loadUserInfo={props.loadUserInfo} teacherInfo={props.data.teacher}/>
           </div>
           <div className={tabClasses[1].contentClass} id="tabcontent-2">
             <ClassesForm classes={props.data.teacher.classes} />
