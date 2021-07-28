@@ -57,7 +57,10 @@ const ListingCard = (props) => {
         (data == "name" && props.type == "students")
       ) {
         query = props.itemData.firstName + " " + props.itemData.lastName;
-      } else {
+      } 
+      else if(data === "category[category]"){
+        query = props.itemData.category.category
+      }else {
         query = props.itemData[data];
       }
 
@@ -135,6 +138,7 @@ const ListingCard = (props) => {
         category={props.itemData.category}
         description={props.itemData.description}
         imageUrl={props.itemData.imageUrl}
+        categories={props.categories}
       />
       <ActionModal 
         isOpen={openTransaction}
