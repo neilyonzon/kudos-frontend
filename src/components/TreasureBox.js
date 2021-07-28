@@ -6,7 +6,6 @@ import Listing from "../components/listing/Listing";
 const TreasureBox = (props) => {
   useEffect(() => {
     if (props.userType === "teacher") {
-      console.log("for some reason made it here");
       getTreasureBoxData({
         variables: {
           classId: props.selectedClassId,
