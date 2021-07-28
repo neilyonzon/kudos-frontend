@@ -83,6 +83,7 @@ const OverlaySelect = (props) => {
         onClose={handleAddPrizeModal}
         refreshData={props.refreshData}
         classId={props.classId}
+        categories={props.categories}
       />
     </div>
   );
