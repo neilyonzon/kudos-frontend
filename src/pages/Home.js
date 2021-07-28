@@ -80,15 +80,15 @@ const Home = (props) => {
     {
       fetchPolicy: "network-only",
       onCompleted(data) {
+        if (data && userType === "teacher" && data.teacher.categories.length > 0){
+          setCategories(data.teacher.categories)
+        }
         if (data && userType === "teacher" && data.teacher.classes.length > 0) {
           setClasses(data.teacher.classes);
           if (!selectedClassId) {
             setSelectedClassId(data.teacher.classes[0].id);
           }
           return;
-        }
-        if (userType === "teacher" && data.teacher.categories.length > 0){
-          setCategories(data.teacher.categories)
         }
         if (data && userType !== "teacher") {
           setSelectedClassId(data.student.classId);
