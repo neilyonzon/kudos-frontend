@@ -21,6 +21,7 @@ const Home = (props) => {
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [userType, setUserType] = useState(null);
   const [kudosBalance, setKudosBalance] = useState(0);
+  const [categories, setCategories] = useState(null)
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -46,12 +47,16 @@ const Home = (props) => {
           firstName
           lastName
           email
+          username
           classes {
             id
             className
             treasureBoxOpen
           }
-          username
+          categories {
+            id
+            category
+          }
         }
       }
     `;
@@ -81,6 +86,9 @@ const Home = (props) => {
             setSelectedClassId(data.teacher.classes[0].id);
           }
           return;
+        }
+        if (userType === "teacher" && data.teacher.categories.length > 0){
+          setCategories(data.teacher.categories)
         }
         if (data && userType !== "teacher") {
           setSelectedClassId(data.student.classId);
@@ -139,6 +147,7 @@ const Home = (props) => {
   }
 
   if (error) {
+    console.log(error)
     return (
       <div>
         <h1>...an error happened...</h1>
@@ -175,6 +184,7 @@ const Home = (props) => {
             selectedClassId={selectedClassId}
             userType={userType}
             kudosBalance={kudosBalance}
+            categories={categories}
           />
         );
         tabClass = "treasurebox";
