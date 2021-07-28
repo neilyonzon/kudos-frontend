@@ -27,19 +27,12 @@ const customStyles = {
 
 const PrizeModal = (props) => {
 
-  // let categoriesList
-  // if(props.category){
-  //   const sortedCategories = [...props.categories]
-  //   sortedCategories.forEach((cat, i) => {
-  //     if(cat.category === props.category){
-  //       sortedCategories.splice(i, 1);
-  //       sortedCategories.unshift(cat);
-  //     }
-  //   })
-  //   categoriesList = sortedCategories
-  // } else {
-  //   categoriesList = [...props.categories]
-  // }
+  const categoriesList = []
+  if(props.categories){
+    props.categories.forEach(cat => {
+      categoriesList.push({value: cat.category, displayValue: cat.category})
+    })
+  }
 
   const formStructure = {
     prizename: {
@@ -61,7 +54,7 @@ const PrizeModal = (props) => {
       touched: false,
     },
     category: {
-      inputType: "input",
+      inputType: "select",
       labelConfig: {
         display: false,
         label: "Category",
@@ -69,9 +62,10 @@ const PrizeModal = (props) => {
       config: {
         type: "text",
         placeholder: "Category",
+        options: categoriesList
       },
       helper: "Category",
-      value: props.category,
+      value: props.category ? props.category : props.categories ? props.categories[0] : '',
       validation: {
         required: true,
       },
@@ -158,6 +152,12 @@ const PrizeModal = (props) => {
     async onCompleted({ signS3 }) {
       await uploadToS3(imageFile, signS3.signedRequest);
 
+      const selectedCategory = props.categories.find(cat => {
+        return cat.category === form.category.value
+      })
+
+      const categoryId = selectedCategory.id
+
       prize({
         variables: {
           name: form.prizename.value,
@@ -167,7 +167,8 @@ const PrizeModal = (props) => {
           kudosCost: parseInt(form.kudoscost.value),
           quantity: parseInt(form.points.value),
           classId: props.classId ? props.classId : '',
-          prizeId: props.id ? props.id : ''
+          prizeId: props.id ? props.id : '',
+          categoryId
         },
       });
     },
@@ -183,7 +184,7 @@ const PrizeModal = (props) => {
         $name: String!
         $imageUrl: String!
         $description: String
-        $category: String
+        $categoryId: Int!
         $kudosCost: Int!
         $quantity: Int!
         $classId: Int!
@@ -193,7 +194,7 @@ const PrizeModal = (props) => {
             name: $name
             imageUrl: $imageUrl
             description: $description
-            category: $category
+            categoryId: $categoryId
             kudosCost: $kudosCost
             quantity: $quantity
             classId: $classId
@@ -210,7 +211,7 @@ const PrizeModal = (props) => {
         $name: String!
         $imageUrl: String!
         $description: String
-        $category: String
+        $categoryId: Int!
         $kudosCost: Int!
         $quantity: Int!
       ) {
@@ -220,7 +221,7 @@ const PrizeModal = (props) => {
             name: $name
             imageUrl: $imageUrl
             description: $description
-            category: $category
+            categoryId: $categoryId
             kudosCost: $kudosCost
             quantity: $quantity
           }
@@ -328,7 +329,7 @@ const PrizeModal = (props) => {
       const prevFileName = props.imageUrl
         ? "images/" + props.imageUrl.split("/").slice(-1)[0]
         : null
-      console.log('here is the file name!', prevFileName)
+      console.log('here is the file name!', imageFile.name)
       getS3Signature({
         variables: {
           fileName: prevFileName
@@ -338,6 +339,13 @@ const PrizeModal = (props) => {
         }
       })
     } else {
+
+      const selectedCategory = props.categories.find(cat => {
+        return cat.category === form.category.value
+      })
+
+      const categoryId = selectedCategory.id
+
       prize({
         variables: {
           prizeId: props.id ? props.id : "",
@@ -347,7 +355,7 @@ const PrizeModal = (props) => {
           kudosCost: parseInt(form.kudoscost.value),
           quantity: parseInt(form.points.value),
           description: form.description.value,
-          category: "Toy",
+          categoryId
         },
       });
     }
