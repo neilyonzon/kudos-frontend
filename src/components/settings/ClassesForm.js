@@ -3,18 +3,53 @@ import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 
 const ClassesForm = (props) => {
-  //Form Data -> useState Hook
-  //Enable Save -> useState Hook
-  //Function to map form data into form inputs
-  //Function to handle input change. If input change, change state to touched. Also make sure valid is available.
-  //Function to handle save button.
-  //Return form inputs
 
-  const [formData, setFormData] = useState([{}]);
+  const [classFormData, setClassForm] = useState({
+    classes: props.classes
+  });
+
+  const [ogFormData, setOgFormData] = useState({
+    classes: props.classes
+  })
+
 
   const [saveBtn, setSaveBtn] = useState({
     class: "btn--settings-disable",
   });
+
+
+  const inputChangeHandler = (event, inputIdentifier) => {
+    console.log(event);
+    console.log(inputIdentifier)
+
+    const updatedForm = { ...classFormData };
+    const updatedArray = [...classFormData.classes];
+    const updatedElement = {...updatedArray[inputIdentifier]};
+    updatedElement.className = event.target.value;
+    console.log(updatedElement);
+    updatedArray[inputIdentifier] = updatedElement;
+    updatedForm.classes = updatedArray;
+    // updatedFormInput.className = event.target.value;
+    // updatedForm.classes[inputIdentifier] = updatedFormInput;
+    // let formIsValid = true;
+    // for (const field in updatedForm) {
+    //   if (updatedForm[field].value == "") {
+    //     formIsValid = false;
+    //     console.log("There is an empty field. Disable button");
+    //     updateSaveBtn("disable");
+    //   }
+    // }
+    // if (formIsValid) {
+    //   if (!compareFormValues(updatedForm, ogFormData)) {
+    //     updateSaveBtn("enable");
+    //   } else {
+    //     updateSaveBtn("disable");
+    //   }
+    // }
+    setClassForm(updatedForm);
+  }
+  
+
 
   return (
     <>
@@ -26,7 +61,9 @@ const ClassesForm = (props) => {
         </button>
       </div>
       <div className="class-settings">
-        <div className="class-settings__group">
+
+
+      {classFormData.classes.map((item, index) => {return <div className="class-settings__group" key={index}>
           <div className="class-settings__name">
             <label className="settings-form__label">Class #1 Name</label>
             <input
@@ -34,6 +71,8 @@ const ClassesForm = (props) => {
               className="settings-form__input-text"
               id="class-name-1"
               name="class-name-1"
+              value={item.className}
+              onChange={(e) => inputChangeHandler(e, index)}
             />
           </div>
           <div className="class-settings__img">
@@ -43,61 +82,7 @@ const ClassesForm = (props) => {
             ></img>
             <button className="class-settings__delete">Delete</button>
           </div>
-        </div>
-        <div className="class-settings__group">
-          <div className="class-settings__name">
-            <label className="settings-form__label">Class #2 Name</label>
-            <input
-              type="text"
-              className="settings-form__input-text"
-              id="class-name-1"
-              name="class-name-1"
-            />
-          </div>
-          <div className="class-settings__img">
-            <img
-              src="https://placekitten.com/g/200/200"
-              alt="placeholder"
-            ></img>
-            <button className="class-settings__delete">Delete</button>
-          </div>
-        </div>
-        <div className="class-settings__group">
-          <div className="class-settings__name">
-            <label className="settings-form__label">Class #3 Name</label>
-            <input
-              type="text"
-              className="settings-form__input-text"
-              id="class-name-1"
-              name="class-name-1"
-            />
-          </div>
-          <div className="class-settings__img">
-            <img
-              src="https://placekitten.com/g/200/200"
-              alt="placeholder"
-            ></img>
-            <button className="class-settings__delete">Delete</button>
-          </div>
-        </div>
-        <div className="class-settings__group">
-          <div className="class-settings__name">
-            <label className="settings-form__label">Class #4 Name</label>
-            <input
-              type="text"
-              className="settings-form__input-text"
-              id="class-name-1"
-              name="class-name-1"
-            />
-          </div>
-          <div className="class-settings__img">
-            <img
-              src="https://placekitten.com/g/200/200"
-              alt="placeholder"
-            ></img>
-            <button className="class-settings__delete">Delete</button>
-          </div>
-        </div>
+        </div> })}
       </div>
       <div className="tabs__actions">
         <button className={`tabs__action-save btn ` + saveBtn.class}>
