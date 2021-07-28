@@ -135,7 +135,7 @@ const ListingCard = (props) => {
         prizename={props.itemData.name}
         kudoscost={props.itemData.kudosCost}
         quantity={props.itemData.quantity}
-        category={props.itemData.category.category}
+        category={props.itemData.category ? props.itemData.category.category : ''}
         description={props.itemData.description}
         imageUrl={props.itemData.imageUrl}
         categories={props.categories}
