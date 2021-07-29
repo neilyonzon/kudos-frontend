@@ -139,55 +139,6 @@ const GeneralForm = (props) => {
       console.log("error editing teacher");
     },
   });
-
-  // useEffect(() => {
-  //   if(props.userType === 'teacher'){
-  //     getTeacherData({
-  //       variables: {
-  //         classId: props.selectedClassId
-  //       }
-  //     })
-  //   } else {
-  //     getTeacherData()
-  //   }
-  // }, [props.selectedClassId]);
-
-
-  // let GET_TEACHER;
-
-  // const [getTeacherData, { loading, error, data }] = useLazyQuery(
-  //   GET_TEACHER, 
-  //   {
-  //     fetchPolicy: "network-only"
-  //   }
-  // ) 
-
-  // if (loading) {
-  //   return (
-  //     <div>
-  //       <h2>...loading...</h2>
-  //     </div>
-  //   );
-  // }
-
-  // if (error) {
-  //   console.log("error!!!", error);
-  //   return (
-  //     <div>
-  //       <h2>there was an error</h2>
-  //     </div>
-  //   );
-  // }
-
-  // if (data) {
-  //   const classPrizes =
-  //     props.userType === "teacher"
-  //       ? data.getClassInfo.prizes
-  //       : data.getClassPrizes;
-  //   if (classPrizes.length === 0) {
-  //     return <p>There are no prizes</p>;
-  //   }
-  // }
   
   return (
     <>
