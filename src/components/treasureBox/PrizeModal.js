@@ -26,6 +26,14 @@ const customStyles = {
 //Modal.setAppElement('#yourAppElement')
 
 const PrizeModal = (props) => {
+
+  const categoriesList = []
+  if(props.categories){
+    props.categories.forEach(cat => {
+      categoriesList.push({value: cat.category, displayValue: cat.category})
+    })
+  }
+
   const formStructure = {
     prizename: {
       inputType: "input",
@@ -46,7 +54,7 @@ const PrizeModal = (props) => {
       touched: false,
     },
     category: {
-      inputType: "input",
+      inputType: "select",
       labelConfig: {
         display: false,
         label: "Category",
@@ -54,9 +62,10 @@ const PrizeModal = (props) => {
       config: {
         type: "text",
         placeholder: "Category",
+        options: categoriesList
       },
       helper: "Category",
-      value: props.category,
+      value: props.category ? props.category : props.categories ? props.categories[0] : '',
       validation: {
         required: true,
       },
@@ -143,6 +152,12 @@ const PrizeModal = (props) => {
     async onCompleted({ signS3 }) {
       await uploadToS3(imageFile, signS3.signedRequest);
 
+      const selectedCategory = props.categories.find(cat => {
+        return cat.category === form.category.value
+      })
+
+      const categoryId = selectedCategory.id
+
       prize({
         variables: {
           name: form.prizename.value,
@@ -151,7 +166,9 @@ const PrizeModal = (props) => {
           category: form.category.value,
           kudosCost: parseInt(form.kudoscost.value),
           quantity: parseInt(form.points.value),
-          classId: props.classId,
+          classId: props.classId ? props.classId : '',
+          prizeId: props.id ? props.id : '',
+          categoryId
         },
       });
     },
@@ -167,7 +184,7 @@ const PrizeModal = (props) => {
         $name: String!
         $imageUrl: String!
         $description: String
-        $category: String
+        $categoryId: Int!
         $kudosCost: Int!
         $quantity: Int!
         $classId: Int!
@@ -177,7 +194,7 @@ const PrizeModal = (props) => {
             name: $name
             imageUrl: $imageUrl
             description: $description
-            category: $category
+            categoryId: $categoryId
             kudosCost: $kudosCost
             quantity: $quantity
             classId: $classId
@@ -194,7 +211,7 @@ const PrizeModal = (props) => {
         $name: String!
         $imageUrl: String!
         $description: String
-        $category: String
+        $categoryId: Int!
         $kudosCost: Int!
         $quantity: Int!
       ) {
@@ -204,7 +221,7 @@ const PrizeModal = (props) => {
             name: $name
             imageUrl: $imageUrl
             description: $description
-            category: $category
+            categoryId: $categoryId
             kudosCost: $kudosCost
             quantity: $quantity
           }
@@ -307,18 +324,42 @@ const PrizeModal = (props) => {
 
   const submitPrizeHandler = async (event) => {
     event.preventDefault();
-    prize({
-      variables: {
-        prizeId: props.id ? props.id : "",
-        classId: props.classId ? props.classId : "",
-        name: form.prizename.value,
-        imageUrl: "",
-        kudosCost: parseInt(form.kudoscost.value),
-        quantity: parseInt(form.points.value),
-        description: form.description.value,
-        category: "Toy",
-      },
-    });
+
+    if(imageFile){
+      const prevFileName = props.imageUrl
+        ? "images/" + props.imageUrl.split("/").slice(-1)[0]
+        : null
+      console.log('here is the file name!', imageFile.name)
+      getS3Signature({
+        variables: {
+          fileName: prevFileName
+            ? prevFileName
+            : formatFileName(imageFile.name),
+          fileType: imageFile.type
+        }
+      })
+    } else {
+
+      const selectedCategory = props.categories.find(cat => {
+        return cat.category === form.category.value
+      })
+
+      const categoryId = selectedCategory.id
+
+      prize({
+        variables: {
+          prizeId: props.id ? props.id : "",
+          classId: props.classId ? props.classId : "",
+          name: form.prizename.value,
+          imageUrl: "",
+          kudosCost: parseInt(form.kudoscost.value),
+          quantity: parseInt(form.points.value),
+          description: form.description.value,
+          categoryId
+        },
+      });
+    }
+
     props.onClose();
   };
 

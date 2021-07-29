@@ -41,7 +41,7 @@ const ListingCard = (props) => {
   };
 
   const handleActionModal = (actionType) => {
-    if(!hasEnoughKudos || actionType === 'wish'){
+    if(actionType === 'wish'){
       setOpenWish(!openWish)
     } else {
       setOpenTransaction(!openTransaction)
@@ -57,7 +57,10 @@ const ListingCard = (props) => {
         (data == "name" && props.type == "students")
       ) {
         query = props.itemData.firstName + " " + props.itemData.lastName;
-      } else {
+      } 
+      else if(data === "category[category]"){
+        query = props.itemData.category.category
+      }else {
         query = props.itemData[data];
       }
 
@@ -132,9 +135,10 @@ const ListingCard = (props) => {
         prizename={props.itemData.name}
         kudoscost={props.itemData.kudosCost}
         quantity={props.itemData.quantity}
-        category={props.itemData.category}
+        category={props.itemData.category ? props.itemData.category.category : ''}
         description={props.itemData.description}
         imageUrl={props.itemData.imageUrl}
+        categories={props.categories}
       />
       <ActionModal 
         isOpen={openTransaction}
@@ -145,6 +149,7 @@ const ListingCard = (props) => {
         kudoscost={props.itemData.kudosCost}
         imageUrl={props.itemData.imageUrl}
         actionType={'transaction'}
+        hasEnoughKudos={hasEnoughKudos}
       />
       <ActionModal 
         isOpen={openWish}
@@ -155,7 +160,6 @@ const ListingCard = (props) => {
         kudoscost={props.itemData.kudosCost}
         imageUrl={props.itemData.imageUrl}
         actionType={'wish'}
-        hasEnoughKudos={hasEnoughKudos}
         kudosBalance={props.kudosBalance}
       />
     </div>

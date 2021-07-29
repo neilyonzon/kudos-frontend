@@ -6,7 +6,6 @@ import Listing from "../components/listing/Listing";
 const TreasureBox = (props) => {
   useEffect(() => {
     if (props.userType === "teacher") {
-      console.log("for some reason made it here");
       getTreasureBoxData({
         variables: {
           classId: props.selectedClassId,
@@ -34,7 +33,7 @@ const TreasureBox = (props) => {
       },
       {
         name: "Category",
-        dataQuery: "category",
+        dataQuery: "category[category]",
       },
     ],
   };
@@ -50,9 +49,12 @@ const TreasureBox = (props) => {
             name
             imageUrl
             description
-            category
             kudosCost
             quantity
+            category {
+              id
+              category
+            }
           }
         }
       }
@@ -65,7 +67,10 @@ const TreasureBox = (props) => {
           name
           imageUrl
           description
-          category
+          category {
+            id
+            category
+          }
           kudosCost
           quantity
         }
@@ -124,6 +129,7 @@ const TreasureBox = (props) => {
             }
             userType={props.userType}
             kudosBalance={props.kudosBalance}
+            categories={props.categories}
           />
         </div>
       </>

@@ -18,7 +18,7 @@ const customStyles = {
 
 const ActionModal = props => {
 
-    const ACTION = props.actionType === 'transaction' ? gql`
+    const ACTION = props.actionType === 'transaction' && props.hasEnoughKudos ? gql`
         mutation makeTransaction($prizeId: Int!){
             postTransaction(transactionInput: {prizeId: $prizeId}){
                 id
@@ -60,12 +60,12 @@ const ActionModal = props => {
             <img
                 src={props.imageUrl}
             ></img>
-            {props.actionType === 'wish' && !props.hasEnoughKudos ? 
+            {props.actionType === 'transaction' && !props.hasEnoughKudos ? 
                 <div>{`You don't have enough kudos! You only have ${props.kudosBalance} kudos. You need ${props.kudoscost - props.kudosBalance} more. Click the wish button to add to your wishlist!`}</div> : null}
             <h2>{props.prizename}</h2>
             <h3>{props.kudoscost}</h3>
             <Button btnColor="green" clicked={makeTransactionHandler}>
-                {props.actionType === 'transaction' ? 'Buy!' : 'Wish!'}
+                {props.actionType === 'transaction' && props.hasEnoughKudos ? 'Buy!' : 'Wish!'}
             </Button>
         </Modal>
     )
