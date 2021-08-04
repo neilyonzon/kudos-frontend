@@ -262,7 +262,7 @@ const Home = (props) => {
         />
 
         <div className={`control-panel ${tabClass}`}>
-          {userType === "teacher" ? (
+          {userType === "teacher" && selectedTab !== "Settings" ? (
             <div className="utility-bar">
               <ClassSelector
                 onSelectClass={onSelectClassHandler}
