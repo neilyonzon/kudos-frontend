@@ -53,14 +53,17 @@ const CategoriesForm = (props) => {
               <label className="settings-form__label">
                 {cat.category === "Toy" ? `${cat.category} (Default)` : cat.category}
               </label>
-              <input
-                type="text"
-                className="settings-form__input-text"
-                id={cat.category}
-                value={cat.category}
-              />
+              
               {cat.category !== "Toy" ? 
-                <button onClick={() => openDeleteHandler(cat)}>Delete</button>
+                <>
+                  <input
+                    type="text"
+                    className="settings-form__input-text"
+                    id={cat.category}
+                    value={cat.category}
+                  />
+                  <button onClick={() => openDeleteHandler(cat)}>Delete</button>
+                </>
                 : null
               }
             </div>
