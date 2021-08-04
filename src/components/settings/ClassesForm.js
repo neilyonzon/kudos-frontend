@@ -122,14 +122,15 @@ const ClassesForm = (props) => {
       <div className="class-settings">
 
 
-      {classFormData.classes.map((item, index) => {return <div className="class-settings__group" key={index}>
+      {classFormData.classes.map((item, index) => (
+        <div className="class-settings__group" key={index}>
           <div className="class-settings__name">
             <label className="settings-form__label">Class #1 Name</label>
             <input
               type="text"
               className="settings-form__input-text"
-              id="class-name-1"
-              name="class-name-1"
+              id={`class-name-${index}`}
+              name={`class-name-${index}`}
               value={item.className}
               onChange={(e) => inputChangeHandler(e, index)}
             />
@@ -141,7 +142,7 @@ const ClassesForm = (props) => {
             ></img>
             <button className="class-settings__delete">Delete</button>
           </div>
-        </div> })}
+        </div> ))}
       </div>
       <div className="tabs__actions">
       <button
