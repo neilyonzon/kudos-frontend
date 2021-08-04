@@ -51,7 +51,7 @@ const CategoriesForm = (props) => {
           props.categories.map((cat, idx) => (
             <div className="categories-settings__group" key={cat.category}>
               <label className="settings-form__label">
-                {cat.category}
+                {cat.category === "Toy" ? `${cat.category} (Default)` : cat.category}
               </label>
               <input
                 type="text"
