@@ -122,11 +122,7 @@ const GeneralForm = (props) => {
           username: formData.username.value,
         },
       });
-      console.log(formData);
-    } else {
-      alert("Button is disabled");
-      console.log(saveBtn);
-    }
+    } 
   };
 
   const [teacher] = useMutation(TEACHER, {
