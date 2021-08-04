@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+
+import DeleteCatModal from './DeleteCatModal';
+
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 
-const ClassesForm = (props) => {
+const CategoriesForm = (props) => {
   //Form Data -> useState Hook
   //Enable Save -> useState Hook
   //Function to map form data into form inputs
@@ -10,11 +13,29 @@ const ClassesForm = (props) => {
   //Function to handle save button.
   //Return form inputs
 
-  const [formData, setFormData] = useState([{}]);
+  // const [formData, setFormData] = useState([{}]);
 
   const [saveBtn, setSaveBtn] = useState({
     class: "btn--settings-disable",
   });
+
+  const [openDeleteCat, setOpenDeleteCat] = useState(false)
+
+  const toDeleteCat = useRef(props.categories[0])
+
+  const openDeleteHandler = (cat) => {
+    let remainingCategories = []
+    props.categories.forEach(category => {
+      if(category.category !== cat.category){
+        remainingCategories.push({value: category.category, displayValue: category.category })
+      }
+    })
+    // setDisplayCategories(remainingCategories)
+    toDeleteCat.current = cat
+    setOpenDeleteCat(true)
+  }
+
+  const closeDeleteHandler = () => setOpenDeleteCat(false)
 
   return (
     <>
@@ -26,63 +47,31 @@ const ClassesForm = (props) => {
         </button>
       </div>
       <div className="categories-settings">
-        <div className="categories-settings__group">
-          <label for="arts-crafts-category" className="settings-form__label">
-            Category #1
-          </label>
-          <input
-            type="text"
-            className="settings-form__input-text"
-            id="arts-crafts-category"
-            value="Arts &amp; Crafts"
-          />
-        </div>
-
-        <div className="categories-settings__group">
-          <label for="books-category" className="settings-form__label">
-            Category #2
-          </label>
-          <input
-            type="text"
-            className="settings-form__input-text"
-            id="books-category"
-            value="Books"
-          />
-        </div>
-        <div className="categories-settings__group">
-          <label for="clothing-category" className="settings-form__label">
-            Category #3
-          </label>
-          <input
-            type="text"
-            className="settings-form__input-text"
-            id="clothing-category"
-            value="Clothing"
-          />
-        </div>
-        <div className="categories-settings__group">
-          <label for="home-category" className="settings-form__label">
-            Category #4
-          </label>
-          <input
-            type="text"
-            className="settings-form__input-text"
-            id="home-category"
-            value="Home &amp; Decor"
-          />
-        </div>
-        <div className="categories-settings__group">
-          <label for="toys-category" className="settings-form__label">
-            Category #5
-          </label>
-          <input
-            type="text"
-            className="settings-form__input-text"
-            id="toys-category"
-            value="Toys"
-          />
-        </div>
+        {
+          props.categories.map((cat, idx) => (
+            <div className="categories-settings__group" key={cat.category}>
+              <label className="settings-form__label">
+                {cat.category}
+              </label>
+              <input
+                type="text"
+                className="settings-form__input-text"
+                id={cat.category}
+                value={cat.category}
+              />
+              <button onClick={() => openDeleteHandler(cat)}>Delete</button>
+            </div>
+          ))
+        }
       </div>
+
+      <DeleteCatModal 
+        isOpen={openDeleteCat}
+        onClose={closeDeleteHandler}
+        toDeleteCategory={toDeleteCat.current}
+        categories={props.categories}
+        loadUserInfo={props.loadUserInfo}
+      />
 
       <div className="tabs__actions">
         <button className={`tabs__action-save btn ` + saveBtn.class}>
@@ -93,4 +82,4 @@ const ClassesForm = (props) => {
   );
 };
 
-export default ClassesForm;
+export default CategoriesForm;
