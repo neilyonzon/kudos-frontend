@@ -95,5 +95,9 @@
   }
 }
 
+.ReactModal__Overlay {
+  z-index: 999999;
+}
+
 @import "control-zone";
 @import "dashboard-zone";

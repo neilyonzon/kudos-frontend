@@ -59,12 +59,7 @@ const Settings = (props) => {
             <GeneralForm loadUserInfo={props.loadUserInfo} teacherInfo={props.data.teacher}/>
           </div>
           <div className={tabClasses[1].contentClass} id="tabcontent-2">
-            <ClassesForm classes={props.data.teacher.classes} />
-            <div className="tabs__actions">
-              <button className="tabs__action-save btn btn--settings">
-                Save Update
-              </button>
-            </div>
+            <ClassesForm refreshData={props.loadUserInfo} classes={props.data.teacher.classes} />
           </div>
           <div className={tabClasses[2].contentClass} id="tabcontent-3">
             <CategoriesForm />
