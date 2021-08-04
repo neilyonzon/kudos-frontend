@@ -59,7 +59,10 @@ const CategoriesForm = (props) => {
                 id={cat.category}
                 value={cat.category}
               />
-              <button onClick={() => openDeleteHandler(cat)}>Delete</button>
+              {cat.category !== "Toy" ? 
+                <button onClick={() => openDeleteHandler(cat)}>Delete</button>
+                : null
+              }
             </div>
           ))
         }
