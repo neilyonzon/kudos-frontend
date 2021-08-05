@@ -43,7 +43,7 @@ const Settings = (props) => {
       selectedSettingComponent = <GeneralForm loadUserInfo={props.loadUserInfo} teacherInfo={props.data.teacher}/>
       break
     case 'classes':
-      selectedSettingComponent = <ClassesForm classes={props.data.teacher.classes} />
+      selectedSettingComponent = <ClassesForm loadUserInfo={props.loadUserInfo} classes={props.data.teacher.classes} />
       break
     case 'categories':
       selectedSettingComponent = <CategoriesForm loadUserInfo={props.loadUserInfo} categories={props.categories} />

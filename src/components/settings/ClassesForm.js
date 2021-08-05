@@ -3,7 +3,8 @@ import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import {gql, useMutation} from "@apollo/client";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 import { compareFormValues } from "../../utils/compareFormValues";
-import ClassModal from "./ClassesModal";
+import AddClassModal from "./AddClassModal";
+import DeleteClassModal from "./DeleteClassModal"
 
 const ClassesForm = (props) => {
 
@@ -104,10 +105,16 @@ const ClassesForm = (props) => {
     }
   })
 
-  const [openAddClass, setOpenAddClass] = useState(false);
+  const [openDeleteClassModal, setOpenDeleteClassModal] = useState(false);
+
+  const handleDeleteClassModal = () => {
+    setOpenDeleteClassModal(!openDeleteClassModal);
+  }
+
+  const [openAddClassModal, setOpenAddClassModal] = useState(false);
 
   const handleAddClassModal = () => {
-    setOpenAddClass(!openAddClass);
+    setOpenAddClassModal(!openAddClassModal);
   }
 
   return (
@@ -125,7 +132,7 @@ const ClassesForm = (props) => {
       {classFormData.classes.map((item, index) => (
         <div className="class-settings__group" key={index}>
           <div className="class-settings__name">
-            <label className="settings-form__label">Class #1 Name</label>
+            <label className="settings-form__label">Class #{index + 1} Name</label>
             <input
               type="text"
               className="settings-form__input-text"
@@ -140,8 +147,14 @@ const ClassesForm = (props) => {
               src="https://placekitten.com/g/200/200"
               alt="placeholder"
             ></img>
-            <button className="class-settings__delete">Delete</button>
+            <button className="class-settings__delete" onClick={handleDeleteClassModal}>Delete</button>
           </div>
+          <DeleteClassModal
+            isOpen = {openDeleteClassModal}
+            onClose={handleDeleteClassModal}
+            loadUserInfo={props.loadUserInfo}
+            classId={item.id}
+            className={item.className}/>
         </div> ))}
       </div>
       <div className="tabs__actions">
@@ -152,13 +165,15 @@ const ClassesForm = (props) => {
           Save Update
         </button>
       </div>
-      <ClassModal
+      <AddClassModal
       addClass={true}
-      isOpen={openAddClass}
+      isOpen={openAddClassModal}
       onClose={handleAddClassModal}
-      refreshData={props.refreshData}
-      classId={props.classId}
+      loadUserInfo={props.loadUserInfo}
       />
+
+      
+
     </>
   );
 };

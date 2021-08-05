@@ -24,7 +24,7 @@ const customStyles = {
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 //Modal.setAppElement('#yourAppElement')
 
-const ClassModal = (props) => {
+const AddClassModal = (props) => {
   const formStructure = {
     className: {
       inputType: "input",
@@ -113,7 +113,7 @@ const ClassModal = (props) => {
 
   const [classes] = useMutation(CLASS, {
     onCompleted() {
-      props.refreshData();
+      props.loadUserInfo()
     },
     onError() {
       console.log("error adding student");
@@ -259,4 +259,4 @@ const ClassModal = (props) => {
   );
 };
 
-export default ClassModal;
+export default AddClassModal;

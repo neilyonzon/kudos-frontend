@@ -8,7 +8,7 @@ const Button = (props) => {
 
   return (
     <button
-      className={`btn ${buttonClass}`}
+      className={`btn btn-${props.btnColor}`}
       onClick={props.clicked}
       disabled={props.disabled}
     >

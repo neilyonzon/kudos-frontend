@@ -103,7 +103,7 @@ const DeleteCatModal = props => {
                     changed={(event) => replaceCategoryHandler(event)}
                 />
                 <Button
-                    btnColor="green"
+                    btnColor="red"
                     clicked={deleteCatHandler}
                 >
                     Delete Category

@@ -111,6 +111,15 @@ p {
     background: white;
     cursor: default;
   }
+
+  &-red {
+    background: $color-red;
+
+    &:hover {
+      border-color: $color-green-blue;
+      color: $color-green-blue;
+    }
+  }
 }
 
 a {
