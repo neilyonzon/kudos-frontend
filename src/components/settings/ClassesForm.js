@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import {gql, useMutation} from "@apollo/client";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 import { compareFormValues } from "../../utils/compareFormValues";
-import ClassModal from "./ClassesModal";
+import AddClassModal from "./AddClassModal";
 
 const ClassesForm = (props) => {
 
@@ -152,7 +152,7 @@ const ClassesForm = (props) => {
           Save Update
         </button>
       </div>
-      <ClassModal
+      <AddClassModal
       addClass={true}
       isOpen={openAddClass}
       onClose={handleAddClassModal}
