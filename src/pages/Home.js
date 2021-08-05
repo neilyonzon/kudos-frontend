@@ -161,7 +161,12 @@ const Home = (props) => {
     switch (true) {
       case selectedTab === "Settings":
         tabComponent = (
-          <Settings selectedClassId={selectedClassId} data={data} loadUserInfo={loadUserInfo}/>
+          <Settings 
+            selectedClassId={selectedClassId} 
+            data={data} 
+            loadUserInfo={loadUserInfo}
+            categories={categories}
+          />
         );
         tabClass = "";
         break;
@@ -257,7 +262,7 @@ const Home = (props) => {
         />
 
         <div className={`control-panel ${tabClass}`}>
-          {userType === "teacher" ? (
+          {userType === "teacher" && selectedTab !== "Settings" ? (
             <div className="utility-bar">
               <ClassSelector
                 onSelectClass={onSelectClassHandler}
