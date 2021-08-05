@@ -113,7 +113,7 @@ const AddClassModal = (props) => {
 
   const [classes] = useMutation(CLASS, {
     onCompleted() {
-      props.refreshData();
+      props.loadUserInfo()
     },
     onError() {
       console.log("error adding student");
