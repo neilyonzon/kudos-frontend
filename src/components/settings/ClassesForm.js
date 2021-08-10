@@ -58,8 +58,6 @@ const ClassesForm = (props) => {
     }
   }
 
-
-  //Variable with GraphQL String
   const EDIT_CLASSES = gql`
   mutation postEditClasses($classInput: [EditClassInput]!) {
     editClasses(
@@ -67,8 +65,7 @@ const ClassesForm = (props) => {
     ){
       id
     }
-  }
-  `;
+  }`
   
   const submitClassesForm = async (event) => {
 
@@ -83,7 +80,6 @@ const ClassesForm = (props) => {
     } else{
       alert("Each class name must be at least one character or no class names have been changed")
     }
-
   }
 
   const [editClasses] = useMutation(EDIT_CLASSES, {
