@@ -135,8 +135,8 @@ const ClassesForm = (props) => {
           </div>
           <div className="class-settings__img">
             <img
-              src="https://placekitten.com/g/200/200"
-              alt="placeholder"
+              src={item.imageUrl}
+              alt={item.className}
             ></img>
             <button className="class-settings__delete" onClick={handleDeleteClassModal}>Delete</button>
           </div>

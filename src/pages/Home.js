@@ -51,6 +51,7 @@ const Home = (props) => {
           classes {
             id
             className
+            imageUrl
             treasureBoxOpen
           }
           categories {
