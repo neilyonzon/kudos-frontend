@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
-import {gql, useMutation} from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 import { compareFormValues } from "../../utils/compareFormValues";
 import AddClassModal from "./AddClassModal";
-import DeleteClassModal from "./DeleteClassModal"
+
+import EditClassCard from './EditClassCard'
 
 const ClassesForm = (props) => {
 
@@ -18,7 +19,7 @@ const ClassesForm = (props) => {
 
   const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
 
-  const [openAddClass, setOpenAddClass] = useState(false);
+  const [openAddClassModal, setOpenAddClassModal] = useState(false);
 
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...classFormData };
@@ -92,14 +93,6 @@ const ClassesForm = (props) => {
     }
   })
 
-  const [openDeleteClassModal, setOpenDeleteClassModal] = useState(false);
-
-  const handleDeleteClassModal = () => {
-    setOpenDeleteClassModal(!openDeleteClassModal);
-  }
-
-  const [openAddClassModal, setOpenAddClassModal] = useState(false);
-
   const handleAddClassModal = () => {
     setOpenAddClassModal(!openAddClassModal);
   }
@@ -114,35 +107,15 @@ const ClassesForm = (props) => {
         </button>
       </div>
       <div className="class-settings">
-
-
-      {classFormData.classes.map((item, index) => (
-        <div className="class-settings__group" key={index}>
-          <div className="class-settings__name">
-            <label className="settings-form__label">Edit class name:</label>
-            <input
-              type="text"
-              className="settings-form__input-text"
-              id={`class-name-${index}`}
-              name={`class-name-${index}`}
-              value={item.className}
-              onChange={(e) => inputChangeHandler(e, index)}
-            />
-          </div>
-          <div className="class-settings__img">
-            <img
-              src={item.imageUrl}
-              alt={item.className}
-            ></img>
-            <button className="class-settings__delete" onClick={handleDeleteClassModal}>Delete</button>
-          </div>
-          <DeleteClassModal
-            isOpen = {openDeleteClassModal}
-            onClose={handleDeleteClassModal}
+        {classFormData.classes.map((item, idx) => (
+          <EditClassCard
+            key={idx}
+            item={item}
+            index={idx}
+            onChange={inputChangeHandler}
             loadUserInfo={props.loadUserInfo}
-            classId={item.id}
-            className={item.className}/>
-        </div> ))}
+          />
+        ))}
       </div>
       <div className="tabs__actions">
       <button
@@ -153,14 +126,11 @@ const ClassesForm = (props) => {
         </button>
       </div>
       <AddClassModal
-      addClass={true}
-      isOpen={openAddClassModal}
-      onClose={handleAddClassModal}
-      loadUserInfo={props.loadUserInfo}
+        addClass={true}
+        isOpen={openAddClassModal}
+        onClose={handleAddClassModal}
+        loadUserInfo={props.loadUserInfo}
       />
-
-      
-
     </>
   );
 };
