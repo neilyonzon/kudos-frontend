@@ -79,12 +79,7 @@ const AddClassModal = (props) => {
 
       classes({
         variables: {
-          id: props.id ? props.id : "",
-          classId: props.classId ? props.classId : "",
-          firstName: form.firstName.value,
-          lastName: form.lastName.value,
-          username: form.username.value,
-          password: form.password.value,
+          className: form.className.value,
           imageUrl: signS3.url,
         },
       });
@@ -96,7 +91,7 @@ const AddClassModal = (props) => {
 
   let CLASS;
   CLASS = gql`
-  mutation postCreateStudent(
+  mutation postCreateClass(
     $className: String!
     $imageUrl: String!
   ) {
@@ -116,7 +111,7 @@ const AddClassModal = (props) => {
       props.loadUserInfo()
     },
     onError() {
-      console.log("error adding student");
+      console.log("error adding class");
     },
   });
 
@@ -178,9 +173,8 @@ const AddClassModal = (props) => {
     } else {
       classes({
         variables: {
-          id: props.id ? props.id : "",
           className: form.className.value,
-          imageUrl: props.imageUrl ? props.imageUrl : "dummyImageUrl",
+          imageUrl: "https://placekitten.com/g/200/200",
         },
       });
     }
@@ -224,7 +218,7 @@ const AddClassModal = (props) => {
           }}
         >
           <button className="form__image-btn" onClick={openImageFilePicker}>
-            {imagePreview ? null : "Upload/Edit"}
+            {imagePreview ? null : "Upload"}
           </button>
         </div>
 

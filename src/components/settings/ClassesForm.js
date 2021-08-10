@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
-import {gql, useMutation} from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
-import { compareFormValues } from "../../utils/compareFormValues";
 import AddClassModal from "./AddClassModal";
-import DeleteClassModal from "./DeleteClassModal"
+
+import EditClassCard from './EditClassCard'
 
 const ClassesForm = (props) => {
 
@@ -12,27 +12,13 @@ const ClassesForm = (props) => {
     classes: props.classes
   });
 
-  const [ogFormData, setOgFormData] = useState({
-    classes: props.classes
-  })
+  const originalClasses = props.classes
 
+  const [changedClasses, setChangedClasses] = useState([])
 
-  const updateSaveBtn = (status) => {
-    if (status == "enable") {
-      setSaveBtn({
-        class: "btn--settings",
-      });
-    } else {
-      setSaveBtn({
-        class: "btn--settings-disable",
-      });
-    }
-  };
+  const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
 
-  const [saveBtn, setSaveBtn] = useState({
-    class: "btn--settings-disable",
-  });
-
+  const [openAddClassModal, setOpenAddClassModal] = useState(false);
 
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...classFormData };
@@ -41,77 +27,70 @@ const ClassesForm = (props) => {
     updatedElement.className = event.target.value;
     updatedArray[inputIdentifier] = updatedElement;
     updatedForm.classes = updatedArray;
+
     let formIsValid = true;
-
-
-    for (let i = 0; i < updatedForm.classes.length; i++) {
-      if (updatedForm.classes[i].className == "") {
+    for(let i = 0; i < updatedForm.classes.length; i++) {
+      if(updatedForm.classes[i].className === "") {
         formIsValid = false;
         console.log("There is an empty field. Disable button");
-        updateSaveBtn("disable");
+        setSaveButtonClass("btn--settings-disable");
       }
     }
-    if (formIsValid) {
-      if (!compareArray( updatedForm.classes, ogFormData.classes, "className")) {
-        updateSaveBtn("enable");
-      } else {
-        updateSaveBtn("disable");
-      }
+    if(formIsValid) {
+      updateChangedClasses(updatedForm.classes, originalClasses)
     }
     setClassForm(updatedForm);
   }
 
-  const compareArray = (arr1, arr2, property) => {
-   let same = true;
-   for (let i = 0; i < arr1.length; i++) {
-     if (arr1[i][property] !== arr2[i][property]) {
-       same = false;
-     }
-   }
-   return same;
+  const updateChangedClasses = (updatedForm, originalForm) => {
+    
+    let changedClasses = []
+    for (let i = 0; i < updatedForm.length; i++){
+      if(updatedForm[i].className !== originalForm[i].className){
+        changedClasses.push({ id: updatedForm[i].id, className: updatedForm[i].className })
+      }
+    }
+    setChangedClasses(changedClasses)
+    if(changedClasses.length > 0){
+      setSaveButtonClass("btn--settings")
+    } else {
+      setSaveButtonClass("btn--settings-disable")
+    }
   }
 
-
-  //Variable with GraphQL String
-  let CLASSES;
-  CLASSES = gql`
-  mutation postEditClasses(
-    $classes: Array!
-  ) {
+  const EDIT_CLASSES = gql`
+  mutation postEditClasses($classInput: [EditClassInput]!) {
     editClasses(
-      classInput: $classes
-    )
-  }
-`;
-
+      classInput: $classInput
+    ){
+      id
+    }
+  }`
   
   const submitClassesForm = async (event) => {
-    if (saveBtn.class == "btn--settings") {
+
+    if(saveButtonClass === 'btn--settings'){
       event.preventDefault();
       console.log(classFormData.classes)
-    } else {
-      alert("Button is disabled");
+      editClasses({
+        variables: {
+          classInput: changedClasses
+        }
+      })
+    } else{
+      alert("Each class name must be at least one character or no class names have been changed")
     }
   }
 
-  const [classes] = useMutation(CLASSES, {
+  const [editClasses] = useMutation(EDIT_CLASSES, {
     onCompleted() {
-      updateSaveBtn("disable");
-      setOgFormData(classFormData);
       props.loadUserInfo()
     }, 
-    onError() {
-      console.log("There was an error while editing the classe");
+    onError(error) {
+      console.log("There was an error while editing the classes");
+      console.log(error)
     }
   })
-
-  const [openDeleteClassModal, setOpenDeleteClassModal] = useState(false);
-
-  const handleDeleteClassModal = () => {
-    setOpenDeleteClassModal(!openDeleteClassModal);
-  }
-
-  const [openAddClassModal, setOpenAddClassModal] = useState(false);
 
   const handleAddClassModal = () => {
     setOpenAddClassModal(!openAddClassModal);
@@ -127,53 +106,30 @@ const ClassesForm = (props) => {
         </button>
       </div>
       <div className="class-settings">
-
-
-      {classFormData.classes.map((item, index) => (
-        <div className="class-settings__group" key={index}>
-          <div className="class-settings__name">
-            <label className="settings-form__label">Class #{index + 1} Name</label>
-            <input
-              type="text"
-              className="settings-form__input-text"
-              id={`class-name-${index}`}
-              name={`class-name-${index}`}
-              value={item.className}
-              onChange={(e) => inputChangeHandler(e, index)}
-            />
-          </div>
-          <div className="class-settings__img">
-            <img
-              src="https://placekitten.com/g/200/200"
-              alt="placeholder"
-            ></img>
-            <button className="class-settings__delete" onClick={handleDeleteClassModal}>Delete</button>
-          </div>
-          <DeleteClassModal
-            isOpen = {openDeleteClassModal}
-            onClose={handleDeleteClassModal}
+        {classFormData.classes.map((item, idx) => (
+          <EditClassCard
+            key={idx}
+            item={item}
+            index={idx}
+            onChange={inputChangeHandler}
             loadUserInfo={props.loadUserInfo}
-            classId={item.id}
-            className={item.className}/>
-        </div> ))}
+          />
+        ))}
       </div>
       <div className="tabs__actions">
       <button
-          className={`tabs__action-save btn ` + saveBtn.class}
+          className={`tabs__action-save btn ` + saveButtonClass}
           onClick={submitClassesForm}
         >
           Save Update
         </button>
       </div>
       <AddClassModal
-      addClass={true}
-      isOpen={openAddClassModal}
-      onClose={handleAddClassModal}
-      loadUserInfo={props.loadUserInfo}
+        addClass={true}
+        isOpen={openAddClassModal}
+        onClose={handleAddClassModal}
+        loadUserInfo={props.loadUserInfo}
       />
-
-      
-
     </>
   );
 };
