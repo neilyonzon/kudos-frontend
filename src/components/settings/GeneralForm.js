@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { gql, useMutation , useEffect, useLazyQuery} from "@apollo/client";
-import { checkValidity } from "../../utils/formValidity";
 import { compareFormValues } from "../../utils/compareFormValues";
 
 const GeneralForm = (props) => {
