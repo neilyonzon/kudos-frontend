@@ -12,27 +12,13 @@ const ClassesForm = (props) => {
     classes: props.classes
   });
 
-  const [ogFormData, setOgFormData] = useState({
-    classes: props.classes
-  })
+  const originalClasses = props.classes
 
+  const [changedClasses, setChangedClasses] = useState([])
 
-  const updateSaveBtn = (status) => {
-    if (status == "enable") {
-      setSaveBtn({
-        class: "btn--settings",
-      });
-    } else {
-      setSaveBtn({
-        class: "btn--settings-disable",
-      });
-    }
-  };
+  const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
 
-  const [saveBtn, setSaveBtn] = useState({
-    class: "btn--settings-disable",
-  });
-
+  const [openAddClass, setOpenAddClass] = useState(false);
 
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...classFormData };
@@ -41,67 +27,72 @@ const ClassesForm = (props) => {
     updatedElement.className = event.target.value;
     updatedArray[inputIdentifier] = updatedElement;
     updatedForm.classes = updatedArray;
+
     let formIsValid = true;
-
-
-    for (let i = 0; i < updatedForm.classes.length; i++) {
-      if (updatedForm.classes[i].className == "") {
+    for(let i = 0; i < updatedForm.classes.length; i++) {
+      if(updatedForm.classes[i].className === "") {
         formIsValid = false;
         console.log("There is an empty field. Disable button");
-        updateSaveBtn("disable");
+        setSaveButtonClass("btn--settings-disable");
       }
     }
-    if (formIsValid) {
-      if (!compareArray( updatedForm.classes, ogFormData.classes, "className")) {
-        updateSaveBtn("enable");
-      } else {
-        updateSaveBtn("disable");
-      }
+    if(formIsValid) {
+      updateChangedClasses(updatedForm.classes, originalClasses)
     }
     setClassForm(updatedForm);
   }
 
-  const compareArray = (arr1, arr2, property) => {
-   let same = true;
-   for (let i = 0; i < arr1.length; i++) {
-     if (arr1[i][property] !== arr2[i][property]) {
-       same = false;
-     }
-   }
-   return same;
+  const updateChangedClasses = (updatedForm, originalForm) => {
+    
+    let changedClasses = []
+    for (let i = 0; i < updatedForm.length; i++){
+      if(updatedForm[i].className !== originalForm[i].className){
+        changedClasses.push({ id: updatedForm[i].id, className: updatedForm[i].className })
+      }
+    }
+    setChangedClasses(changedClasses)
+    if(changedClasses.length > 0){
+      setSaveButtonClass("btn--settings")
+    } else {
+      setSaveButtonClass("btn--settings-disable")
+    }
   }
 
 
   //Variable with GraphQL String
-  let CLASSES;
-  CLASSES = gql`
-  mutation postEditClasses(
-    $classes: Array!
-  ) {
+  const EDIT_CLASSES = gql`
+  mutation postEditClasses($classInput: [EditClassInput]!) {
     editClasses(
-      classInput: $classes
-    )
-  }
-`;
-
-  
-  const submitClassesForm = async (event) => {
-    if (saveBtn.class == "btn--settings") {
-      event.preventDefault();
-      console.log(classFormData.classes)
-    } else {
-      alert("Button is disabled");
+      classInput: $classInput
+    ){
+      id
     }
   }
+  `;
+  
+  const submitClassesForm = async (event) => {
 
-  const [classes] = useMutation(CLASSES, {
+    if(saveButtonClass === 'btn--settings'){
+      event.preventDefault();
+      console.log(classFormData.classes)
+      editClasses({
+        variables: {
+          classInput: changedClasses
+        }
+      })
+    } else{
+      alert("Each class name must be at least one character or no class names have been changed")
+    }
+
+  }
+
+  const [editClasses] = useMutation(EDIT_CLASSES, {
     onCompleted() {
-      updateSaveBtn("disable");
-      setOgFormData(classFormData);
       props.loadUserInfo()
     }, 
-    onError() {
-      console.log("There was an error while editing the classe");
+    onError(error) {
+      console.log("There was an error while editing the classes");
+      console.log(error)
     }
   })
 
@@ -132,7 +123,7 @@ const ClassesForm = (props) => {
       {classFormData.classes.map((item, index) => (
         <div className="class-settings__group" key={index}>
           <div className="class-settings__name">
-            <label className="settings-form__label">Class #{index + 1} Name</label>
+            <label className="settings-form__label">Edit class name:</label>
             <input
               type="text"
               className="settings-form__input-text"
@@ -159,7 +150,7 @@ const ClassesForm = (props) => {
       </div>
       <div className="tabs__actions">
       <button
-          className={`tabs__action-save btn ` + saveBtn.class}
+          className={`tabs__action-save btn ` + saveButtonClass}
           onClick={submitClassesForm}
         >
           Save Update

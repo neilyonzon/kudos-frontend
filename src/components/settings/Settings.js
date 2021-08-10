@@ -81,15 +81,6 @@ const Settings = (props) => {
           <div className={"tabs__content active"}>
             {selectedSettingComponent}
           </div>
-          {/* <div className={tabClasses[0].contentClass} id="tabcontent-1">
-            <GeneralForm loadUserInfo={props.loadUserInfo} teacherInfo={props.data.teacher}/>
-          </div>
-          <div className={tabClasses[1].contentClass} id="tabcontent-2">
-            <ClassesForm refreshData={props.loadUserInfo} classes={props.data.teacher.classes} />
-          </div>
-          <div className={tabClasses[2].contentClass} id="tabcontent-3">
-            <CategoriesForm loadUserInfo={props.loadUserInfo} categories={props.categories} />
-          </div> */}
         </div>
       </div>
     </>
