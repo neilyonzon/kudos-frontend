@@ -13,24 +13,62 @@ const CategoriesForm = (props) => {
   //Function to handle save button.
   //Return form inputs
 
-  // const [formData, setFormData] = useState([{}]);
+  const [categoriesFormData, setCategoriesFormData] = useState({
+    categories: props.categories
+  })
 
-  const [saveBtn, setSaveBtn] = useState({
-    class: "btn--settings-disable",
-  });
+  const originalCategories = props.categories
+
+  const [changedCategories, setChangedCategories] = useState([])
+
+  const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
+
+  // const [saveBtn, setSaveBtn] = useState({
+  //   class: "btn--settings-disable",
+  // });
 
   const [openDeleteCat, setOpenDeleteCat] = useState(false)
 
   const toDeleteCat = useRef(props.categories[0])
 
-  const openDeleteHandler = (cat) => {
-    let remainingCategories = []
-    props.categories.forEach(category => {
-      if(category.category !== cat.category){
-        remainingCategories.push({value: category.category, displayValue: category.category })
+  const inputChangeHandler = (event, inputIdentifier) => {
+    const updatedForm = { ...categoriesFormData }
+    const updatedArray = [...categoriesFormData.categories]
+    const updatedElement = { ...updatedArray[inputIdentifier] }
+    updatedElement.category = event.target.value
+    updatedArray[inputIdentifier] = updatedElement
+    updatedForm.categories = updatedArray
+
+    let formIsValid = true
+    for(let i = 0; i < updatedForm.categories.length; i++){
+      if(updatedForm.categories[i].category === ""){
+        formIsValid = false
+        console.log("There is an empty field. Disable button")
+        setSaveButtonClass("btn--settings-disable")
       }
-    })
-    // setDisplayCategories(remainingCategories)
+    }
+    if(formIsValid){
+      updateChangedCategories(updatedForm.categories, originalCategories)
+    }
+    setCategoriesFormData(updatedForm)
+  }
+
+  const updateChangedCategories = (updatedForm, originalForm) => {
+    let changedCategories = []
+    for(let i = 0; i < updatedForm.length; i++){
+      if(updatedForm[i].category !== originalForm[i].category){
+        changedCategories.push({ id: updatedForm[i].id, name: updatedForm[i].category})
+      }
+    }
+    setChangedCategories(changedCategories)
+    if(changedCategories.length > 0){
+      setSaveButtonClass("btn--settings")
+    } else{
+      setSaveButtonClass("btn--settings-disable")
+    }
+  }
+
+  const openDeleteHandler = (cat) => {
     toDeleteCat.current = cat
     setOpenDeleteCat(true)
   }
