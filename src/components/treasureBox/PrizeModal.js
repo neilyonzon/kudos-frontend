@@ -258,19 +258,6 @@ const PrizeModal = (props) => {
     },
   });
 
-  // const populateFormData = () => {
-  //   const updatedForm = { ...form };
-  //   updatedForm["prizename"].value = props.prizename;
-  //   updatedForm["kudoscost"].value = props.kudoscost;
-  //   updatedForm["points"].value = props.quantity;
-  //   updatedForm["category"].value = props.category;
-  //   updatedForm["description"].value = props.description;
-  // };
-
-  // if (props.edit === true) {
-  //   populateFormData();
-  // }
-
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...form };
     const updatedFormInput = { ...updatedForm[inputIdentifier] };

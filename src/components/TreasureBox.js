@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import Listing from "../components/listing/Listing";
+import Button from "./elements/Button";
+import PrizeModal from "./treasureBox/PrizeModal";
 
 const TreasureBox = (props) => {
   useEffect(() => {
@@ -15,6 +17,14 @@ const TreasureBox = (props) => {
       getTreasureBoxData();
     }
   }, [props.selectedClassId]);
+
+
+  const [openAddPrize, setOpenAddPrize] = useState(false);
+
+
+  const handleAddPrizeModal = () => {
+    setOpenAddPrize(!openAddPrize);
+  };
 
   const listingData = {
     type: props.userType === "teacher" ? "prizes" : "treasureBox",
@@ -109,7 +119,18 @@ const TreasureBox = (props) => {
         ? data.getClassInfo.prizes
         : data.getClassPrizes;
     if (classPrizes.length === 0) {
-      return <p>There are no prizes</p>;
+      return <>
+      <h2>Add your first prize</h2>
+      <Button clicked={handleAddPrizeModal} btnColor="green">Add Prize</Button>
+      <PrizeModal
+        addPrize={true}
+        isOpen={openAddPrize}
+        onClose={handleAddPrizeModal}
+        refreshData={getTreasureBoxData}
+        classId={props.selectedClassId}
+        categories={props.categories}
+      />
+      </>
     }
 
     return (
