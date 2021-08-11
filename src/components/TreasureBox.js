@@ -119,8 +119,8 @@ const TreasureBox = (props) => {
         ? data.getClassInfo.prizes
         : data.getClassPrizes;
     if (classPrizes.length === 0) {
-      return <>
-      <h2>Add your first prize</h2>
+      return <div className="treasure-box__container">
+      <h2>Add your first prize for {data.getClassInfo.className}</h2>
       <Button clicked={handleAddPrizeModal} btnColor="green">Add Prize</Button>
       <PrizeModal
         addPrize={true}
@@ -130,7 +130,7 @@ const TreasureBox = (props) => {
         classId={props.selectedClassId}
         categories={props.categories}
       />
-      </>
+      </div>
     }
 
     return (
