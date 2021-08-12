@@ -201,6 +201,8 @@ const Home = (props) => {
         );
         if (userType !== "teacher") {
           tabClass = "dashboard--student";
+        } else {
+          tabClass = "dashboard";
         }
     }
 
