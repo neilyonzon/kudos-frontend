@@ -21,6 +21,7 @@ const EditCategoryCard = props => {
                     className="settings-form__input-text"
                     id={props.item.category}
                     value={props.item.category}
+                    onChange={e => props.onChange(e, props.index)}
                 />
                 <button onClick={openDeleteClassModal}>Delete</button>
             </>
