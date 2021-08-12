@@ -371,7 +371,7 @@ const StudentModal = (props) => {
         </Button>
 
         {!props.addStudent ? (
-          <Button btnColor="green" clicked={deleteStudentHandler}>
+          <Button btnColor="red" clicked={deleteStudentHandler}>
             Delete Student
           </Button>
         ) : null}

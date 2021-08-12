@@ -78,8 +78,30 @@ const Dashboard = (props) => {
     }
   ) 
 
-  const listingData = {
+  const studentListingData = {
     type: "studentsTeacherDash",
+    columns: [
+      {
+        name: "Name",
+        dataQuery: "name",
+      },
+      { name: "Kudos", dataQuery: "kudosBalance" },
+    ],
+  }
+
+  const prizesListingData = {
+    type: "",
+    columns: [
+      {
+        name: "Name",
+        dataQuery: "name",
+      },
+      { name: "Cost", dataQuery: "kudosCost" },
+    ],
+  }
+
+  const wishesListingData = {
+    type: "",
     columns: [
       {
         name: "Name",
@@ -113,9 +135,6 @@ const Dashboard = (props) => {
   let pendingApprovals = []
   if (props.userType === 'teacher' && data) {
     const classStudents = data.getClassInfo.students;
-    // const updatedListingData = { ...listingData };
-    // updatedListingData.data = classStudents;
-    // setClassData(updatedListingData);
     
     for (const student of classStudents) {
       for (const transaction of student.transactions) {
@@ -145,7 +164,7 @@ const Dashboard = (props) => {
           <h4 className="panel__title">{data.getClassInfo.className}</h4>
           <Listing
             rows={classStudents}
-            config={listingData}
+            config={studentListingData}
             refreshData={getDashboardData}
           />
         </div>
@@ -174,6 +193,9 @@ const Dashboard = (props) => {
   }
 
   if(data){
+
+
+    
     let approvedPurchases = []
     const studentTransactions = data.student.transactions
     for(const transaction of studentTransactions){
@@ -185,17 +207,27 @@ const Dashboard = (props) => {
       }
     }
 
+    const studentsPrizes = data.student.transactions;
+
     return (
       <>
-        <div className="panel dashboard-groups">
-          <h4 className="panel__title">Your Prizes!</h4>
+        <div className="panel dashboard-prizes">
+          <h4 className="panel__title">Your Prizes</h4>
+          <Listing
+            rows={studentsPrizes}
+            config={prizesListingData}
+            refreshData={getDashboardData}
+          />
+        </div>
+        <div className="panel dashboard-panel-wishes">
+          <h4 className="panel__title">Your Wishes</h4>
           {/* <Listing
             rows={classStudents}
             config={listingData}
             refreshData={getDashboardData}
           /> */}
         </div>
-        <div className="panel dashboard-panel-treasure">
+        <div className="panel dashboard-panel-points">
           <h4 className="panel__title">Kudos Points</h4>
           <div className="panel__content">
             <GiOpenTreasureChest className="icon-treasure" /> 
@@ -209,7 +241,7 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-        <div className="panel dashboard-lorem">
+        <div className="panel dashboard-pending">
           <h4 className="panel__title">Approvals</h4>
           <div className="panel__content">
             <p><strong>{numPendingApproval} Pending Approvals</strong></p>
