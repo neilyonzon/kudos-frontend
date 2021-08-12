@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
 import Approval from "./treasureBox/Approval";
+import ApprovalCard from "./dashboard/ApprovalCard";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import Listing from "../components/listing/Listing";
 
@@ -211,7 +212,8 @@ const Dashboard = (props) => {
         <div className="panel dashboard-lorem">
           <h4 className="panel__title">Approvals</h4>
           <div className="panel__content">
-            <p>{numPendingApproval} Pending Approvals</p>
+            <p><strong>{numPendingApproval} Pending Approvals</strong></p>
+            <ApprovalCard/>
           </div>
         </div>
       </>
