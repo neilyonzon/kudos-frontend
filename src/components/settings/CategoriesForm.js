@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { gql, useMutation } from '@apollo/client';
 
+import AddCategoryModal from './AddCategoryModal'
 import EditCategoryCard from "./EditCategoryCard";
 
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
@@ -23,6 +24,8 @@ const CategoriesForm = (props) => {
   const [changedCategories, setChangedCategories] = useState([])
 
   const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
+
+  const [addCatModalOpen, setAddCatModalOpen] = useState(false)
 
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...categoriesFormData }
@@ -92,13 +95,17 @@ const CategoriesForm = (props) => {
     }
   }
 
+  const handleAddCategoryModal = () => {
+    setAddCatModalOpen(!addCatModalOpen)
+  }
+
   return (
     <>
       <div className="utility-bar">
         <AiOutlineSearch className="icon-search" />
 
         <button className="list__btn">
-          <BiPlus className="icon-plus" />
+          <BiPlus className="icon-plus" onClick={handleAddCategoryModal}/>
         </button>
       </div>
       <div className="categories-settings">
@@ -124,6 +131,11 @@ const CategoriesForm = (props) => {
           Save Update
         </button>
       </div>
+      <AddCategoryModal
+        isOpen={addCatModalOpen}
+        onClose={handleAddCategoryModal}
+        loadUserInfo={props.loadUserInfo}
+      />
     </>
   );
 };
