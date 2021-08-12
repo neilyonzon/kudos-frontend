@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
-import DeleteCatModal from './DeleteCatModal';
+import EditCategoryCard from "./EditCategoryCard";
 
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
@@ -22,14 +22,6 @@ const CategoriesForm = (props) => {
   const [changedCategories, setChangedCategories] = useState([])
 
   const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
-
-  // const [saveBtn, setSaveBtn] = useState({
-  //   class: "btn--settings-disable",
-  // });
-
-  const [openDeleteCat, setOpenDeleteCat] = useState(false)
-
-  const toDeleteCat = useRef(props.categories[0])
 
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedForm = { ...categoriesFormData }
@@ -68,13 +60,6 @@ const CategoriesForm = (props) => {
     }
   }
 
-  const openDeleteHandler = (cat) => {
-    toDeleteCat.current = cat
-    setOpenDeleteCat(true)
-  }
-
-  const closeDeleteHandler = () => setOpenDeleteCat(false)
-
   return (
     <>
       <div className="utility-bar">
@@ -86,39 +71,21 @@ const CategoriesForm = (props) => {
       </div>
       <div className="categories-settings">
         {
-          props.categories.map((cat, idx) => (
-            <div className="categories-settings__group" key={cat.category}>
-              <label className="settings-form__label">
-                {cat.category === "Toy" ? `${cat.category} (Default)` : cat.category}
-              </label>
-              
-              {cat.category !== "Toy" ? 
-                <>
-                  <input
-                    type="text"
-                    className="settings-form__input-text"
-                    id={cat.category}
-                    value={cat.category}
-                  />
-                  <button onClick={() => openDeleteHandler(cat)}>Delete</button>
-                </>
-                : null
-              }
-            </div>
+          categoriesFormData.categories.map((cat, idx) => (
+            <EditCategoryCard
+              key={idx}
+              item={cat}
+              index={idx}
+              onChange={inputChangeHandler}
+              loadUserInfo={props.loadUserInfo}
+              categories={props.categories}
+            />
           ))
         }
       </div>
 
-      <DeleteCatModal 
-        isOpen={openDeleteCat}
-        onClose={closeDeleteHandler}
-        toDeleteCategory={toDeleteCat.current}
-        categories={props.categories}
-        loadUserInfo={props.loadUserInfo}
-      />
-
       <div className="tabs__actions">
-        <button className={`tabs__action-save btn ` + saveBtn.class}>
+        <button className={`tabs__action-save btn ` + saveButtonClass}>
           Save Update
         </button>
       </div>

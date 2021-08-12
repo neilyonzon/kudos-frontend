@@ -18,25 +18,12 @@ const customStyles = {
 
 const DeleteCatModal = props => {
 
-    useEffect(() => {
-        let displayCategories = []
-        props.categories.forEach(category => {
-            if(category.category !== props.toDeleteCategory.category){
-                displayCategories.push({ value: category.category, displayValue: category.category })
-            }
-        })
-        setReplaceCategory(displayCategories[0].value)
-    }, [props.isOpen, props.categories])
-
     let displayCategories = []
     props.categories.forEach(category => {
         if(category.category !== props.toDeleteCategory.category){
-            displayCategories.push({ value: category.category, displayValue: category.category })
+            displayCategories.push({ value: category.category, displayValue: category.category})
         }
     })
-
-    // console.log('displayCats', displayCategories)
-    // console.log('propsCats', props.categories)
 
     const inputConfig = {
         type: "text",
@@ -50,8 +37,6 @@ const DeleteCatModal = props => {
     }
 
     const [replaceCategory, setReplaceCategory] = useState(null)
-
-    console.log('replaceCat', replaceCategory)
 
     const DELETE_CAT = gql`
         mutation deleteCategory($id: Int!, $replaceId: Int!){
