@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { gql, useMutation } from '@apollo/client';
 
 import EditCategoryCard from "./EditCategoryCard";
 
@@ -60,6 +61,37 @@ const CategoriesForm = (props) => {
     }
   }
 
+  const EDIT_CATEGORIES = gql`
+  mutation editCategories($categoryInput: [EditCategory]!) {
+    editCategories(
+      categoryInput: $categoryInput
+    ) {
+      id
+    }
+  }
+  `
+
+  const [editCategories] = useMutation(EDIT_CATEGORIES, {
+    onCompleted(){
+      props.loadUserInfo()
+    },
+    onError(error){
+      console.log("There was an error while editing categories")
+      console.log(error)
+    }
+  })
+
+  const submitCategoriesForm = async (event) => {
+    if(saveButtonClass === 'btn--settings'){
+      event.preventDefault()
+      editCategories({
+        variables: {
+          categoryInput: changedCategories
+        }
+      })
+    }
+  }
+
   return (
     <>
       <div className="utility-bar">
@@ -85,7 +117,10 @@ const CategoriesForm = (props) => {
       </div>
 
       <div className="tabs__actions">
-        <button className={`tabs__action-save btn ` + saveButtonClass}>
+        <button 
+          className={`tabs__action-save btn ` + saveButtonClass}
+          onClick={submitCategoriesForm}
+        >
           Save Update
         </button>
       </div>
