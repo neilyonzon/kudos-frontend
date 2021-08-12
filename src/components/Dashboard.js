@@ -254,7 +254,10 @@ const Dashboard = (props) => {
           <h4 className="panel__title">Approvals</h4>
           <div className="panel__content">
             <p><strong>{numPendingApproval} Pending Approvals</strong></p>
-            <ApprovalCard/>
+            <div className="approval-section">
+              <ApprovalCard/>
+              <ApprovalCard/>
+            </div>
           </div>
         </div>
       </>
