@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
+import { gql, useMutation } from '@apollo/client';
 
-import DeleteCatModal from './DeleteCatModal';
+import EditCategoryCard from "./EditCategoryCard";
 
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
@@ -13,29 +14,83 @@ const CategoriesForm = (props) => {
   //Function to handle save button.
   //Return form inputs
 
-  // const [formData, setFormData] = useState([{}]);
+  const [categoriesFormData, setCategoriesFormData] = useState({
+    categories: props.categories
+  })
 
-  const [saveBtn, setSaveBtn] = useState({
-    class: "btn--settings-disable",
-  });
+  const originalCategories = props.categories
 
-  const [openDeleteCat, setOpenDeleteCat] = useState(false)
+  const [changedCategories, setChangedCategories] = useState([])
 
-  const toDeleteCat = useRef(props.categories[0])
+  const [saveButtonClass, setSaveButtonClass] = useState("btn--settings-disable")
 
-  const openDeleteHandler = (cat) => {
-    let remainingCategories = []
-    props.categories.forEach(category => {
-      if(category.category !== cat.category){
-        remainingCategories.push({value: category.category, displayValue: category.category })
+  const inputChangeHandler = (event, inputIdentifier) => {
+    const updatedForm = { ...categoriesFormData }
+    const updatedArray = [...categoriesFormData.categories]
+    const updatedElement = { ...updatedArray[inputIdentifier] }
+    updatedElement.category = event.target.value
+    updatedArray[inputIdentifier] = updatedElement
+    updatedForm.categories = updatedArray
+
+    let formIsValid = true
+    for(let i = 0; i < updatedForm.categories.length; i++){
+      if(updatedForm.categories[i].category === ""){
+        formIsValid = false
+        console.log("There is an empty field. Disable button")
+        setSaveButtonClass("btn--settings-disable")
       }
-    })
-    // setDisplayCategories(remainingCategories)
-    toDeleteCat.current = cat
-    setOpenDeleteCat(true)
+    }
+    if(formIsValid){
+      updateChangedCategories(updatedForm.categories, originalCategories)
+    }
+    setCategoriesFormData(updatedForm)
   }
 
-  const closeDeleteHandler = () => setOpenDeleteCat(false)
+  const updateChangedCategories = (updatedForm, originalForm) => {
+    let changedCategories = []
+    for(let i = 0; i < updatedForm.length; i++){
+      if(updatedForm[i].category !== originalForm[i].category){
+        changedCategories.push({ id: updatedForm[i].id, name: updatedForm[i].category})
+      }
+    }
+    setChangedCategories(changedCategories)
+    if(changedCategories.length > 0){
+      setSaveButtonClass("btn--settings")
+    } else{
+      setSaveButtonClass("btn--settings-disable")
+    }
+  }
+
+  const EDIT_CATEGORIES = gql`
+  mutation editCategories($categoryInput: [EditCategory]!) {
+    editCategories(
+      categoryInput: $categoryInput
+    ) {
+      id
+    }
+  }
+  `
+
+  const [editCategories] = useMutation(EDIT_CATEGORIES, {
+    onCompleted(){
+      props.loadUserInfo()
+    },
+    onError(error){
+      console.log("There was an error while editing categories")
+      console.log(error)
+    }
+  })
+
+  const submitCategoriesForm = async (event) => {
+    if(saveButtonClass === 'btn--settings'){
+      event.preventDefault()
+      editCategories({
+        variables: {
+          categoryInput: changedCategories
+        }
+      })
+    }
+  }
 
   return (
     <>
@@ -48,39 +103,24 @@ const CategoriesForm = (props) => {
       </div>
       <div className="categories-settings">
         {
-          props.categories.map((cat, idx) => (
-            <div className="categories-settings__group" key={cat.category}>
-              <label className="settings-form__label">
-                {cat.category === "Toy" ? `${cat.category} (Default)` : cat.category}
-              </label>
-              
-              {cat.category !== "Toy" ? 
-                <>
-                  <input
-                    type="text"
-                    className="settings-form__input-text"
-                    id={cat.category}
-                    value={cat.category}
-                  />
-                  <button onClick={() => openDeleteHandler(cat)}>Delete</button>
-                </>
-                : null
-              }
-            </div>
+          categoriesFormData.categories.map((cat, idx) => (
+            <EditCategoryCard
+              key={idx}
+              item={cat}
+              index={idx}
+              onChange={inputChangeHandler}
+              loadUserInfo={props.loadUserInfo}
+              categories={props.categories}
+            />
           ))
         }
       </div>
 
-      <DeleteCatModal 
-        isOpen={openDeleteCat}
-        onClose={closeDeleteHandler}
-        toDeleteCategory={toDeleteCat.current}
-        categories={props.categories}
-        loadUserInfo={props.loadUserInfo}
-      />
-
       <div className="tabs__actions">
-        <button className={`tabs__action-save btn ` + saveBtn.class}>
+        <button 
+          className={`tabs__action-save btn ` + saveButtonClass}
+          onClick={submitCategoriesForm}
+        >
           Save Update
         </button>
       </div>
