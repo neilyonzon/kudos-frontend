@@ -1,0 +1,22 @@
+.approval {
+    &-section {
+        height: 100%;
+        overflow: scroll;
+    }
+
+    &-card {
+        display: flex;
+        padding: 2rem 0rem;
+
+        & span {
+            font-size: 1.6rem;
+        }
+
+        &:not(:last-child) {
+            border-bottom: 1px solid gray;
+        }
+    }
+
+
+
+}

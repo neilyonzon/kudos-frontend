@@ -199,7 +199,9 @@ const Home = (props) => {
         tabComponent = (
           <Dashboard selectedClassId={selectedClassId} userType={userType} />
         );
-        tabClass = "dashboard";
+        if (userType !== "teacher") {
+          tabClass = "dashboard--student";
+        }
     }
 
     let treasureBoxIcon;

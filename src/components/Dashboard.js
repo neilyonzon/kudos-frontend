@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
 import Approval from "./treasureBox/Approval";
+import ApprovalCard from "./dashboard/ApprovalCard";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import Listing from "../components/listing/Listing";
 
@@ -57,6 +58,10 @@ const Dashboard = (props) => {
         student {
           kudosBalance
           classId
+          wishList {
+            id
+            prizeAvailable
+          }
           transactions {
             id
             approved
@@ -77,7 +82,7 @@ const Dashboard = (props) => {
     }
   ) 
 
-  const listingData = {
+  const studentListingData = {
     type: "studentsTeacherDash",
     columns: [
       {
@@ -85,6 +90,17 @@ const Dashboard = (props) => {
         dataQuery: "name",
       },
       { name: "Kudos", dataQuery: "kudosBalance" },
+    ],
+  }
+
+  const prizesListingData = {
+    type: "",
+    columns: [
+      {
+        name: "Name",
+        dataQuery: "name",
+      },
+      { name: "Cost", dataQuery: "kudosCost" },
     ],
   }
 
@@ -112,9 +128,6 @@ const Dashboard = (props) => {
   let pendingApprovals = []
   if (props.userType === 'teacher' && data) {
     const classStudents = data.getClassInfo.students;
-    // const updatedListingData = { ...listingData };
-    // updatedListingData.data = classStudents;
-    // setClassData(updatedListingData);
     
     for (const student of classStudents) {
       for (const transaction of student.transactions) {
@@ -144,7 +157,7 @@ const Dashboard = (props) => {
           <h4 className="panel__title">{data.getClassInfo.className}</h4>
           <Listing
             rows={classStudents}
-            config={listingData}
+            config={studentListingData}
             refreshData={getDashboardData}
           />
         </div>
@@ -173,6 +186,9 @@ const Dashboard = (props) => {
   }
 
   if(data){
+
+
+    
     let approvedPurchases = []
     const studentTransactions = data.student.transactions
     for(const transaction of studentTransactions){
@@ -184,17 +200,43 @@ const Dashboard = (props) => {
       }
     }
 
+    //Filter this array by approved prizes only
+    let allStudentsPrizes = data.student.transactions;
+    let studentsPrizes = [];
+
+    if (studentsPrizes.length > 0) {
+      studentsPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
+    }
+
+    console.log(studentsPrizes);
+
+    const studentsWishes = [];
+
+    if (data.student.wishList !== null ) {
+      studentsWishes = data.student.wishList;
+    }
+
+    console.log(data.student);
+
     return (
       <>
-        <div className="panel dashboard-groups">
-          <h4 className="panel__title">Your Prizes!</h4>
-          {/* <Listing
-            rows={classStudents}
-            config={listingData}
+        <div className="panel dashboard-prizes">
+          <h4 className="panel__title">Your Prizes</h4>
+          <Listing
+            rows={studentsPrizes}
+            config={prizesListingData}
             refreshData={getDashboardData}
-          /> */}
+          />
         </div>
-        <div className="panel dashboard-panel-treasure">
+        <div className="panel dashboard-panel-wishes">
+          <h4 className="panel__title">Your Wishes</h4>
+          <Listing
+            rows={studentsWishes}
+            config={prizesListingData}
+            refreshData={getDashboardData}
+          />
+        </div>
+        <div className="panel dashboard-panel-points">
           <h4 className="panel__title">Kudos Points</h4>
           <div className="panel__content">
             <GiOpenTreasureChest className="icon-treasure" /> 
@@ -208,10 +250,14 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-        <div className="panel dashboard-lorem">
+        <div className="panel dashboard-pending">
           <h4 className="panel__title">Approvals</h4>
           <div className="panel__content">
-            <p>{numPendingApproval} Pending Approvals</p>
+            <p><strong>{numPendingApproval} Pending Approvals</strong></p>
+            <div className="approval-section">
+              <ApprovalCard/>
+              <ApprovalCard/>
+            </div>
           </div>
         </div>
       </>
