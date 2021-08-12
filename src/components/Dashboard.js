@@ -178,7 +178,11 @@ const Dashboard = (props) => {
         <div className="panel dashboard-lorem">
           <h4 className="panel__title">Lorem Ipsum</h4>
           <div className="panel__content">
-            <p>{numPendingApproval} Pending Approvals</p>
+            <p><strong>{numPendingApproval} Pending Approvals</strong></p>
+            <div className="approval-section">
+              <ApprovalCard/>
+              <ApprovalCard/>
+            </div>
           </div>
         </div>
       </>
