@@ -58,6 +58,10 @@ const Dashboard = (props) => {
         student {
           kudosBalance
           classId
+          wishList {
+            id
+            prizeAvailable
+          }
           transactions {
             id
             approved
@@ -97,17 +101,6 @@ const Dashboard = (props) => {
         dataQuery: "name",
       },
       { name: "Cost", dataQuery: "kudosCost" },
-    ],
-  }
-
-  const wishesListingData = {
-    type: "",
-    columns: [
-      {
-        name: "Name",
-        dataQuery: "name",
-      },
-      { name: "Kudos", dataQuery: "kudosBalance" },
     ],
   }
 
@@ -207,7 +200,23 @@ const Dashboard = (props) => {
       }
     }
 
-    const studentsPrizes = data.student.transactions;
+    //Filter this array by approved prizes only
+    let allStudentsPrizes = data.student.transactions;
+    let studentsPrizes = [];
+
+    if (studentsPrizes.length > 0) {
+      studentsPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
+    }
+
+    console.log(studentsPrizes);
+
+    const studentsWishes = [];
+
+    if (data.student.wishList !== null ) {
+      studentsWishes = data.student.wishList;
+    }
+
+    console.log(data.student);
 
     return (
       <>
@@ -221,11 +230,11 @@ const Dashboard = (props) => {
         </div>
         <div className="panel dashboard-panel-wishes">
           <h4 className="panel__title">Your Wishes</h4>
-          {/* <Listing
-            rows={classStudents}
-            config={listingData}
+          <Listing
+            rows={studentsWishes}
+            config={prizesListingData}
             refreshData={getDashboardData}
-          /> */}
+          />
         </div>
         <div className="panel dashboard-panel-points">
           <h4 className="panel__title">Kudos Points</h4>
