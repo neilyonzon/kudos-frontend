@@ -135,11 +135,15 @@ const Dashboard = (props) => {
           numPendingApproval += 1;
           const studentName = student.firstName + " " + student.lastName;
           pendingApprovals.push(
-            <Approval
+            <ApprovalCard
               key={transaction.id}
+              transactionId={transaction.id}
               studentName={studentName}
+              prizeId={transaction.prizeId}
               prizeCost={transaction.prizeCost}
               prizeName={transaction.prizeName}
+              refreshData={getDashboardData}
+              classId={props.selectedClassId}
             />
           );
         }
@@ -180,8 +184,7 @@ const Dashboard = (props) => {
           <div className="panel__content">
             <p><strong>{numPendingApproval} Pending Approvals</strong></p>
             <div className="approval-section">
-              <ApprovalCard/>
-              <ApprovalCard/>
+              {pendingApprovals}
             </div>
           </div>
         </div>
@@ -189,10 +192,7 @@ const Dashboard = (props) => {
     );
   }
 
-  if(data){
-
-
-    
+  if(data){ 
     let approvedPurchases = []
     const studentTransactions = data.student.transactions
     for(const transaction of studentTransactions){
@@ -200,7 +200,17 @@ const Dashboard = (props) => {
         approvedPurchases.push(transaction)
       } else{
         numPendingApproval += 1
-        pendingApprovals.push(transaction)
+        pendingApprovals.push(
+          <ApprovalCard
+            key={transaction.id}
+            transactionId={transaction.id}
+            prizeId={transaction.prizeId}
+            prizeCost={transaction.prizeCost}
+            prizeName={transaction.prizeName}
+            refreshData={getDashboardData}
+            student={true}
+          />
+        )
       }
     }
 
@@ -212,7 +222,7 @@ const Dashboard = (props) => {
       studentsPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
     }
 
-    console.log(studentsPrizes);
+    // console.log(studentsPrizes);
 
     const studentsWishes = [];
 
@@ -220,7 +230,7 @@ const Dashboard = (props) => {
       studentsWishes = data.student.wishList;
     }
 
-    console.log(data.student);
+    // console.log(data.student);
 
     return (
       <>
@@ -259,8 +269,7 @@ const Dashboard = (props) => {
           <div className="panel__content">
             <p><strong>{numPendingApproval} Pending Approvals</strong></p>
             <div className="approval-section">
-              <ApprovalCard/>
-              <ApprovalCard/>
+              {pendingApprovals}
             </div>
           </div>
         </div>
