@@ -9,6 +9,7 @@ import KudosModal from "../students/KudosModal";
 import StudentModal from "../students/StudentModal";
 import PrizeModal from "../treasureBox/PrizeModal";
 import ActionModal from '../treasureBox/ActionModal';
+import { removeFragmentSpreadFromDocument } from "@apollo/client/utilities";
 
 const ListingCard = (props) => {
   const [openEditKudos, setOpenEditKudos] = useState(false);
@@ -16,6 +17,22 @@ const ListingCard = (props) => {
   const [openEditPrize, setOpenEditPrize] = useState(false);
   const [openTransaction, setOpenTransaction] = useState(false);
   const [openWish, setOpenWish] = useState(false);
+
+  let prizeUrl;
+  if (props.type == 'studentsPrizes') {
+    prizeUrl = props.itemData.prizeImageUrl;
+  } else {
+    prizeUrl = props.itemData.imageUrl;
+  }
+
+  let name;
+
+  if (props.type == 'students' || props.type == 'studentsTeacherDash' ) {
+    name = props.itemData.firstName + " " + props.itemData.lastName;
+  } else {
+    name = props.itemData.prizeName;
+  }
+  
 
   let hasEnoughKudos
   if(props.type === 'treasureBox'){
@@ -75,11 +92,13 @@ const ListingCard = (props) => {
 
   return (
     <div className="list__item">
-      <input type="checkbox" className="list__checkbox"></input>
+      {props.type !== "studentsPrizes" ? null : props.type == "treasureBox" ? null : <input type="checkbox" className="list__checkbox"></input>}
+    
       <div className="list__details">
         <img
           className="list__img list__col"
-          src={props.itemData.imageUrl}
+          src={prizeUrl}
+          alt={name}
         ></img>
         {getItemColumns(props.columns)}
       </div>
@@ -101,11 +120,11 @@ const ListingCard = (props) => {
           </>
         ) : null}
 
-        {props.type !== "treasureBox" ? (
-          <button className="list__btn list__btn--edit">
-            <FaEdit className="icon-edit" onClick={handleEditModal} />
-          </button>
-        ) : null}
+      {props.type == "studentsPrizes" ? null : props.type == "treasureBox" ? null : ( <button className="list__btn list__btn--edit">
+        <FaEdit className="icon-edit" onClick={handleEditModal} />
+      </button>)}
+
+
       </div>
       <KudosModal
         isOpen={openEditKudos}
