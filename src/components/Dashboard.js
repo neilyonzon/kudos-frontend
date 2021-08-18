@@ -94,13 +94,13 @@ const Dashboard = (props) => {
   }
 
   const prizesListingData = {
-    type: "",
+    type: "studentsPrizes",
     columns: [
       {
         name: "Name",
-        dataQuery: "name",
+        dataQuery: "prizeName",
       },
-      { name: "Cost", dataQuery: "kudosCost" },
+      { name: "Cost", dataQuery: "prizeCost" },
     ],
   }
 
@@ -222,7 +222,7 @@ const Dashboard = (props) => {
       studentsPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
     }
 
-    // console.log(studentsPrizes);
+    console.log(studentsPrizes);
 
     const studentsWishes = [];
 
@@ -230,14 +230,14 @@ const Dashboard = (props) => {
       studentsWishes = data.student.wishList;
     }
 
-    // console.log(data.student);
+    console.log(data.student);
 
     return (
       <>
         <div className="panel dashboard-prizes">
           <h4 className="panel__title">Your Prizes</h4>
           <Listing
-            rows={studentsPrizes}
+            rows={allStudentsPrizes}
             config={prizesListingData}
             refreshData={getDashboardData}
           />

@@ -13,12 +13,13 @@
 .dashboard--student {
   display: grid;
   padding: 4rem;
-  grid-template-rows: 37rem 37rem;
+  grid-template-rows: 55rem 55rem;
   grid-template-columns: 1fr 1fr;
   grid-gap: 3rem;
   grid-template-areas:
     "prizes points"
     "wishes pending";
+  height: 130rem;
 }
 
 .dashboard-panel-treasure {
