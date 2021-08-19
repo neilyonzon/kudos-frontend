@@ -20,6 +20,10 @@
     "prizes points"
     "wishes pending";
   height: 130rem;
+
+  & .list__items-container {
+    height: 43rem;
+  }
 }
 
 .dashboard-panel-treasure {

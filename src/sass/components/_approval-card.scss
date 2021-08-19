@@ -1,7 +1,19 @@
 .approval {
     &-section {
-        height: 100%;
+        height: 90%;
+        padding-right: 3rem;
         overflow: scroll;
+    }
+
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 10px;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: $color-gray-light;
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
     }
 
     &-card {

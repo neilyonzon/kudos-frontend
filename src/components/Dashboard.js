@@ -216,21 +216,17 @@ const Dashboard = (props) => {
 
     //Filter this array by approved prizes only
     let allStudentsPrizes = data.student.transactions;
-    let studentsPrizes = [];
+    let approvedPrizes = [];
 
-    if (studentsPrizes.length > 0) {
-      studentsPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
+    if (allStudentsPrizes.length > 0) {
+      approvedPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
     }
-
-    console.log(studentsPrizes);
 
     const studentsWishes = [];
 
     if (data.student.wishList !== null ) {
       studentsWishes = data.student.wishList;
     }
-
-    console.log(data.student);
 
     return (
       <>
