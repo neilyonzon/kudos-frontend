@@ -92,7 +92,7 @@ const ListingCard = (props) => {
 
   return (
     <div className="list__item">
-      {props.type !== "studentsPrizes" ? null : props.type == "treasureBox" ? null : <input type="checkbox" className="list__checkbox"></input>}
+      {props.type == "studentsPrizes" ? null : props.type == "treasureBox" ? null : <input type="checkbox" className="list__checkbox"></input>}
     
       <div className="list__details">
         <img

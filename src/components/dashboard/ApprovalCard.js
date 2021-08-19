@@ -68,7 +68,7 @@ const ApprovalCard = props => {
         : null
       }
       {
-        !props.student ? <button className="btn--micro" onClick={() => approveOrDeclineTransaction(false)}>Decline</button>
+        !props.student ? <button className="btn--link" onClick={() => approveOrDeclineTransaction(false)}>Decline</button>
         : null
       }
     </div>

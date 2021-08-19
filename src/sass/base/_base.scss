@@ -127,6 +127,20 @@ p, span {
     font-size: 1.6rem;
     cursor: pointer;
   }
+
+  &--link {
+    border: none;
+    text-decoration: underline;
+    height: 2.5rem;
+    margin: 0.75rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+
+  &--inactive {
+    cursor: not-allowed !important;
+    opacity: .3;
+  }
 }
 
 a {
