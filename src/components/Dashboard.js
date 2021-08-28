@@ -216,6 +216,8 @@ const Dashboard = (props) => {
       }
     }
 
+    console.log(data.student);
+
     //Filter this array by approved prizes only
     let allStudentsPrizes = data.student.transactions;
     let approvedPrizes = [];
