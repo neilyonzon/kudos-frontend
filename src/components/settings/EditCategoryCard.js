@@ -23,7 +23,7 @@ const EditCategoryCard = props => {
                     value={props.item.category}
                     onChange={e => props.onChange(e, props.index)}
                 />
-                <button onClick={openDeleteClassModal}>Delete</button>
+                <button className="categories-settings__delete" onClick={openDeleteClassModal}>Delete</button>
             </>
             : null
             }

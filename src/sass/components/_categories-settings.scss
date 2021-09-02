@@ -3,6 +3,7 @@
   width: 100%;
   justify-content: flex-start;
   flex-wrap: wrap;
+  font-size: 1.6rem;
 
   &__group {
     width: 30%;
@@ -15,6 +16,19 @@
 
     & input {
       min-width: 17rem;
+      border-radius: 5px;
+      border: 1px #707070 solid;
+      padding: 0.5rem 0.75rem;
+      max-width: 25rem;
     }
+  }
+
+  &__delete {
+    display: block;
+    background: white;
+    border: 0;
+    position: relative;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
