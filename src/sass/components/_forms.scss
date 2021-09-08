@@ -19,7 +19,7 @@
 
     &--points {
       align-self: center;
-      width: 20rem;
+      width: 50rem;
       text-align: center;
       margin-top: 2.5rem;
     }
@@ -50,12 +50,12 @@
     }
   }
 
-  &__points-control {
-    margin-top: 2rem;
-    width: 20rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+  &__points {
+    &-button {
+      padding-top: 1rem;
+      display: flex;
+      justify-content: center;
+    }
   }
 
   &__input {
@@ -91,7 +91,7 @@
     }
 
     &--points {
-      width: 6.7rem;
+      width: 10rem;
       height: 6rem;
       padding: 1rem;
       text-align: center;

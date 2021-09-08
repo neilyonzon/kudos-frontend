@@ -81,27 +81,32 @@ const KudosModal = (props) => {
             onRequestClose={props.onClose}
             style={customStyles}
         >
-            <FaMoneyBillAlt />
-            <p>{props.firstName + ' ' + props.lastName}</p>
-            <p>{props.studentKudos}</p>
-            <div>
-                <AiOutlineMinus onClick={() => editHandler("minus")} />
-                <input 
-                    type="number"
-                    value={editNumber}
-                    min="0" 
-                    onChange={(event) => setEditNumber(parseInt(event.target.value))}
-                />
-                <AiOutlinePlus onClick={() => editHandler("add")} />
+            <div className="form__group form__group--points">
+                <label className="form__label" htmlFor="points">
+                Points
+                </label>
+                <p>{props.firstName + ' ' + props.lastName}</p>
+                <p>{props.studentKudos}</p>
+                <div className="form__points-control">
+                    <AiOutlineMinus className="form__icon points-minus" aria-controls="points" onClick={() => editHandler("minus")} />
+                    <input 
+                        type="number"
+                        value={editNumber}
+                        min="0" 
+                        className="form__input--points form__input"
+                        onChange={(event) => setEditNumber(parseInt(event.target.value))}
+                    />
+                    <AiOutlinePlus className="form__icon points-plus" aria-controls="points" onClick={() => editHandler("add")} />
+                </div>
+                <div className="form__points-button">
+                     <Button btnColor="green" clicked={(event) => editKudosHandler("minus", event)}>
+                        Subtract points
+                    </Button>
+                    <Button btnColor="green" clicked={(event) => editKudosHandler("add", event)}>
+                        Add points
+                    </Button>
+                </div>
             </div>
-
-            <Button btnColor="green" clicked={(event) => editKudosHandler("add", event)}>
-                Add these points!
-            </Button>
-            <Button btnColor="green" clicked={(event) => editKudosHandler("minus", event)}>
-                Subtract these points!
-            </Button>
-
         </Modal>
     )
 }

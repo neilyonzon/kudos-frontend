@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import Layout from "../../components/global/Layout";
-import Form from "../../components/forms/FormStarter";
+import Form from "../../components/forms/_designForm";
 
 class FormTest extends React.Component {
   state = {
@@ -19,6 +19,8 @@ class FormTest extends React.Component {
         <Helmet>
           <title>Kudos Login</title>
           <meta name="description" content="Kudos" />
+          <Form/>
+          <p>Test</p>
         </Helmet>
       </Layout>
     );
