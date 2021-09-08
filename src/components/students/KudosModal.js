@@ -98,7 +98,7 @@ const KudosModal = (props) => {
                     />
                     <AiOutlinePlus className="form__icon points-plus" aria-controls="points" onClick={() => editHandler("add")} />
                 </div>
-                <div className="form__points-button">
+                <div className="form__points-button test">
                      <Button btnColor="green" clicked={(event) => editKudosHandler("minus", event)}>
                         Subtract points
                     </Button>
