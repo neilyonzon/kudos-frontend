@@ -70,7 +70,11 @@ const Home = (props) => {
           username
           imageUrl
           kudosBalance
-          classId
+          id
+          class {
+            id
+            treasureBoxOpen
+          }
         }
       }
     `;
@@ -92,7 +96,7 @@ const Home = (props) => {
           return;
         }
         if (data && userType !== "teacher") {
-          setSelectedClassId(data.student.classId);
+          setSelectedClassId(data.student.class.id);
           setKudosBalance(data.student.kudosBalance);
         }
       },
