@@ -59,10 +59,8 @@ const Dashboard = (props) => {
       query getStudentDashboard {
         student {
           kudosBalance
-          classId
-          wishList {
+          wishes {
             id
-            prizeAvailable
           }
           transactions {
             id
@@ -216,8 +214,6 @@ const Dashboard = (props) => {
       }
     }
 
-    console.log(data.student);
-
     //Filter this array by approved prizes only
     let allStudentsPrizes = data.student.transactions;
     let approvedPrizes = [];
@@ -226,10 +222,10 @@ const Dashboard = (props) => {
       approvedPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
     }
 
-    const studentsWishes = [];
+    let studentsWishes = [];
 
-    if (data.student.wishList !== null ) {
-      studentsWishes = data.student.wishList;
+    if (data.student.wishes !== null ) {
+      studentsWishes = data.student.wishes;
     }
 
     return (
