@@ -70,7 +70,7 @@ const Home = (props) => {
           username
           imageUrl
           kudosBalance
-          classId
+          id
         }
       }
     `;
