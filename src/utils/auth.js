@@ -32,11 +32,6 @@ export const retrieveAcsToken = async () => {
   return getAcsToken();
 };
 
-export const logout = (callback) => {
-  setAcsToken("");
-  callback();
-};
-
 // returns valid access token if refresh token cookie is valid
 // else returns empty string if refresh token is not valid
 const refreshToken = async () =>{
