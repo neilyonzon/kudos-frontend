@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
-import { retrieveAcsToken, logout } from "../utils/auth";
+import { retrieveAcsToken, setAcsToken } from "../utils/auth";
 import { getUserType } from "../utils/userType";
 
 import ControlNav from "../components/home/ControlNav";
@@ -138,6 +138,24 @@ const Home = (props) => {
     });
   };
 
+  const LOGOUT = gql`
+    mutation logout {
+      logoutUser {
+        userId
+      }
+    }
+  `
+
+  const [logoutUser] = useMutation(LOGOUT, {
+    onCompleted() {
+      setAcsToken('')
+      navigate("/")
+    },
+    onError() {
+      console.log("could not logout user!")
+    }
+  })
+
   if (!called && show) {
     loadUserInfo();
     return null;
@@ -258,7 +276,7 @@ const Home = (props) => {
           href="/"
           onClick={(event) => {
             event.preventDefault();
-            logout(() => navigate("/"));
+            logoutUser()
           }}
         >
           Log Out!
