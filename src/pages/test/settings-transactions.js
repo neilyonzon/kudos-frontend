@@ -215,22 +215,71 @@ class Dashboard extends Component {
                       </div>
                       <div class="class-selector select">
                         <select>
-                          <option value="Class 101">Class 101</option>
-                          <option value="Class 102">Class 102</option>
-                          <option value="Class 103">Class 103</option>
-                          <option value="Class 105">Class 105</option>
+                          <option value="Class 101">October 2021</option>
+                          <option value="Class 102">September 2021</option>
+                          <option value="Class 103">August 2021</option>
                         </select>
-                      </div>  
+                      </div>
                     </div>
                     <AiOutlineSearch className="icon-search" />
                   </div>
-                  <div className="categories-settings">
-
-                  </div>
-                  <div className="tabs__actions">
-                    <button className="tabs__action-save btn btn--settings">
-                      Save Update
-                    </button>
+                  <div className="transactions">
+                    <div className="transactions__group">
+                      <p>
+                        Kate Mendoza exchanged 50pts for{" "}
+                        <a href="#">Pikachu Plush</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Matthew Arquetta exchanged 10pts for{" "}
+                        <a href="#">Lego Set</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Jonathan Pagaduan exchanged 100pts for{" "}
+                        <a href="#">Transformers Lego Set</a>
+                      </p>{" "}
+                      <span>Given on 7/14/2021</span>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Peter Seejay exchanged 100pts for{" "}
+                        <a href="#">Harry Potter Collection</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Peter Seejay exchanged 100pts for{" "}
+                        <a href="#">Harry Potter Collection</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Peter Seejay exchanged 100pts for{" "}
+                        <a href="#">Harry Potter Collection</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Peter Seejay exchanged 100pts for{" "}
+                        <a href="#">Harry Potter Collection</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
+                    <div className="transactions__group">
+                      <p>
+                        Peter Seejay exchanged 100pts for{" "}
+                        <a href="#">Harry Potter Collection</a>
+                      </p>{" "}
+                      <button class="btn--micro">Give Prize</button>
+                    </div>
                   </div>
                 </div>
               </div>

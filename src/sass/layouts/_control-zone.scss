@@ -80,6 +80,10 @@
 
   &__dropdowns {
     display: flex;
+
+    & .class-selector:first-child {
+      margin-right: 1rem;
+    }
   }
 
   &--space-between {
@@ -87,7 +91,8 @@
   }
 
   &--transactions {
-    width: 75%;
+    margin-bottom: 1.5rem;
+    width: 75rem;
   }
 }
 
