@@ -218,3 +218,22 @@
     }
   }
 }
+
+.transactions {
+  width: 74rem;
+  height: 80%;
+  overflow: scroll;
+
+  &__group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0rem;
+    border-bottom: solid 1px $color-gray-light;
+    padding-right: 2rem;
+
+    & span {
+      font-style: italic;
+    }
+  }
+}

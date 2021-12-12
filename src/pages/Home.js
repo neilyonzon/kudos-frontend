@@ -178,6 +178,40 @@ const Home = (props) => {
     );
   }
 
+
+  let treasureBoxIcon;
+  let sortedClasses;
+  if (userType === "teacher") {
+    sortedClasses = [...classes];
+    if (selectedClassId) {
+      const selectedClass = classes.find((cls) => {
+        return cls.id === selectedClassId;
+      });
+      if (selectedClass.treasureBoxOpen) {
+        treasureBoxIcon = (
+          <AiOutlineUnlock
+            className="treasure-lock"
+            onClick={() => handleToggleTB(selectedClassId)}
+          />
+        );
+      } else {
+        treasureBoxIcon = (
+          <AiOutlineLock
+            className="treasure-lock"
+            onClick={() => handleToggleTB(selectedClassId)}
+          />
+        );
+      }
+
+      sortedClasses.forEach((cls, i) => {
+        if (cls.id === selectedClassId) {
+          sortedClasses.splice(i, 1);
+          sortedClasses.unshift(cls);
+        }
+      });
+    }
+  }
+
   if (called && !loading) {
     let tabComponent;
     let tabClass;
@@ -189,6 +223,8 @@ const Home = (props) => {
             data={data} 
             loadUserInfo={loadUserInfo}
             categories={categories}
+            onSelectClass={onSelectClassHandler}
+            classes={sortedClasses}
           />
         );
         tabClass = "";
@@ -226,39 +262,6 @@ const Home = (props) => {
         } else {
           tabClass = "dashboard";
         }
-    }
-
-    let treasureBoxIcon;
-    let sortedClasses;
-    if (userType === "teacher") {
-      sortedClasses = [...classes];
-      if (selectedClassId) {
-        const selectedClass = classes.find((cls) => {
-          return cls.id === selectedClassId;
-        });
-        if (selectedClass.treasureBoxOpen) {
-          treasureBoxIcon = (
-            <AiOutlineUnlock
-              className="treasure-lock"
-              onClick={() => handleToggleTB(selectedClassId)}
-            />
-          );
-        } else {
-          treasureBoxIcon = (
-            <AiOutlineLock
-              className="treasure-lock"
-              onClick={() => handleToggleTB(selectedClassId)}
-            />
-          );
-        }
-
-        sortedClasses.forEach((cls, i) => {
-          if (cls.id === selectedClassId) {
-            sortedClasses.splice(i, 1);
-            sortedClasses.unshift(cls);
-          }
-        });
-      }
     }
 
     return (

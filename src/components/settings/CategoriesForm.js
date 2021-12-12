@@ -8,13 +8,6 @@ import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { BiPlus } from "@react-icons/all-files/bi/Biplus";
 
 const CategoriesForm = (props) => {
-  //Form Data -> useState Hook
-  //Enable Save -> useState Hook
-  //Function to map form data into form inputs
-  //Function to handle input change. If input change, change state to touched. Also make sure valid is available.
-  //Function to handle save button.
-  //Return form inputs
-
   const [categoriesFormData, setCategoriesFormData] = useState({
     categories: props.categories
   })

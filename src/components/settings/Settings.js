@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { gql, useQuery, useEffect, useLazyQuery} from "@apollo/client";
+import { gql, useQuery, useEffect, useLazyQuery } from "@apollo/client";
 import GeneralForm from "./GeneralForm";
 import CategoriesForm from "./CategoriesForm";
 import ClassesForm from "./ClassesForm";
+import Transactions from "./Transactions";
 
 const Settings = (props) => {
-
-  const [selectedSetting, setSelectedSetting] = useState('general')
+  const [selectedSetting, setSelectedSetting] = useState("general");
 
   const [tabClasses, setTabClasses] = useState([
     { tabClass: "tabs__header active", contentClass: "tabs__content active" },
+    { tabClass: "tabs__header", contentClass: "tabs__content" },
     { tabClass: "tabs__header", contentClass: "tabs__content" },
     { tabClass: "tabs__header", contentClass: "tabs__content" },
   ]);
@@ -28,27 +29,53 @@ const Settings = (props) => {
     };
     setTabClasses(tabs);
 
-    if(index === 0){
-      setSelectedSetting('general')
-    } else if(index === 1){
-      setSelectedSetting('classes')
+    if (index === 0) {
+      setSelectedSetting("general");
+    } else if (index === 1) {
+      setSelectedSetting("classes");
+    } else if (index === 2) {
+      setSelectedSetting("categories");
     } else {
-      setSelectedSetting('categories')
+      setSelectedSetting("transactions");
     }
   };
 
-  let selectedSettingComponent
+  let selectedSettingComponent;
   switch (selectedSetting) {
-    case 'general':
-      selectedSettingComponent = <GeneralForm loadUserInfo={props.loadUserInfo} teacherInfo={props.data.teacher}/>
-      break
-    case 'classes':
-      selectedSettingComponent = <ClassesForm loadUserInfo={props.loadUserInfo} classes={props.data.teacher.classes} />
-      break
-    case 'categories':
-      selectedSettingComponent = <CategoriesForm loadUserInfo={props.loadUserInfo} categories={props.categories} />
-      break
+    case "general":
+      selectedSettingComponent = (
+        <GeneralForm
+          loadUserInfo={props.loadUserInfo}
+          teacherInfo={props.data.teacher}
+        />
+      );
+      break;
+    case "classes":
+      selectedSettingComponent = (
+        <ClassesForm
+          loadUserInfo={props.loadUserInfo}
+          classes={props.data.teacher.classes}
+        />
+      );
+      break;
+    case "categories":
+      selectedSettingComponent = (
+        <CategoriesForm
+          loadUserInfo={props.loadUserInfo}
+          categories={props.categories}
+        />
+      );
+      break;
+    case "transactions":
+      selectedSettingComponent = (
+        <Transactions
+          loadUserInfo={props.loadUserInfo}
+          classes={props.classes}
+          onSelectClass={props.onSelectClass}
+        />
+      );
   }
+
 
   return (
     <>
@@ -75,6 +102,13 @@ const Settings = (props) => {
             onClick={() => handleTabChange(2)}
           >
             Categories
+          </div>
+          <div
+            className={tabClasses[3].tabClass}
+            id="tabhead-4"
+            onClick={() => handleTabChange(3)}
+          >
+            Transactions
           </div>
         </div>
         <div className="tabs__content-container">

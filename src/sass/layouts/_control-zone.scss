@@ -77,11 +77,30 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+  &__dropdowns {
+    display: flex;
+
+    & .class-selector:first-child {
+      margin-right: 1rem;
+    }
+  }
+
+  &--space-between {
+    justify-content: space-between;
+  }
+
+  &--transactions {
+    margin-bottom: 1.5rem;
+    width: 75rem;
+  }
 }
 
 .class-selector {
-  position: relative;
-  right: 2.5rem;
+  &--dashboard {
+    position: relative;
+    right: 2.5rem;
+  }
 }
 
 .treasure-lock {
