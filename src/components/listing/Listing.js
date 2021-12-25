@@ -44,10 +44,10 @@ const Listing = (props) => {
           </div>
         </div>
         <div className="list__items-container">
-          {props.rows.map((item) => {
+          {props.rows.map((item, index) => {
             return (
               <ListingCard
-                key={item.id}
+                key={index}
                 itemData={item}
                 columns={props.config.columns}
                 refreshData={props.refreshData}

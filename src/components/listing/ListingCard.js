@@ -4,6 +4,7 @@ import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
 import { FaExchangeAlt } from "@react-icons/all-files/fa/FaExchangeAlt";
 import { SiWish } from "@react-icons/all-files/si/SiWish";
+import {AiFillCloseCircle} from "@react-icons/all-files/ai/AiFillCloseCircle"
 
 import KudosModal from "../students/KudosModal";
 import StudentModal from "../students/StudentModal";
@@ -120,9 +121,20 @@ const ListingCard = (props) => {
           </>
         ) : null}
 
-      {props.type == "studentsPrizes" ? null : props.type == "treasureBox" ? null : ( <button className="list__btn list__btn--edit">
+      {props.type == "studentsPrizes" ? null : props.type == "treasureBox" ? null : props.type=="studentsWishes" ? null : ( <button className="list__btn list__btn--edit">
         <FaEdit className="icon-edit" onClick={handleEditModal} />
       </button>)}
+
+      {props.type == "studentsWishes" ? (
+          <>
+            <button className="list__btn">
+              <FaExchangeAlt className="icon-pts" onClick={() => handleActionModal('transaction')} />
+            </button>
+            <button className="list__btn">
+              <AiFillCloseCircle className="icon-pts"/>
+            </button>
+          </>
+        ) : null}
 
 
       </div>
