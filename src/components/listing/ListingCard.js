@@ -112,9 +112,11 @@ const ListingCard = (props) => {
 
         {props.type == "treasureBox" ? (
           <>
+          {props.treasureBoxOpen == true ? (
             <button className="list__btn">
               <FaExchangeAlt className="icon-pts" onClick={() => handleActionModal('transaction')} />
             </button>
+          ) : null }
             <button className="list__btn">
               <SiWish className="icon-pts" onClick={() => handleActionModal('wish')} />
             </button>
@@ -127,9 +129,11 @@ const ListingCard = (props) => {
 
       {props.type == "studentsWishes" ? (
           <>
+           {props.treasureBoxOpen == true ? (
             <button className="list__btn">
               <FaExchangeAlt className="icon-pts" onClick={() => handleActionModal('transaction')} />
             </button>
+          ) : null }
             <button className="list__btn">
               <AiFillCloseCircle className="icon-pts"/>
             </button>

@@ -22,6 +22,7 @@ const Home = (props) => {
   const [userType, setUserType] = useState(null);
   const [kudosBalance, setKudosBalance] = useState(0);
   const [categories, setCategories] = useState(null)
+  const [treasureBoxOpen, setTreasureBoxOpen] = useState(null)
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -98,6 +99,7 @@ const Home = (props) => {
         if (data && userType !== "teacher") {
           setSelectedClassId(data.student.class.id);
           setKudosBalance(data.student.kudosBalance);
+          setTreasureBoxOpen(data.student.class.treasureBoxOpen)
         }
       },
     }
@@ -249,13 +251,14 @@ const Home = (props) => {
             userType={userType}
             kudosBalance={kudosBalance}
             categories={categories}
+            treasureBoxOpen={treasureBoxOpen}
           />
         );
         tabClass = "treasurebox";
         break;
       default:
         tabComponent = (
-          <Dashboard selectedClassId={selectedClassId} userType={userType} />
+          <Dashboard selectedClassId={selectedClassId} userType={userType} treasureBoxOpen={treasureBoxOpen}/>
         );
         if (userType !== "teacher") {
           tabClass = "dashboard--student";

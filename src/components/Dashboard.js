@@ -249,6 +249,8 @@ const Dashboard = (props) => {
       })
     }
 
+
+
     return (
       <>
         <div className="panel dashboard-prizes">
@@ -265,6 +267,7 @@ const Dashboard = (props) => {
             rows={studentWishes}
             config={wishesListingData}
             refreshData={getDashboardData}
+            treasureBoxOpen={props.treasureBoxOpen}
           />
         </div>
         <div className="panel dashboard-panel-points">
