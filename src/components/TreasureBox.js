@@ -25,6 +25,7 @@ const TreasureBox = (props) => {
   const handleAddPrizeModal = () => {
     setOpenAddPrize(!openAddPrize);
   };
+  
 
   const listingData = {
     type: props.userType === "teacher" ? "prizes" : "treasureBox",
@@ -151,6 +152,7 @@ const TreasureBox = (props) => {
             userType={props.userType}
             kudosBalance={props.kudosBalance}
             categories={props.categories}
+            treasureBoxOpen={props.treasureBoxOpen}
           />
         </div>
       </>

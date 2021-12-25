@@ -54,6 +54,7 @@ const Listing = (props) => {
                 type={props.config.type}
                 kudosBalance={props.kudosBalance}
                 categories={props.categories}
+                treasureBoxOpen={props.treasureBoxOpen}
               />
             );
           })}
