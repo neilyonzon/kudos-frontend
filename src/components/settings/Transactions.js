@@ -5,10 +5,10 @@ import TransactionGroup from "./TransactionCard";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 
 const Transactions = (props) => {
-  const [selectedClassId, setSelectedClassId] = useState(props.classes[0].id);
+  const [selectedClassId, setSelectedClassId] = useState(props.classes[0] ? props.classes[0].id : null);
 
   useEffect(() => {
-    getTransactionsData();
+    selectedClassId && getTransactionsData();
   }, [props.selectedClassId]);
 
   const onSelectClassHandler = (e) => {
@@ -42,11 +42,18 @@ const Transactions = (props) => {
   const [getTransactionsData, { loading, error, data }] = useLazyQuery(
     GET_TRANSACTIONS, 
     {
-      variables: { classId: selectedClassId},
+      variables: { classId: selectedClassId },
       fetchPolicy: "network-only",
     }
   ) 
 
+  if (loading) {
+    return (
+      <div>
+        <h2>...loading...</h2>
+      </div>
+    );
+  }
 
   if (data) {
     return (
@@ -61,7 +68,7 @@ const Transactions = (props) => {
           <AiOutlineSearch className="icon-search" />
         </div>
         <div className="transactions">
-          {data.getTransactions.map((transaction)=> {
+          {data.getTransactions.length > 0 ? data.getTransactions.map((transaction)=> {
             return (
               <TransactionGroup
                 student={transaction.student}
@@ -73,7 +80,12 @@ const Transactions = (props) => {
                 loadUserInfo={props.loadUserInfo}
                 />
             )
-          })}
+          })
+        :
+        <div>
+          <h2>There are no pending transactions from your students in this class.</h2>
+        </div> 
+        }
         </div>
       </>
     );
@@ -81,9 +93,9 @@ const Transactions = (props) => {
 
   return (
     <div>
-      <h2>...loading...</h2>
+      <h2>You don't have any classes! Go to the Classes tab to add a class.</h2>
     </div>
-  );
+  )
 
 };
 
