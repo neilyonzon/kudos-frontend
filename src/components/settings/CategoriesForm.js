@@ -103,7 +103,7 @@ const CategoriesForm = (props) => {
       </div>
       <div className="categories-settings">
         {
-          categoriesFormData.categories.map((cat, idx) => (
+          categoriesFormData.categories && categoriesFormData.categories.map((cat, idx) => (
             <EditCategoryCard
               key={idx}
               item={cat}
