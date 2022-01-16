@@ -157,8 +157,11 @@ const Dashboard = (props) => {
               prizeId={transaction.prizeId}
               prizeCost={transaction.prizeCost}
               prizeName={transaction.prizeName}
-              refreshData={getDashboardData}
-              classId={props.selectedClassId}
+              refreshData={() => {getDashboardData({
+                variables: {
+                  classId: props.selectedClassId
+                }
+              })}}
             />
           );
         }
