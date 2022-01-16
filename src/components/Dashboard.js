@@ -177,7 +177,11 @@ const Dashboard = (props) => {
           <Listing
             rows={classStudents}
             config={studentListingData}
-            refreshData={getDashboardData}
+            refreshData={() => {getDashboardData({
+              variables: {
+                classId: props.selectedClassId
+              }
+            })}}
           />
         </div>
         <div className="panel dashboard-panel-treasure">
