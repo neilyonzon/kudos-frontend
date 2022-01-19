@@ -21,9 +21,6 @@ const customStyles = {
   },
 };
 
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
-//Modal.setAppElement('#yourAppElement')
-
 const StudentModal = (props) => {
   const formStructure = {
     username: {
@@ -41,7 +38,7 @@ const StudentModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: props.username,
       touched: false,
     },
     firstName: {
@@ -59,7 +56,7 @@ const StudentModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: props.firstName,
       touched: false,
     },
     lastName: {
@@ -77,7 +74,7 @@ const StudentModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: props.lastName,
       touched: false,
     },
     password: {
@@ -88,14 +85,14 @@ const StudentModal = (props) => {
       },
       config: {
         type: "password",
-        placeholder: "Password",
+        placeholder: "******",
       },
       helper: "",
       value: "",
       validation: {
         required: false,
       },
-      valid: false,
+      valid: props.firstName,
       touched: false,
     },
   };
@@ -129,7 +126,6 @@ const StudentModal = (props) => {
   const [getS3Signature] = useMutation(S3SIGN, {
     async onCompleted({ signS3 }) {
       await uploadToS3(imageFile, signS3.signedRequest);
-
       student({
         variables: {
           id: props.id ? props.id : "",
@@ -276,7 +272,7 @@ const StudentModal = (props) => {
           fileType: imageFile.type,
         },
       });
-    } else {
+    } else  {
       student({
         variables: {
           id: props.id ? props.id : "",
