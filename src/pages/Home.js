@@ -151,7 +151,8 @@ const Home = (props) => {
   const [logoutUser] = useMutation(LOGOUT, {
     onCompleted() {
       setAcsToken('')
-      navigate("/")
+      const loginDomain = userType === "teacher" ? "teacher" : ""
+      navigate(`/${loginDomain}`);
     },
     onError() {
       console.log("could not logout user!")
