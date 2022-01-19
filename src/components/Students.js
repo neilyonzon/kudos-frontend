@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import Listing from "../components/listing/Listing";
+import StudentModal from "./students/StudentModal";
+import Button from "./elements/Button";
 
 const Students = (props) => {
   const listingData = {
@@ -13,6 +15,12 @@ const Students = (props) => {
       },
       { name: "Kudos", dataQuery: "kudosBalance" },
     ],
+  };
+
+  const [openAddStudent, setOpenAddStudent] = useState(false);
+
+  const handleAddStudentModal = () => {
+    setOpenAddStudent(!openAddStudent);
   };
 
   const GET_CLASS_DASHBOARD = gql`
@@ -67,13 +75,22 @@ const Students = (props) => {
     );
   }
 
-  // if no students, prompt teacher to add students
-  // if(data && !data.getClassInfo.students){
-
-  // }
-
   if (data) {
     const classStudents = data.getClassInfo.students;
+
+    if (classStudents.length === 0) {
+      return <div className="treasure-box__container">
+      <h2>Add your first student for {data.getClassInfo.className}</h2>
+      <Button clicked={handleAddStudentModal} btnColor="green">Add Student</Button>
+      <StudentModal
+        addStudent={true}
+        isOpen={openAddStudent}
+        onClose={handleAddStudentModal}
+        refreshData={getClassData}
+        classId={props.selectedClassId}
+      />
+      </div>
+    }
 
     return (
       <>
@@ -90,6 +107,8 @@ const Students = (props) => {
       </>
     );
   }
+
+  
 
   return (
     <div>
