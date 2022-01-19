@@ -192,12 +192,8 @@ const Dashboard = (props) => {
           <div className="panel__content">
             <GiOpenTreasureChest className="icon-treasure" /> 
             <div className="dashboard-panel-treasure__links">
-              <p>
-                <a href="#">{numPendingApproval} Pending Approvals</a>
-              </p>
-              <p>
-                <a href="#">{remainingPrizes} Prizes Remaining</a>
-              </p>
+              <p>{numPendingApproval} Pending Approvals</p>
+              <p>{remainingPrizes} Prizes Remaining</p>
             </div>
           </div>
         </div>
@@ -282,12 +278,7 @@ const Dashboard = (props) => {
           <div className="panel__content">
             <GiOpenTreasureChest className="icon-treasure" /> 
             <div className="dashboard-panel-treasure__links">
-              <p>
-                <a href="#">{data.student.kudosBalance} Kudos Points Remaining</a>
-              </p>
-              {/* <p>
-                <a href="#">{remainingPrizes} Prizes Remaining</a>
-              </p> */}
+              <p>{data.student.kudosBalance} Kudos Points Remaining</p>
             </div>
           </div>
         </div>
