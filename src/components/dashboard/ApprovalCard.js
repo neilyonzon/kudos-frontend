@@ -17,11 +17,7 @@ const ApprovalCard = props => {
 
   const [makeTransaction] = useMutation(TRANSACTION, {
     onCompleted(){
-      props.refreshData({
-        variables: {
-          classId: props.classId
-        }
-      })
+      props.refreshData()
     },
     onError(error){
       console.log('unable to approve or deny transaction')
