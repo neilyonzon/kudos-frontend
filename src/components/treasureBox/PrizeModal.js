@@ -50,7 +50,7 @@ const PrizeModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: props.prizename,
       touched: false,
     },
     category: {
@@ -69,7 +69,7 @@ const PrizeModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
     },
     kudoscost: {
@@ -87,7 +87,7 @@ const PrizeModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: props.kudoscost,
       touched: false,
     },
     description: {
@@ -105,7 +105,7 @@ const PrizeModal = (props) => {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: props.description,
       touched: false,
     },
     points: {
@@ -287,7 +287,14 @@ const PrizeModal = (props) => {
     if (operator !== "plus" && updatedInput.value > 0) {
       updatedInput.value--;
     }
+    //Note: Opportunity to create utility function for form validation below
     updatedForm[inputIdentifier] = updatedInput;
+    let formIsValid = true;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+    setFormIsValid(formIsValid);
+
     setForm(updatedForm);
   };
 
