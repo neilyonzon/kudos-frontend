@@ -135,6 +135,10 @@ p, span {
     margin: 0.75rem;
     font-size: 1.6rem;
     cursor: pointer;
+
+    &:hover {
+      opacity: .7;
+    }
   }
 
   &--inactive {
