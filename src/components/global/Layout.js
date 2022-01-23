@@ -5,8 +5,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 import "../../sass/style.scss";
 
-const Layout = ({ children, pageName }) => {
+const Layout = props => {
   let className = "";
+  const { pageName, children } = props;
 
   if (pageName) {
     className = `${className} page-${pageName}`;
@@ -18,7 +19,7 @@ const Layout = ({ children, pageName }) => {
         <title>Gatsby Site</title>
       </Helmet>
       <div className="wrapper">
-        <Header />
+        <Header loginState={props.loginState} updateLoginStatus={props.updateLoginStatus}/>
         <main>{children}</main>
         <Footer />
       </div>

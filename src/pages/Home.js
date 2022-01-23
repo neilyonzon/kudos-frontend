@@ -31,6 +31,7 @@ const Home = (props) => {
       if (!!acsToken) {
         setUserType(savedUserType);
         setShow(true);
+        props.updateLoginStatus(true);
       } else {
         const loginDomain = savedUserType ? savedUserType : "";
         return navigate(`/${loginDomain}`);
@@ -147,17 +148,6 @@ const Home = (props) => {
       }
     }
   `
-
-  const [logoutUser] = useMutation(LOGOUT, {
-    onCompleted() {
-      setAcsToken('')
-      const loginDomain = userType === "teacher" ? "teacher" : ""
-      navigate(`/${loginDomain}`);
-    },
-    onError() {
-      console.log("could not logout user!")
-    }
-  })
 
   if (!called && show) {
     loadUserInfo();
@@ -278,16 +268,6 @@ const Home = (props) => {
               : `${data.student.firstName} ${data.student.lastName}!`}
           </h1>
         </div>
-
-        <a
-          href="/"
-          onClick={(event) => {
-            event.preventDefault();
-            logoutUser()
-          }}
-        >
-          Log Out!
-        </a>
 
         <ControlNav
           onSelectTab={onTabSelectHandler}

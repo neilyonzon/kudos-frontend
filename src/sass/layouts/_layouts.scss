@@ -7,8 +7,12 @@
   height: 8rem;
   background: white;
 
-  .main-header__logo {
+  &__logo {
     padding: 2rem;
+  }
+
+  &__utility {
+    padding-right: 2rem;
   }
 }
 
