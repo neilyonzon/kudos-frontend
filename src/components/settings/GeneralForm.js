@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { gql, useMutation , useEffect, useLazyQuery} from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { compareFormValues } from "../../utils/compareFormValues";
 
 const GeneralForm = (props) => {
@@ -62,7 +62,7 @@ const GeneralForm = (props) => {
     updatedForm[inputIdentifier] = updatedFormInput;
     let formIsValid = true;
     for (const field in updatedForm) {
-      if (updatedForm[field].value == "") {
+      if (updatedForm[field].value === "") {
         formIsValid = false;
         console.log("There is an empty field. Disable button");
         updateSaveBtn("disable");
@@ -79,7 +79,7 @@ const GeneralForm = (props) => {
   };
 
   const updateSaveBtn = (status) => {
-    if (status == "enable") {
+    if (status === "enable") {
       setSaveBtn({
         class: "btn--settings",
       });
@@ -111,7 +111,7 @@ const GeneralForm = (props) => {
   `;
 
   const submitGeneralForm = async (event) => {
-    if (saveBtn.class == "btn--settings") {
+    if (saveBtn.class === "btn--settings") {
       event.preventDefault();
 
       teacher({

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 
 import { gql, useMutation } from '@apollo/client';
-import Input from '../forms/Input';
 import Button from '../elements/Button';
 
 const customStyles = {
