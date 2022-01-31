@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal'
 
-import { gql, useMutation, fromPromise } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 
 import Input from '../forms/Input'
 import Button from '../elements/Button'

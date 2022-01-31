@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { gql, useMutation } from '@apollo/client'
 
 const EditClassCard = (props) => {

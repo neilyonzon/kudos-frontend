@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { gql, useQuery, useEffect, useLazyQuery } from "@apollo/client";
 import GeneralForm from "./GeneralForm";
 import CategoriesForm from "./CategoriesForm";
 import ClassesForm from "./ClassesForm";
