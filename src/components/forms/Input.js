@@ -6,7 +6,7 @@ const input = (props) => {
   let inputElement = null;
   let helperElement = "";
 
-  if (props.helper != "") {
+  if (props.helper !== "") {
     helperElement = (
       <div
         id="helper-text__username"
@@ -20,14 +20,14 @@ const input = (props) => {
 
   //START FORM GROUP CLASS ASSIGNMENT
   let formGroupClass = "form__group";
-  if (props.inputType == "points") {
+  if (props.inputType === "points") {
     formGroupClass = "form__group form__group--points";
   }
 
   //START INPUT CHECK ASSIGNMENT
   let inputClass = "form__input";
 
-  if (props.inputType == "select") {
+  if (props.inputType === "select") {
     inputClass += " form__input--select";
   }
 
@@ -52,11 +52,6 @@ const input = (props) => {
     validationError = <p>Please enter valid value!</p>;
   }
 
-  //POINTS HANDLER
-
-  const inputPointsHandler = (type) => {
-    props.pointsHandler("points", type);
-  };
 
   switch (props.inputType) {
     case "input":

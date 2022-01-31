@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
-import { GiOpenTreasureChest } from "@react-icons/all-files/gi/GiOpenTreasureChest";
 import Listing from "../components/listing/Listing";
 import StudentModal from "./students/StudentModal";
 import Button from "./elements/Button";

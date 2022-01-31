@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { gql, useMutation } from '@apollo/client';
-
 import { FaExchangeAlt } from "@react-icons/all-files/fa/FaExchangeAlt";
-import { SiWish } from "@react-icons/all-files/si/SiWish";
 
 
 const ApprovalCard = props => {
