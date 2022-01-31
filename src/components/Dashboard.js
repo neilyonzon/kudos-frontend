@@ -240,7 +240,7 @@ const Dashboard = (props) => {
     let approvedPrizes = [];
 
     if (allStudentsPrizes.length > 0) {
-      approvedPrizes = allStudentsPrizes.filter(transaction => transaction.approved == true);
+      approvedPrizes = allStudentsPrizes.filter(transaction => transaction.approved === true);
     }
 
     let studentWishesData = data.student.wishes;

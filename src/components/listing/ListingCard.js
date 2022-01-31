@@ -5,12 +5,10 @@ import { FaEdit } from "@react-icons/all-files/fa/FaEdit";
 import { FaExchangeAlt } from "@react-icons/all-files/fa/FaExchangeAlt";
 import { SiWish } from "@react-icons/all-files/si/SiWish";
 import {AiFillCloseCircle} from "@react-icons/all-files/ai/AiFillCloseCircle"
-
 import KudosModal from "../students/KudosModal";
 import StudentModal from "../students/StudentModal";
 import PrizeModal from "../treasureBox/PrizeModal";
 import ActionModal from '../treasureBox/ActionModal';
-import { removeFragmentSpreadFromDocument } from "@apollo/client/utilities";
 
 const ListingCard = (props) => {
   const [openEditKudos, setOpenEditKudos] = useState(false);
@@ -20,7 +18,7 @@ const ListingCard = (props) => {
   const [openWish, setOpenWish] = useState(false);
 
   let prizeUrl;
-  if (props.type == 'studentsPrizes') {
+  if (props.type === 'studentsPrizes') {
     prizeUrl = props.itemData.prizeImageUrl;
   } else {
     prizeUrl = props.itemData.imageUrl;
@@ -28,7 +26,7 @@ const ListingCard = (props) => {
 
   let name;
 
-  if (props.type == 'students' || props.type == 'studentsTeacherDash' ) {
+  if (props.type === 'students' || props.type === 'studentsTeacherDash' ) {
     name = props.itemData.firstName + " " + props.itemData.lastName;
   } else {
     name = props.itemData.prizeName;
@@ -71,8 +69,8 @@ const ListingCard = (props) => {
       const data = column.dataQuery;
       let query = null;
       if (
-        (data == "name" && props.type === "studentsTeacherDash") ||
-        (data == "name" && props.type == "students")
+        (data === "name" && props.type === "studentsTeacherDash") ||
+        (data === "name" && props.type === "students")
       ) {
         query = props.itemData.firstName + " " + props.itemData.lastName;
       } 
@@ -93,7 +91,7 @@ const ListingCard = (props) => {
 
   return (
     <div className="list__item">
-      {props.type == "studentsPrizes" ? null : props.type == "treasureBox" ? null : <input type="checkbox" className="list__checkbox"></input>}
+      {props.type === "studentsPrizes" ? null : props.type === "treasureBox" ? null : <input type="checkbox" className="list__checkbox"></input>}
     
       <div className="list__details">
         <img
@@ -104,15 +102,15 @@ const ListingCard = (props) => {
         {getItemColumns(props.columns)}
       </div>
       <div className="list__col-btns">
-        {props.type == "students" || props.type == "studentsTeacherDash" ? (
+        {props.type === "students" || props.type === "studentsTeacherDash" ? (
           <button className="list__btn list__btn--pts">
             <FaDollarSign className="icon-pts" onClick={handleEditKudosModal} />
           </button>
         ) : null}
 
-        {props.type == "treasureBox" ? (
+        {props.type === "treasureBox" ? (
           <>
-          {props.treasureBoxOpen == true ? (
+          {props.treasureBoxOpen === true ? (
             <button className="list__btn">
               <FaExchangeAlt className="icon-pts" onClick={() => handleActionModal('transaction')} />
             </button>
@@ -123,13 +121,13 @@ const ListingCard = (props) => {
           </>
         ) : null}
 
-      {props.type == "studentsPrizes" ? null : props.type == "treasureBox" ? null : props.type=="studentsWishes" ? null : ( <button className="list__btn list__btn--edit">
+      {props.type === "studentsPrizes" ? null : props.type === "treasureBox" ? null : props.type==="studentsWishes" ? null : ( <button className="list__btn list__btn--edit">
         <FaEdit className="icon-edit" onClick={handleEditModal} />
       </button>)}
 
-      {props.type == "studentsWishes" ? (
+      {props.type === "studentsWishes" ? (
           <>
-           {props.treasureBoxOpen == true ? (
+           {props.treasureBoxOpen === true ? (
             <button className="list__btn">
               <FaExchangeAlt className="icon-pts" onClick={() => handleActionModal('transaction')} />
             </button>
