@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { navigate } from "gatsby";
-
 import Input from "../forms/Input";
 import Button from "../elements/Button";
-import { setAcsToken } from "../../utils/auth";
 
 const Register = (props) => {
   //Add Hooks

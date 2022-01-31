@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
 import { gql, useMutation } from "@apollo/client";
-import { BiPlus } from "@react-icons/all-files/bi/Biplus";
+import { BiPlus } from "@react-icons/all-files/bi/BiPlus";
 import AddClassModal from "./AddClassModal";
 
 import EditClassCard from './EditClassCard'

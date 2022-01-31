@@ -1,9 +1,8 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { navigate } from "gatsby";
-import { retrieveAcsToken, setAcsToken } from "../utils/auth";
+import { retrieveAcsToken } from "../utils/auth";
 import { getUserType } from "../utils/userType";
-
 import ControlNav from "../components/home/ControlNav";
 import ClassSelector from "../components/home/ClassSelector";
 import Dashboard from "../components/Dashboard";
@@ -12,7 +11,6 @@ import TreasureBox from "../components/TreasureBox";
 import Settings from "../components/settings/Settings";
 import { AiOutlineLock } from "@react-icons/all-files/ai/AiOutlineLock";
 import { AiOutlineUnlock } from "@react-icons/all-files/ai/AiOutlineUnlock";
-import dashboardStyles from "../components/dashboard.module.css";
 
 const Home = (props) => {
   const [show, setShow] = useState(false);
@@ -140,14 +138,6 @@ const Home = (props) => {
       },
     });
   };
-
-  const LOGOUT = gql`
-    mutation logout {
-      logoutUser {
-        userId
-      }
-    }
-  `
 
   if (!called && show) {
     loadUserInfo();

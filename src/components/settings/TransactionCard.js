@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { gql, useMutation, fromPromise } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 
 const EditClassCard = (props) => {
-  const [deleteClassModalOpen, setDeleteClassModalOpen] = useState(false);
 
   const handleGiveButton = () => {
     giveGift({
