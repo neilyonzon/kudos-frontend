@@ -1,6 +1,8 @@
 module.exports = {
   siteMetadata: {
     title: "Kudos",
+    description: "Manage your students points",
+    siteUrl: "https://kudos-points-manager.netlify.app"
   },
   plugins: [
     "gatsby-plugin-sass",
