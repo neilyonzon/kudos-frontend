@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoEllipsisVerticalSharp } from "@react-icons/all-files/io5/IoEllipsisVerticalSharp";
-import { BiPlus } from "@react-icons/all-files/bi/Biplus";
+import { BiPlus } from "@react-icons/all-files/bi/BiPlus";
 import { BiMinus } from "@react-icons/all-files/bi/BiMinus";
 
 import StudentModal from "../students/StudentModal";

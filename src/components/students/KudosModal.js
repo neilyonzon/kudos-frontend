@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import Modal from 'react-modal'
 
 import { gql, useMutation } from '@apollo/client'
-
-import { FaMoneyBillAlt } from '@react-icons/all-files/fa/FaMoneyBillAlt'
 import { AiOutlineMinus } from '@react-icons/all-files/ai/AiOutlineMinus'
 import { AiOutlinePlus } from '@react-icons/all-files/ai/AiOutlinePlus'
 

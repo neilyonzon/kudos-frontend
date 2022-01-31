@@ -5,7 +5,7 @@ import AddCategoryModal from './AddCategoryModal'
 import EditCategoryCard from "./EditCategoryCard";
 
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
-import { BiPlus } from "@react-icons/all-files/bi/Biplus";
+import { BiPlus } from "@react-icons/all-files/bi/BiPlus";
 
 const CategoriesForm = (props) => {
   const [categoriesFormData, setCategoriesFormData] = useState({

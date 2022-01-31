@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { gql, useLazyQuery } from "@apollo/client";
 import ClassSelector from "../home/ClassSelector";
 import TransactionGroup from "./TransactionCard";
 import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
@@ -39,7 +39,7 @@ const Transactions = (props) => {
       } 
     `
 
-  const [getTransactionsData, { loading, error, data }] = useLazyQuery(
+  const [getTransactionsData, { loading, data }] = useLazyQuery(
     GET_TRANSACTIONS, 
     {
       variables: { classId: selectedClassId },
