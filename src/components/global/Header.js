@@ -42,10 +42,10 @@ const Header = (props) => {
   return (
     <header className="main-header">
       <Logo addclassName="main-header__logo"></Logo>
-      <div class="main-header__utility">
+      <div className="main-header__utility">
         { props.loginState ? <a
             href="/"
-            class="btn--link"
+            className="btn--link"
             onClick={(event) => {
               event.preventDefault();
               logoutUser()
