@@ -198,7 +198,7 @@ const Dashboard = (props) => {
           </div>
         </div>
         <div className="panel dashboard-lorem">
-          <h4 className="panel__title">Lorem Ipsum</h4>
+          <h4 className="panel__title">Pending Approvals</h4>
           <div className="panel__content">
             <p><strong>{numPendingApproval} Pending Approvals</strong></p>
             <div className="approval-section">
@@ -237,10 +237,10 @@ const Dashboard = (props) => {
     
     //Filter this array by approved prizes only
     let allStudentsPrizes = data.student.transactions;
-    let approvedPrizes = [];
+    let studentsApprovedPrizes
 
     if (allStudentsPrizes.length > 0) {
-      approvedPrizes = allStudentsPrizes.filter(transaction => transaction.approved === true);
+      studentsApprovedPrizes = allStudentsPrizes.filter(transaction => transaction.approved === true);
     }
 
     let studentWishesData = data.student.wishes;
@@ -252,14 +252,12 @@ const Dashboard = (props) => {
       })
     }
 
-
-
     return (
       <>
         <div className="panel dashboard-prizes">
           <h4 className="panel__title">Your Prizes</h4>
           <Listing
-            rows={allStudentsPrizes}
+            rows={studentsApprovedPrizes}
             config={prizesListingData}
             refreshData={getDashboardData}
           />
